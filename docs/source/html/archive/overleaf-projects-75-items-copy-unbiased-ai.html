@@ -82,7 +82,8 @@
 
 <div class="algorithmic">
 
-<p><strong>Input:</strong> Dataset <span class="math inline"><em>D</em></span> with bias <span class="math inline"><em>ϕ</em></span> <strong>Output:</strong> ML Model <span class="math inline"><em>f</em></span> with amplified bias Initialize model parameters <span class="math inline"><em>θ</em></span> Compute prediction <span class="math inline"><em>ŷ</em> = <em>f</em>(<em>x</em>; <em>θ</em>)</span> Calculate loss <span class="math inline">ℒ(<em>f</em>(<em>x</em>), <em>y</em>)</span> Update <span class="math inline"><em>θ</em></span> to minimize <span class="math inline">ℒ</span> <strong>Result:</strong> Model replicates biased patterns</p>
+**Input:** Dataset $`D`$ with bias $`\phi`$ **Output:** ML Model $`f`$ with amplified bias Initialize model parameters $`\theta`$ Compute prediction $`\hat{y} = f(x; \theta)`$ Calculate loss $`\mathcal{L}(f(x), y)`$ Update $`\theta`$ to minimize $`\mathcal{L}`$ **Result:** Model replicates biased patterns
+
 </div>
 
 </div>
@@ -98,7 +99,8 @@
 
 <div class="algorithmic">
 
-<p><strong>Input:</strong> 4D tensor data <span class="math inline"><em>T</em><sub>4<em>D</em></sub></span> <strong>Output:</strong> Semantically structured map Apply k-NN clustering on <span class="math inline"><em>T</em><sub>4<em>D</em></sub></span> Group data by similarity metrics Transform to 3D representation Ungroup for semantic map creation Match structure to problem domain Structured semantic map</p>
+**Input:** 4D tensor data $`T_{4D}`$ **Output:** Semantically structured map Apply k-NN clustering on $`T_{4D}`$ Group data by similarity metrics Transform to 3D representation Ungroup for semantic map creation Match structure to problem domain Structured semantic map
+
 </div>
 
 </div>
@@ -114,7 +116,8 @@
 
 <div class="algorithmic">
 
-<p><strong>Input:</strong> Module requirements Initialize core LLM module Identify module from directory tree Load module dynamically Connect to core system Validate integration Optimize performance based on loaded modules Configured modular system</p>
+**Input:** Module requirements Initialize core LLM module Identify module from directory tree Load module dynamically Connect to core system Validate integration Optimize performance based on loaded modules Configured modular system
+
 </div>
 
 </div>
@@ -127,10 +130,11 @@
 
 <h1 id="formal-proof-framework">Formal Proof Framework</h1>
 <h2 id="traditional-vs-bayesian-inference">Traditional vs. Bayesian Inference</h2>
-<p><span class="math display">$$\begin{align}
+<pre><code class="language-math">\begin{align}
 \text{Traditional:} \quad \theta^* &amp;= \arg\max_\theta P(\theta|D) \approx \text{biased optimum}\\
 \text{Bayesian:} \quad P(\theta|D) &amp;= \int P(\theta,\phi|D)d\phi
-\end{align}$$</span></p>
+\end{align}
+</code></pre>
 <figure data-latex-placement="H">
 
 <figcaption>Optimization Comparison: Traditional vs. Bayesian</figcaption>
@@ -184,34 +188,54 @@
 <p>This framework establishes a formal mathematical foundation for addressing bias in AI systems through Bayesian modeling. By combining theoretical rigor with practical implementation strategies, we create more equitable and transparent machine learning systems that can be verified and audited.</p>
 <h2 id="key-contributions">Key Contributions</h2>
 <ul>
-<li><p>Formal proof of bias emergence in pattern-based learning</p></li>
-<li><p>Structural unboxing methodology for data awareness</p></li>
-<li><p>Modular architecture for scalable AI systems</p></li>
-<li><p>Bayesian framework for explicit bias mitigation</p></li>
+<li>
+<p>Formal proof of bias emergence in pattern-based learning</p>
+</li>
+<li>
+<p>Structural unboxing methodology for data awareness</p>
+</li>
+<li>
+<p>Modular architecture for scalable AI systems</p>
+</li>
+<li>
+<p>Bayesian framework for explicit bias mitigation</p>
+</li>
 </ul>
 <div class="thebibliography">
 
-<p>9 Pearl, J. (2000). Causality: Models, Reasoning, and Inference. Cambridge University Press.</p>
-<p>Goodfellow, I., Bengio, Y., Shlens, J. (2016). Explaining and Harnessing Adversarial Examples. ICLR 2016.</p>
-<p>Barocas, S., Hardt, M., Narayanan, A. (2019). Fairness and Machine Learning. fairmlbook.org</p>
-<p>Gelman, A., et al. (2013). Bayesian Data Analysis. Chapman &amp; Hall/CRC.</p>
+9 Pearl, J. (2000). Causality: Models, Reasoning, and Inference. Cambridge University Press.
+
+Goodfellow, I., Bengio, Y., Shlens, J. (2016). Explaining and Harnessing Adversarial Examples. ICLR 2016.
+
+Barocas, S., Hardt, M., Narayanan, A. (2019). Fairness and Machine Learning. fairmlbook.org
+
+Gelman, A., et al. (2013). Bayesian Data Analysis. Chapman & Hall/CRC.
+
 </div>
 
 <h1 id="mathematical-derivations">Mathematical Derivations</h1>
 <p>For the marginal posterior computation:</p>
-<p><span class="math display">$$\begin{align}
+<pre><code class="language-math">\begin{align}
 P(\theta|D) &amp;= \int P(\theta,\phi|D)d\phi\\
 &amp;= \int \frac{P(D|\theta,\phi)P(\theta,\phi)}{P(D)}d\phi\\
 &amp;= \frac{1}{P(D)}\int P(D|\theta,\phi)P(\theta|\phi)P(\phi)d\phi
-\end{align}$$</span></p>
+\end{align}
+</code></pre>
 <h1 id="implementation-notes">Implementation Notes</h1>
 <ul>
-<li><p>Use INLA or Stan for efficient Bayesian computation</p></li>
-<li><p>Implement parallel processing for 4D tensor operations</p></li>
-<li><p>Create modular APIs for dynamic component loading</p></li>
-<li><p>Design thorough testing suites for bias metrics</p></li>
+<li>
+<p>Use INLA or Stan for efficient Bayesian computation</p>
+</li>
+<li>
+<p>Implement parallel processing for 4D tensor operations</p>
+</li>
+<li>
+<p>Create modular APIs for dynamic component loading</p>
+</li>
+<li>
+<p>Design thorough testing suites for bias metrics</p>
+</li>
 </ul>
-
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-unbiased-ai</code></p>

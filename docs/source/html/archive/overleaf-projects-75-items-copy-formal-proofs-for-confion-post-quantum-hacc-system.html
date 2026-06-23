@@ -68,134 +68,170 @@
 <p>The enhanced Confion system implements autonomous key management through orthogonal state transitions in Hilbert space, eliminating human intervention. We provide formal security proofs under post-quantum assumptions using Dirac notation and projective measurements.</p>
 <h1 id="mathematical-foundations">Mathematical Foundations</h1>
 <h2 id="hilbert-space-basis-definition">Hilbert Space Basis Definition</h2>
-<p>Define a 3D Hilbert space <span class="math inline">ℋ</span> with orthonormal basis vectors:</p>
-<p><span class="math display">$$\begin{align*}
+<p>Define a 3D Hilbert space $<code>\mathcal{H}</code>$ with orthonormal basis vectors:</p>
+<pre><code class="language-math">\begin{align*}
 &amp;\ket{x}: \text{x-basis vector} \\
 &amp;\ket{y}: \text{y-basis vector (90° projection from x)} \\
 &amp;\ket{z}: \text{z-basis vector (projected from y-plane)}
-\end{align*}$$</span></p>
+\end{align*}
+</code></pre>
 <p>satisfying orthogonality:</p>
-<p><span class="math display">$$\braket{x|y} = \braket{y|z} = \braket{z|x} = 0$$</span></p>
+<pre><code class="language-math">\braket{x|y} = \braket{y|z} = \braket{z|x} = 0
+</code></pre>
 <p>and normalization:</p>
-<p><span class="math display">$$\braket{x|x} = \braket{y|y} = \braket{z|z} = 1$$</span></p>
+<pre><code class="language-math">\braket{x|x} = \braket{y|y} = \braket{z|z} = 1
+</code></pre>
 <h2 id="state-representation">State Representation</h2>
-<p>Cryptographic state at time <span class="math inline"><em>t</em></span>:</p>
-<p><span class="math display">$$\ket{\psi_t} = \alpha_t\ket{x} + \beta_t\ket{y} + \gamma_t\ket{z}$$</span></p>
-<p>where <span class="math inline"><em>α</em><sub><em>t</em></sub>, <em>β</em><sub><em>t</em></sub>, <em>γ</em><sub><em>t</em></sub> ∈ ℤ</span> are integer coefficients.</p>
+<p>Cryptographic state at time $<code>t</code>$:</p>
+<pre><code class="language-math">\ket{\psi_t} = \alpha_t\ket{x} + \beta_t\ket{y} + \gamma_t\ket{z}
+</code></pre>
+<p>where $<code>\alpha_t, \beta_t, \gamma_t \in \mathbb{Z}</code>$ are integer coefficients.</p>
 <h2 id="orthogonal-projection-operators">Orthogonal Projection Operators</h2>
 <p>Define planar projection operators:</p>
-<p><span class="math display">$$\begin{align*}
+<pre><code class="language-math">\begin{align*}
 \hat{P}_{xy} &amp;= \ket{x}\bra{x} + \ket{y}\bra{y} \\
 \hat{P}_{yz} &amp;= \ket{y}\bra{y} + \ket{z}\bra{z}
-\end{align*}$$</span></p>
+\end{align*}
+</code></pre>
 <h2 id="state-transition-operators">State Transition Operators</h2>
-<p><span class="math display">$$\begin{align*}
+<pre><code class="language-math">\begin{align*}
 \hat{R}_{xy} &amp;= -\ket{x}\bra{y} + \ket{y}\bra{x} \quad \text{(90° rotation in xy-plane)} \\
 \hat{T}_{yz} &amp;= \ket{y}\bra{y} + \ket{z}\bra{z} + \delta_z\ket{z}\bra{y} \\
 \hat{U}_t &amp;= \hat{T}_{yz}\hat{R}_{xy} \quad \text{(full transition operator)}
-\end{align*}$$</span></p>
+\end{align*}
+</code></pre>
 <h2 id="key-derivation-function">Key Derivation Function</h2>
-<p>For key <span class="math inline"><em>K</em><sub><em>t</em></sub></span> of length <span class="math inline"><em>n</em></span>:</p>
-<p><span class="math display">$$K_t[i] = \operatorname{Re}\left( \braket{\phi_i | \psi_t} \right) \mod 256$$</span></p>
-<p>where <span class="math inline">$\ket{\phi_i} = \cos\theta_i\ket{y} + \sin\theta_i\ket{z}$</span> are random vectors in the yz-plane.</p>
+<p>For key $<code>K_t</code>$ of length $<code>n</code>$:</p>
+<pre><code class="language-math">K_t[i] = \operatorname{Re}\left( \braket{\phi_i | \psi_t} \right) \mod 256
+</code></pre>
+<p>where $<code>\ket{\phi_i} = \cos\theta_i\ket{y} + \sin\theta_i\ket{z}</code>$ are random vectors in the yz-plane.</p>
 <h1 id="security-properties">Security Properties</h1>
 <h2 id="completeness">Completeness</h2>
 <div class="theorem">
 
-<p>For any valid initial state <span class="math inline">$\ket{\psi_0}$</span>, the Confion system generates cryptographically valid derived keys with probability 1.</p>
+For any valid initial state $`\ket{\psi_0}`$, the Confion system generates cryptographically valid derived keys with probability 1.
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> 1. The state transition <span class="math inline"><em>Û</em><sub><em>t</em></sub></span> is unitary and preserves norm<br />
-2. Projective measurements <span class="math inline">$\braket{\phi_i|\psi_t}$</span> are well-defined<br />
-3. Modular arithmetic ensures byte-aligned output<br />
-4. Hence <span class="math inline"><em>K</em><sub><em>t</em></sub></span> is always computable and valid ◻</p>
+*Proof.* 1. The state transition $`\hat{U}_t`$ is unitary and preserves norm  
+2. Projective measurements $`\braket{\phi_i|\psi_t}`$ are well-defined  
+3. Modular arithmetic ensures byte-aligned output  
+4. Hence $`K_t`$ is always computable and valid ◻
+
 </div>
 
 <h2 id="soundness">Soundness</h2>
 <div class="theorem">
 
-<p>Let <span class="math inline">𝒜</span> be a PPT adversary. The probability that <span class="math inline">𝒜</span> forges a valid <span class="math inline"><em>K</em><sub><em>t</em></sub></span> without <span class="math inline">$\ket{\psi_0}$</span> is negligible.</p>
+Let $`\mathcal{A}`$ be a PPT adversary. The probability that $`\mathcal{A}`$ forges a valid $`K_t`$ without $`\ket{\psi_0}`$ is negligible.
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> The state space has cardinality <span class="math inline">|ℤ<sup>3</sup>| = ∞</span> with trace decay:</p>
-<p><span class="math display">$$|\braket{\psi_0 | \psi_t}| \sim \mathcal{O}(t^{-1/2})$$</span></p>
-<p>For <span class="math inline"><em>t</em> &gt; 2<sup>80</sup></span>, initial state recovery requires solving:</p>
-<p><span class="math display">$$\min_{\alpha,\beta,\gamma} \norm{\hat{U}^{-t}(\alpha\ket{x} + \beta\ket{y} + \gamma\ket{z}) - \ket{\psi_t}}^2$$</span></p>
-<p>which is equivalent to the Orthogonal Vector Problem (OVP), known to be NP-hard. ◻</p>
+*Proof.* The state space has cardinality $`|\mathbb{Z}^3| = \infty`$ with trace decay:
+
+<pre><code class="language-math">|\braket{\psi_0 | \psi_t}| \sim \mathcal{O}(t^{-1/2})
+</code></pre>
+
+For $`t > 2^{80}`$, initial state recovery requires solving:
+
+<pre><code class="language-math">\min_{\alpha,\beta,\gamma} \norm{\hat{U}^{-t}(\alpha\ket{x} + \beta\ket{y} + \gamma\ket{z}) - \ket{\psi_t}}^2
+</code></pre>
+
+which is equivalent to the Orthogonal Vector Problem (OVP), known to be NP-hard. ◻
+
 </div>
 
 <h2 id="quantum-resistance">Quantum Resistance</h2>
 <div class="theorem">
 
-<p>The system resists quantum adversaries running Grover’s and Shor’s algorithms.</p>
+The system resists quantum adversaries running Grover’s and Shor’s algorithms.
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> <strong>Grover’s Algorithm:</strong> Provides quadratic speedup for unstructured search.</p>
-<ul>
-<li>State space dimension: <span class="math inline">∞</span></li>
-<li>Quantum search complexity: <span class="math inline">$O(\sqrt{\infty}) = \infty$</span><br />
-<strong>Shor’s Algorithm:</strong></li>
-<li>Non-commutation: <span class="math inline">[<em>R̂</em><sub><em>x</em><em>y</em></sub>, <em>T̂</em><sub><em>y</em><em>z</em></sub>] ≠ 0</span> prevents period finding</li>
-<li>No algebraic structure for QFT application<br />
-<strong>Quantum Linear Algebra Attacks:</strong><br />
-State evolution requires solving:</li>
-</ul>
-<p><span class="math display">$$\hat{U}_t\ket{\psi_0} = \prod_{k=0}^{t-1} \hat{T}_{yz}^{(k)} \hat{R}_{xy}^{(k)} \ket{\psi_0}$$</span></p>
-<p>where non-commutation creates path-dependent evolution with no efficient inversion. ◻</p>
+*Proof.* **Grover’s Algorithm:** Provides quadratic speedup for unstructured search.  
+- State space dimension: $`\infty`$  
+- Quantum search complexity: $`O(\sqrt{\infty}) = \infty`$  
+**Shor’s Algorithm:**  
+- Non-commutation: $`[\hat{R}_{xy}, \hat{T}_{yz}] \neq 0`$ prevents period finding  
+- No algebraic structure for QFT application  
+**Quantum Linear Algebra Attacks:**  
+State evolution requires solving:
+
+<pre><code class="language-math">\hat{U}_t\ket{\psi_0} = \prod_{k=0}^{t-1} \hat{T}_{yz}^{(k)} \hat{R}_{xy}^{(k)} \ket{\psi_0}
+</code></pre>
+
+where non-commutation creates path-dependent evolution with no efficient inversion. ◻
+
 </div>
 
 <h1 id="orthogonal-span-properties">Orthogonal Span Properties</h1>
 <h2 id="planar-confinement">Planar Confinement</h2>
-<p><span class="math display">$$\hat{P}_{xy}\hat{P}_{yz}\ket{\psi_t} = \beta_t\ket{y}$$</span></p>
+<pre><code class="language-math">\hat{P}_{xy}\hat{P}_{yz}\ket{\psi_t} = \beta_t\ket{y}
+</code></pre>
 <p>preserves coherence through shared y-component.</p>
 <h2 id="projective-trace">Projective Trace</h2>
 <p>Security relies on trace properties:</p>
-<p><span class="math display">$$\begin{align*}
+<pre><code class="language-math">\begin{align*}
 \operatorname{Tr}(\hat{P}_{xy} \ket{\psi_t}\bra{\psi_t}) &amp;= \alpha_t^2 + \beta_t^2 \\
 \operatorname{Tr}(\hat{P}_{yz} \ket{\psi_t}\bra{\psi_t}) &amp;= \beta_t^2 + \gamma_t^2
-\end{align*}$$</span></p>
+\end{align*}
+</code></pre>
 <h2 id="non-commutation-security">Non-commutation Security</h2>
-<p><span class="math display">$$[\hat{R}_{xy}, \hat{T}_{yz}] = \ket{x}\bra{y}\delta_z - \delta_z\ket{y}\bra{x}$$</span></p>
+<pre><code class="language-math">[\hat{R}_{xy}, \hat{T}_{yz}] = \ket{x}\bra{y}\delta_z - \delta_z\ket{y}\bra{x}
+</code></pre>
 <p>generates orthogonal noise preventing simultaneous measurement.</p>
 <h1 id="implementation-security">Implementation Security</h1>
 <h2 id="pattern-registration">Pattern Registration</h2>
 <p>Registered pattern for orthogonal span primitives:</p>
 <pre><code>OSPAN-3D:[a-f0-9]{64}
   - hilbert_dimension: 3
-  - projection_planes: [&quot;xy&quot;, &quot;yz&quot;]
-  - quantum_resistance: non-commutative</code></pre>
+  - projection_planes: ["xy", "yz"]
+  - quantum_resistance: non-commutative
+</code></pre>
 <h2 id="audit-logging">Audit Logging</h2>
 <p>Complies with OBINexus Standard v1.0:</p>
-<p><span class="math display">$$\log_{\text{entry}} = \left\{ 
+<pre><code class="language-math">\log_{\text{entry}} = \left\{ 
 \begin{array}{l}
 \text{timestamp: ISO 8601}, \\
 \text{primitive\_ref: PRIM\_[16-char hex]}, \\
 \text{pattern\_ref: PAT\_OSPAN-3D}, \\
 \text{context: orthogonal\_span\_derivation}
 \end{array} 
-\right\}$$</span></p>
+\right\}
+</code></pre>
 <h1 id="conclusion">Conclusion</h1>
 <p>The orthogonal span formalization provides a quantum-resistant cryptographic foundation with:</p>
 <ul>
-<li><p><strong>Provable security</strong> via non-commuting operators</p></li>
-<li><p><strong>Efficient implementation</strong> using projective measurements</p></li>
-<li><p><strong>Forward secrecy</strong> through trace decay</p></li>
-<li><p><strong>Zero human attack vectors</strong> via autonomous operation</p></li>
+<li>
+<p><strong>Provable security</strong> via non-commuting operators</p>
+</li>
+<li>
+<p><strong>Efficient implementation</strong> using projective measurements</p>
+</li>
+<li>
+<p><strong>Forward secrecy</strong> through trace decay</p>
+</li>
+<li>
+<p><strong>Zero human attack vectors</strong> via autonomous operation</p>
+</li>
 </ul>
 <div class="thebibliography">
 
-<p>9 P. A. M. Dirac. <em>The Principles of Quantum Mechanics</em>. Oxford University Press, 1930.</p>
-<p>N. M. Okpala. <em>Formal Proofs for Confion: Post-Quantum HACC System</em>. OBINexus Computing, 2025.</p>
-<p>N. M. Okpala. <em>OBINexus Cryptographic Interoperability Standard v1.0</em>. OBINexus Computing, 2025.</p>
-<p>S. Aaronson. <em>The Complexity of Quantum State Verification</em>. Foundations of Computer Science, 2018.</p>
-</div>
+9 P. A. M. Dirac. *The Principles of Quantum Mechanics*. Oxford University Press, 1930.
 
+N. M. Okpala. *Formal Proofs for Confion: Post-Quantum HACC System*. OBINexus Computing, 2025.
+
+N. M. Okpala. *OBINexus Cryptographic Interoperability Standard v1.0*. OBINexus Computing, 2025.
+
+S. Aaronson. *The Complexity of Quantum State Verification*. Foundations of Computer Science, 2018.
+
+</div>
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-formal-proofs-for-confion-post-quantum-hacc-system</code></p>

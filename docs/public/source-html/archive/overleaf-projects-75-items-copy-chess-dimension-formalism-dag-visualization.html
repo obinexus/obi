@@ -57,112 +57,112 @@
     </div>
   </header>
   <main id="content" tabindex="-1">
-    <h1 id="chess-dimension-formalism--dag-visualization">Chess Dimension Formalism — DAG Visualization</h1>
+    <h1 id="chess-dimension-formalism-dag-visualization">Chess Dimension Formalism — DAG Visualization</h1>
 <p>Source folder: <code>overleaf-projects-75-items-copy/Chess Dimension Formalism — DAG Visualization</code></p>
 <h2 id="extracted-files">Extracted Files</h2>
 <ul>
 <li><code>main.tex</code></li>
 </ul>
 <h2 id="main">main</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode latex"><code class="sourceCode latex"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">% chess_dimensions_dag.tex</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\documentclass</span>[12pt,a4paper]{<span class="ex">article</span>}</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[margin=1in]{<span class="ex">geometry</span>}</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">amsmath,amssymb</span>}</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">tikz</span>}</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{arrows.meta, positioning, shapes.geometric, shadows}</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">hyperref</span>}</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">caption</span>}</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">listings</span>}</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">\lstset</span>{basicstyle=<span class="fu">\ttfamily\small</span>,breaklines=true}</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">lmodern</span>}</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">textcomp</span>}</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">amsfonts</span>}</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">\title</span>{Chess Dimension Formalism — DAG Visualization}</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">\author</span>{OBINexus / Draft}</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">\date</span>{October 2025}</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">document</span>}</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">\maketitle</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">abstract</span>}</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>This document contains a formalised section for the &quot;Chess Dimension&quot; model and a directed acyclic graph (DAG) that visualises the pipeline from board state to per-dimension scoring and final move selection. The DAG is intentionally acyclic to show flow; iterative or cyclical behaviour (search loops, temporal NFA transitions) is handled by external control (search engine, NFA runner).</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">abstract</span>}</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{DAG: Dimension Transition Pipeline}</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}[ht]</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\centering</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">% TikZ DAG</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}[</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>      node distance=12mm and 28mm,</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>      every node/.style={font=<span class="fu">\small</span>},</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>      box/.style={draw, fill=white, rectangle, rounded corners, minimum width=38mm, minimum height=10mm, align=center, drop shadow},</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>      smallbox/.style={draw, fill=white, rounded corners, minimum width=30mm, minimum height=8mm, align=center},</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>      arrow/.style={-{Stealth[scale=1]}, line width=0.8pt}</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">% Nodes</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\node</span>[box] (S) {Board State <span class="fu">\\</span> <span class="ss">$s</span><span class="sc">\in\mathcal</span><span class="ss"> S$</span>};</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\node</span>[box, right=of S] (F) {Feature Extraction <span class="fu">\\</span> <span class="ss">$</span><span class="sc">\pi</span><span class="ss">_A,</span><span class="sc">\pi</span><span class="ss">_{Df},</span><span class="sc">\pi</span><span class="ss">_{Of}$</span>};</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\node</span>[smallbox, right=of F, yshift= 10mm] (A) {Attack <span class="fu">\\</span> <span class="ss">$u_A(s,m)$</span>};</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\node</span>[smallbox, right=of F, yshift=-10mm] (D) {Defense <span class="fu">\\</span> <span class="ss">$u_{Df}(s,m)$</span>};</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\node</span>[smallbox, right=of F, xshift=36mm] (O) {Offense <span class="fu">\\</span> <span class="ss">$u_{Of}(s,m)$</span>};</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\node</span>[box, right=of O, xshift=18mm] (M) {Meta-controller <span class="fu">\\</span> combine <span class="fu">\&amp;</span> decide <span class="fu">\\</span> <span class="ss">$U_{</span><span class="sc">\text</span>{combined}<span class="ss">}(m)$</span>};</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\node</span>[box, right=of M] (Move) {Move Selection <span class="fu">\\</span> <span class="ss">$m^*=</span><span class="sc">\arg\max</span><span class="ss"> U_{</span><span class="sc">\text</span>{combined}<span class="ss">}$</span>};</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\node</span>[box, below=of Move, yshift=-6mm] (Next) {Next State <span class="fu">\\</span> <span class="ss">$s&#39;=</span><span class="sc">\textsf</span>{apply}<span class="ss">(s,m^*)$</span>};</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="co">% Arrows</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\draw</span>[arrow] (S) -- (F) node[midway, above] {extract};</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\draw</span>[arrow] (F) -- (A) node[midway, above, sloped] {attack features};</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\draw</span>[arrow] (F) -- (D) node[midway, above, sloped] {defense features};</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\draw</span>[arrow] (F.east) .. controls +(.9,0) and +(-.9,0) .. (O.west) node[midway, above] {positional features};</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\draw</span>[arrow] (A.east) -- ++(8mm,0) |- (M.north) node[pos=0.85, above] {<span class="ss">$U_A(m)$</span>};</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\draw</span>[arrow] (D.east) -- ++(8mm,0) |- (M.south) node[pos=0.9, above] {<span class="ss">$U_{Df}(m)$</span>};</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\draw</span>[arrow] (O.east) -- (M.west) node[midway, above] {<span class="ss">$U_{Of}(m)$</span>};</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\draw</span>[arrow] (M) -- (Move) node[midway, above] {select};</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\draw</span>[arrow] (Move) -- (Next) node[midway, right] {apply};</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>    <span class="co">% Styling hints</span></span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\node</span>[below=6mm of F, align=center] (note) {<span class="fu">\small</span> Figure: Acyclic pipeline from state to move; repeated play / search loops happen outside this DAG (e.g. repeated application of the pipeline per ply).};</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>  <span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\caption</span>{Directed Acyclic Graph (DAG) for chess-dimension decision pipeline.}</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>  <span class="kw">\label</span>{<span class="ex">fig:chess-dag</span>}</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{Accompanying Formal Notes}</span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>The DAG shows a single forward pass for one decision step. In practice:</span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">itemize</span>}</span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\item</span> <span class="fu">\textbf</span>{Iterative search.} The Meta-controller may call a search routine (alpha-beta, minimax, MCTS) that iteratively expands the DAG into a search tree/DAG; those internal loops are implemented by the search engine and are not drawn here to keep the figure acyclic.</span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\item</span> <span class="fu">\textbf</span>{NFA-driven mode switching.} An NFA (observer <span class="ss">\(</span><span class="sc">\to</span><span class="ss">\)</span> consumer state machine) can operate in the background to set weights <span class="ss">$</span><span class="sc">\omega</span><span class="ss">_A,</span><span class="sc">\omega</span><span class="ss">_{Df},</span><span class="sc">\omega</span><span class="ss">_{Of}$</span> or to force a single-dimension policy (e.g., urgent defense). The NFA is a control process that does not introduce cycles into this <span class="fu">\emph</span>{single-decision} DAG.</span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\item</span> <span class="fu">\textbf</span>{Coherence <span class="fu">\&amp;</span> formation.} Feature extraction computes formation coherence scores <span class="ss">$</span><span class="sc">\mathcal</span><span class="ss"> C(F)$</span> and vulnerability metrics used by <span class="ss">$u_{Df}$</span> and <span class="ss">$u_{Of}$</span>.</span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">itemize</span>}</span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{LaTeX-ready Pseudocode}</span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>Below is the same selection loop expressed as pseudocode. You can include this in your documentation or use it as a skeleton for implementation.</span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">lstlisting</span>}[caption={Decision selection pseudocode}]</span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a><span class="vs">function SelectMove(s):</span></span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="vs">    best_m = None</span></span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="vs">    best_score = -Inf</span></span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a><span class="vs">    for m in LegalMoves(s):</span></span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a><span class="vs">        scoreA = AttackScore(s,m)        # u_A(s,m)</span></span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="vs">        scoreD = DefenseScore(s,m)       # u_Df(s,m)</span></span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="vs">        scoreO = OffenseScore(s,m)       # u_Of(s,m)</span></span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="vs">        combined = wA*scoreA + wD*scoreD + wO*scoreO</span></span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="vs">        if combined &gt; best_score:</span></span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="vs">            best_score = combined</span></span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="vs">            best_m = m</span></span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="vs">    return best_m</span></span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">lstlisting</span>}</span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{How to extend the DAG (notes for integration)}</span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">enumerate</span>}</span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\item</span> To visualise iterative search, expand the Move node into a subtree: nodes become states at depth <span class="ss">$d$</span>, edges moves, with leaf evaluations fed back into the Meta-controller for minimax aggregation.</span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\item</span> To show NFA transitions explicitly, add a parallel ``Controller&#39;&#39; lane above the DAG that outputs <span class="ss">$</span><span class="sc">\omega</span><span class="ss">$</span> weights to the Meta-controller; keep it acyclic by modelling controller decisions as input tokens for a single step.</span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\item</span> To show witness logging (HDIS ledger), add a side node that ingests <span class="ss">$(s,m^*,</span><span class="sc">\mathcal</span><span class="ss"> C,</span><span class="sc">\tau</span><span class="ss">,</span><span class="sc">\sigma</span><span class="ss">)$</span> for audit; this is an append-only sink and can be drawn as a DAG leaf.</span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">enumerate</span>}</span></code></pre></div>
+<pre><code class="language-latex">% chess_dimensions_dag.tex
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, shadows}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true}
+\usepackage{lmodern}
 
+\usepackage{textcomp}
+\usepackage{amsfonts}
+
+\title{Chess Dimension Formalism — DAG Visualization}
+\author{OBINexus / Draft}
+\date{October 2025}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This document contains a formalised section for the &quot;Chess Dimension&quot; model and a directed acyclic graph (DAG) that visualises the pipeline from board state to per-dimension scoring and final move selection. The DAG is intentionally acyclic to show flow; iterative or cyclical behaviour (search loops, temporal NFA transitions) is handled by external control (search engine, NFA runner).
+\end{abstract}
+
+\section{DAG: Dimension Transition Pipeline}
+\begin{figure}[ht]
+  \centering
+  % TikZ DAG
+  \begin{tikzpicture}[
+      node distance=12mm and 28mm,
+      every node/.style={font=\small},
+      box/.style={draw, fill=white, rectangle, rounded corners, minimum width=38mm, minimum height=10mm, align=center, drop shadow},
+      smallbox/.style={draw, fill=white, rounded corners, minimum width=30mm, minimum height=8mm, align=center},
+      arrow/.style={-{Stealth[scale=1]}, line width=0.8pt}
+    ]
+
+    % Nodes
+    \node[box] (S) {Board State \\ $s\in\mathcal S$};
+    \node[box, right=of S] (F) {Feature Extraction \\ $\pi_A,\pi_{Df},\pi_{Of}$};
+    \node[smallbox, right=of F, yshift= 10mm] (A) {Attack \\ $u_A(s,m)$};
+    \node[smallbox, right=of F, yshift=-10mm] (D) {Defense \\ $u_{Df}(s,m)$};
+    \node[smallbox, right=of F, xshift=36mm] (O) {Offense \\ $u_{Of}(s,m)$};
+    \node[box, right=of O, xshift=18mm] (M) {Meta-controller \\ combine \&amp; decide \\ $U_{\text{combined}}(m)$};
+    \node[box, right=of M] (Move) {Move Selection \\ $m^*=\arg\max U_{\text{combined}}$};
+    \node[box, below=of Move, yshift=-6mm] (Next) {Next State \\ $s'=\textsf{apply}(s,m^*)$};
+
+    % Arrows
+    \draw[arrow] (S) -- (F) node[midway, above] {extract};
+    \draw[arrow] (F) -- (A) node[midway, above, sloped] {attack features};
+    \draw[arrow] (F) -- (D) node[midway, above, sloped] {defense features};
+    \draw[arrow] (F.east) .. controls +(.9,0) and +(-.9,0) .. (O.west) node[midway, above] {positional features};
+    \draw[arrow] (A.east) -- ++(8mm,0) |- (M.north) node[pos=0.85, above] {$U_A(m)$};
+    \draw[arrow] (D.east) -- ++(8mm,0) |- (M.south) node[pos=0.9, above] {$U_{Df}(m)$};
+    \draw[arrow] (O.east) -- (M.west) node[midway, above] {$U_{Of}(m)$};
+    \draw[arrow] (M) -- (Move) node[midway, above] {select};
+    \draw[arrow] (Move) -- (Next) node[midway, right] {apply};
+
+    % Styling hints
+    \node[below=6mm of F, align=center] (note) {\small Figure: Acyclic pipeline from state to move; repeated play / search loops happen outside this DAG (e.g. repeated application of the pipeline per ply).};
+  \end{tikzpicture}
+  \caption{Directed Acyclic Graph (DAG) for chess-dimension decision pipeline.}
+  \label{fig:chess-dag}
+\end{figure}
+
+\section{Accompanying Formal Notes}
+The DAG shows a single forward pass for one decision step. In practice:
+\begin{itemize}
+  \item \textbf{Iterative search.} The Meta-controller may call a search routine (alpha-beta, minimax, MCTS) that iteratively expands the DAG into a search tree/DAG; those internal loops are implemented by the search engine and are not drawn here to keep the figure acyclic.
+  \item \textbf{NFA-driven mode switching.} An NFA (observer \(\to\) consumer state machine) can operate in the background to set weights $\omega_A,\omega_{Df},\omega_{Of}$ or to force a single-dimension policy (e.g., urgent defense). The NFA is a control process that does not introduce cycles into this \emph{single-decision} DAG.
+  \item \textbf{Coherence \&amp; formation.} Feature extraction computes formation coherence scores $\mathcal C(F)$ and vulnerability metrics used by $u_{Df}$ and $u_{Of}$.
+\end{itemize}
+
+\section{LaTeX-ready Pseudocode}
+Below is the same selection loop expressed as pseudocode. You can include this in your documentation or use it as a skeleton for implementation.
+
+\begin{lstlisting}[caption={Decision selection pseudocode}]
+function SelectMove(s):
+    best_m = None
+    best_score = -Inf
+    for m in LegalMoves(s):
+        scoreA = AttackScore(s,m)        # u_A(s,m)
+        scoreD = DefenseScore(s,m)       # u_Df(s,m)
+        scoreO = OffenseScore(s,m)       # u_Of(s,m)
+        combined = wA*scoreA + wD*scoreD + wO*scoreO
+        if combined &gt; best_score:
+            best_score = combined
+            best_m = m
+    return best_m
+\end{lstlisting}
+
+\section{How to extend the DAG (notes for integration)}
+\begin{enumerate}
+  \item To visualise iterative search, expand the Move node into a subtree: nodes become states at depth $d$, edges moves, with leaf evaluations fed back into the Meta-controller for minimax aggregation.
+  \item To show NFA transitions explicitly, add a parallel ``Controller'' lane above the DAG that outputs $\omega$ weights to the Meta-controller; keep it acyclic by modelling controller decisions as input tokens for a single step.
+  \item To show witness logging (HDIS ledger), add a side node that ingests $(s,m^*,\mathcal C,\tau,\sigma)$ for audit; this is an append-only sink and can be drawn as a DAG leaf.
+\end{enumerate}
+</code></pre>
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-chess-dimension-formalism-dag-visualization</code></p>

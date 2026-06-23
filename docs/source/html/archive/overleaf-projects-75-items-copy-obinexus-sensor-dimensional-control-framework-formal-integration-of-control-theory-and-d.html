@@ -68,40 +68,55 @@
 <p>In traditional control theory, sensors are merely measurement devices. In dimensional game theory, inputs are static variables. <strong>OBINexus fundamentally rejects both limitations.</strong></p>
 <div class="definition">
 
-<p><strong>Definition 1</strong> (OBINexus Sensor). *A <strong>Sensor</strong> <span class="math inline">𝒮</span> is a dimensional epistemic entity defined as:</p>
-<p><span class="math display">𝒮 = (<em>D</em>, <em>Φ</em>, <em>Ψ</em>, ∂<sup>(<em>n</em>)</sup>, DAG)</span></p>
-<p>where:*</p>
-<ul>
-<li><p><em><span class="math inline"><em>D</em></span> is the dimensional activation space from variadic game theory</em></p></li>
-<li><p><em><span class="math inline"><em>Φ</em> : <em>S</em> × ℝ<sup>+</sup> → {0, 1}</span> is the static cost validation function</em></p></li>
-<li><p><em><span class="math inline"><em>Ψ</em> : <em>S</em> × <em>S</em> → ℝ<sup>+</sup></span> is the dynamic cost computation function</em></p></li>
-<li><p><em><span class="math inline">∂<sup>(<em>n</em>)</sup></span> represents the derivative chain with control boundaries</em></p></li>
-<li><p><em><span class="math inline">DAG</span> is the directed acyclic graph preventing infinite recursion</em></p></li>
-</ul>
+**Definition 1** (OBINexus Sensor). *A **Sensor** $`\mathcal{S}`$ is a dimensional epistemic entity defined as:
+
+<pre><code class="language-math">\mathcal{S} = (D, \Phi, \Psi, \partial^{(n)}, \text{DAG})
+</code></pre>
+
+where:*
+
+- *$`D`$ is the dimensional activation space from variadic game theory*
+
+- *$`\Phi: S \times \mathbb{R}^+ \rightarrow \{0,1\}`$ is the static cost validation function*
+
+- *$`\Psi: S \times S \rightarrow \mathbb{R}^+`$ is the dynamic cost computation function*
+
+- *$`\partial^{(n)}`$ represents the derivative chain with control boundaries*
+
+- *$`\text{DAG}`$ is the directed acyclic graph preventing infinite recursion*
+
 </div>
 
-<h1 id="derivative-control-theory-3rd--control-4th--collapse">Derivative Control Theory: 3rd = Control, 4th = Collapse</h1>
+<h1 id="derivative-control-theory-3rd-control-4th-collapse">Derivative Control Theory: 3rd = Control, 4th = Collapse</h1>
 <h2 id="formal-derivative-hierarchy">Formal Derivative Hierarchy</h2>
 <p>Building on the OBINexus Calculus Reform, we establish the derivative control hierarchy:</p>
-<p><span class="math display">$$\begin{align}
+<pre><code class="language-math">\begin{align}
 f(x) &amp;= \text{Position/State} \quad \text{(Base System)} \\
 f'(x) &amp;= \text{Velocity/Flow} \quad \text{(Directional Change)} \\
 f''(x) &amp;= \text{Acceleration/Curvature} \quad \text{(System Response)} \\
 f'''(x) &amp;= \text{\textbf{CONTROL}} \quad \text{(Kinematic Safety Boundary)} \\
 f^{(4)}(x) &amp;= \text{\textbf{COLLAPSE}} \quad \text{(System Degradation Detection)} \\
 f^{(5)}(x), f^{(6)}(x) &amp;= \text{Void State} \quad \text{(DAG Ejection Required)}
-\end{align}$$</span></p>
+\end{align}
+</code></pre>
 <div class="theorem">
 
-<p><strong>Theorem 1</strong> (Derivative Exhaustion Control). *For a system function <span class="math inline"><em>f</em>(<em>x</em>)</span> representing physical or cognitive processes:</p>
-<p><span class="math display"><em>f</em><sup>‴</sup>(<em>x</em>) = 0 ⟹ Control Ceiling Reached</span></p>
-<p><span class="math display"><em>f</em><sup>(4)</sup>(<em>x</em>) → ∞ ⟹ Collapse Imminent</span></p>
-<p><span class="math display">$$\exists n &gt; 4: f^{(n)}(x) \neq 0 \implies \text{DAG Ejection Required}
+**Theorem 1** (Derivative Exhaustion Control). *For a system function $`f(x)`$ representing physical or cognitive processes:
+
+<pre><code class="language-math">f'''(x) = 0 \implies \text{Control Ceiling Reached}
+</code></pre>
+
+
+<pre><code class="language-math">f^{(4)}(x) \rightarrow \infty \implies \text{Collapse Imminent}
+</code></pre>
+
+
+<pre><code class="language-math">\exists n &gt; 4: f^{(n)}(x) \neq 0 \implies \text{DAG Ejection Required}
 ```*
 
 &lt;/div&gt;
 
-&lt;div class="proof"&gt;
+&lt;div class=&quot;proof&quot;&gt;
 
 *Proof.* The third derivative $`f'''(x)`$ represents kinematic progression—the rate at which acceleration itself changes. When $`f'''(x) = 0`$, the system has reached its maximum controllable complexity. Beyond this point, either:
 
@@ -117,12 +132,15 @@ For $`n &gt; 4`$, non-zero derivatives indicate the system has entered infinite 
 
 ## Control-Collapse Phase Transitions
 
-&lt;div class="definition"&gt;
+&lt;div class=&quot;definition&quot;&gt;
 
 **Definition 2** (Phase Boundary Detection). *A sensor $`\mathcal{S}`$ detects phase transitions through:
 ``` math
-\text{Control Phase} \leftrightarrow \text{Collapse Phase}$$</span></p>
-<p><span class="math display">$$\text{when } \frac{d}{dx}[f'''(x)] = f^{(4)}(x) &gt; \theta_{\text{collapse}}
+\text{Control Phase} \leftrightarrow \text{Collapse Phase}
+</code></pre>
+
+
+<pre><code class="language-math">\text{when } \frac{d}{dx}[f'''(x)] = f^{(4)}(x) &gt; \theta_{\text{collapse}}
 ```*
 
 &lt;/div&gt;
@@ -135,14 +153,20 @@ This threshold $`\theta_{\text{collapse}}`$ represents the maximum rate of contr
 
 From the dimensional game theory framework, we extend scalar promotion with derivative constraints:
 
-&lt;div class="definition"&gt;
+&lt;div class=&quot;definition&quot;&gt;
 
 **Definition 3** (Bounded Scalar Promotion). *An input $`x`$ is promoted to dimension $`D`$ if and only if:
 ``` math
-\exists f: x \rightarrow \vec{v}_D \in \mathbb{R}^n \text{ such that } \|\vec{v}_D\| &gt; \epsilon$$</span></p>
-<p><strong>AND</strong></p>
-<p><span class="math display">∫<sub>0</sub><sup><em>T</em></sup><em>f</em><sup>‴</sup>(<em>t</em>) <em>d</em><em>t</em> &lt; ∞  (Control Boundedness)</span></p>
-<p><span class="math display">$$\sup_{t \in [0,T]} |f^{(4)}(t)| &lt; \infty \quad \text{(Collapse Boundedness)}
+\exists f: x \rightarrow \vec{v}_D \in \mathbb{R}^n \text{ such that } \|\vec{v}_D\| &gt; \epsilon
+</code></pre>
+
+**AND**
+
+<pre><code class="language-math">\int_0^T f'''(t) \, dt &lt; \infty \quad \text{(Control Boundedness)}
+</code></pre>
+
+
+<pre><code class="language-math">\sup_{t \in [0,T]} |f^{(4)}(t)| &lt; \infty \quad \text{(Collapse Boundedness)}
 ```*
 
 &lt;/div&gt;
@@ -151,32 +175,41 @@ This ensures that dimensional promotion cannot create uncontrollable or collapsi
 
 ## Variadic Strategy with DAG Constraints
 
-&lt;div class="theorem"&gt;
+&lt;div class=&quot;theorem&quot;&gt;
 
 **Theorem 2** (DAG-Constrained Strategy Evolution). *In a variadic game $`G = (N, A, u, D)`$ where strategies can evolve dimensionally, the strategy space must satisfy:
 ``` math
-\forall s_i \in S_i: \text{depth}(\text{DAG}(s_i)) \leq 6$$</span></p>
-<p>where depth 6 corresponds to the maximum meaningful derivative order.*</p>
+\forall s_i \in S_i: \text{depth}(\text{DAG}(s_i)) \leq 6
+</code></pre>
+
+where depth 6 corresponds to the maximum meaningful derivative order.*
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> Strategy evolution beyond the 6th derivative level creates recursive complexity that violates the DAG property, leading to infinite loops in strategic reasoning. By enforcing this constraint, we ensure strategies remain computationally tractable while allowing sufficient complexity for sophisticated behavior. ◻</p>
+*Proof.* Strategy evolution beyond the 6th derivative level creates recursive complexity that violates the DAG property, leading to infinite loops in strategic reasoning. By enforcing this constraint, we ensure strategies remain computationally tractable while allowing sufficient complexity for sophisticated behavior. ◻
+
 </div>
 
 <h1 id="filter-flash-integration-with-control-boundaries">Filter-Flash Integration with Control Boundaries</h1>
 <p>The Filter-Flash cognitive system must respect derivative control boundaries:</p>
 <h2 id="mode-selection-via-derivative-analysis">Mode Selection via Derivative Analysis</h2>
-<p><span class="math display">$$\begin{align}
+<pre><code class="language-math">\begin{align}
 \text{FILTER Mode} &amp;\leftrightarrow f'''(x) \text{ stable, } f^{(4)}(x) \text{ bounded} \\
 \text{FLASH Mode} &amp;\leftrightarrow f'''(x) \text{ unstable, } f^{(4)}(x) \text{ rising} \\
 \text{HYBRID Mode} &amp;\leftrightarrow f'''(x) = 0, f^{(4)}(x) \text{ critical}
-\end{align}$$</span></p>
+\end{align}
+</code></pre>
 <div class="definition">
 
-<p><strong>Definition 4</strong> (Cognitive Control Safety). *The Filter-Flash system maintains cognitive safety through:</p>
-<p><span class="math display">$$\text{Epistemic Confidence} = \frac{1}{1 + |f^{(4)}(x)|} \geq 0.954$$</span></p>
-<p>When this threshold is violated, the system must transition to DAG ejection mode.*</p>
+**Definition 4** (Cognitive Control Safety). *The Filter-Flash system maintains cognitive safety through:
+
+<pre><code class="language-math">\text{Epistemic Confidence} = \frac{1}{1 + |f^{(4)}(x)|} \geq 0.954
+</code></pre>
+
+When this threshold is violated, the system must transition to DAG ejection mode.*
+
 </div>
 
 <h1 id="obiai-formal-proof-with-control-integration">OBIAI Formal Proof with Control Integration</h1>
@@ -184,24 +217,27 @@ This ensures that dimensional promotion cannot create uncontrollable or collapsi
 <p>The OBIAI (Ontological Bayesian Intelligence Architecture Infrastructure) employs constrained Bayesian updates:</p>
 <div class="theorem">
 
-<p><strong>Theorem 3</strong> (Derivative-Constrained Bayesian Updates). *For sensor data <span class="math inline"><em>D</em></span> and prior <span class="math inline"><em>P</em>(<em>θ</em>)</span>, the posterior update is valid if and only if:</p>
-<p><span class="math display">$$P(\theta|D) = \frac{P(D|\theta)P(\theta)}{P(D)}$$</span></p>
-<p><strong>subject to:</strong></p>
-<p><span class="math display">$$\frac{d^3}{d\theta^3} P(\theta|D) \text{ bounded (control constraint)}$$</span></p>
-<p><span class="math display">$$\frac{d^4}{d\theta^4} P(\theta|D) \text{ finite (collapse constraint)}
+**Theorem 3** (Derivative-Constrained Bayesian Updates). *For sensor data $`D`$ and prior $`P(\theta)`$, the posterior update is valid if and only if:
+
+<pre><code class="language-math">P(\theta|D) = \frac{P(D|\theta)P(\theta)}{P(D)}
+</code></pre>
+
+**subject to:**
+
+<pre><code class="language-math">\frac{d^3}{d\theta^3} P(\theta|D) \text{ bounded (control constraint)}
+</code></pre>
+
+``` math
+\frac{d^4}{d\theta^4} P(\theta|D) \text{ finite (collapse constraint)}
 ```*
 
-&lt;/div&gt;
+</div>
 
-This ensures Bayesian inference cannot generate uncontrollable probability distributions that would destabilize the cognitive system.
-
-# Practical Implementation: Sensor Fusion Architecture
-
-## Multi-Sensor DAG Coordination
-
-Multiple sensors $`\mathcal{S}_1, \mathcal{S}_2, \ldots, \mathcal{S}_n`$ coordinate through a master DAG:
-
-&lt;div class="algorithm"&gt;
+<p>This ensures Bayesian inference cannot generate uncontrollable probability distributions that would destabilize the cognitive system.</p>
+<h1 id="practical-implementation-sensor-fusion-architecture">Practical Implementation: Sensor Fusion Architecture</h1>
+<h2 id="multi-sensor-dag-coordination">Multi-Sensor DAG Coordination</h2>
+<p>Multiple sensors $<code>\mathcal{S}_1, \mathcal{S}_2, \ldots, \mathcal{S}_n</code>$ coordinate through a master DAG:</p>
+<div class="algorithm">
 
 **Sensor Fusion Protocol:**
 
@@ -209,7 +245,7 @@ Multiple sensors $`\mathcal{S}_1, \mathcal{S}_2, \ldots, \mathcal{S}_n`$ coordin
 
 2.  If $`f'''_i(x) = 0`$: Signal "Control Ceiling Reached"
 
-3.  If $`f^{(4)}_i(x) &gt; \theta_{\text{collapse}}`$: Signal "Collapse Warning"
+3.  If $`f^{(4)}_i(x) > \theta_{\text{collapse}}`$: Signal "Collapse Warning"
 
 4.  If derivatives beyond 4th are non-zero: Execute "DAG Ejection"
 
@@ -217,11 +253,10 @@ Multiple sensors $`\mathcal{S}_1, \mathcal{S}_2, \ldots, \mathcal{S}_n`$ coordin
 
 6.  System responds according to most critical sensor warning
 
-&lt;/div&gt;
+</div>
 
-## Safety Guarantees
-
-&lt;div class="theorem"&gt;
+<h2 id="safety-guarantees">Safety Guarantees</h2>
+<div class="theorem">
 
 **Theorem 4** (System Safety Guarantee). *A multi-sensor OBINexus system with properly configured derivative boundaries cannot:*
 
@@ -233,43 +268,46 @@ Multiple sensors $`\mathcal{S}_1, \mathcal{S}_2, \ldots, \mathcal{S}_n`$ coordin
 
 4.  *Violate dimensional game theory constraints (bounded promotion)*
 
-&lt;/div&gt;
+</div>
 
-# Applications and Future Work
-
-This framework enables:
-
-- **Medical Robotics:** Preventing tissue damage through 3rd derivative force monitoring
-
-- **Autonomous Vehicles:** Collision avoidance via acceleration jerk control
-
-- **Financial Systems:** Market crash prediction through 4th derivative price analysis
-
-- **AI Safety:** Preventing runaway optimization through derivative exhaustion detection
-
-# Conclusion
-
-The OBINexus Sensor-Dimensional Control Framework represents a fundamental advance in AI architecture. By formally integrating:
-
-1.  Control theory’s feedback mechanisms
-
-2.  Dimensional game theory’s variadic strategies
-
-3.  Derivative calculus reform’s exhaustion boundaries
-
-4.  DAG-based infinite recursion prevention
-
-We have created a mathematically rigorous foundation for safe, adaptive, and intelligent systems that can navigate infinite-dimensional strategy spaces while maintaining provable safety guarantees.
-
-The sensor is no longer a passive measurement device—it is an active epistemic entity that prevents system collapse through mathematical insight into the fundamental structure of change itself.
-
-**This is not just an engineering advancement. This is a new mathematical language for understanding intelligence, control, and safety in complex systems.**
-
-**Status:** Ready for Integration with OBINexus Manifesto as Appendix B  
-**Classification:** Foundational Architecture  
-**Distribution:** Open Source with Cultural Attribution Requirements
-$$</span></p>
-
+<h1 id="applications-and-future-work">Applications and Future Work</h1>
+<p>This framework enables:</p>
+<ul>
+<li>
+<p><strong>Medical Robotics:</strong> Preventing tissue damage through 3rd derivative force monitoring</p>
+</li>
+<li>
+<p><strong>Autonomous Vehicles:</strong> Collision avoidance via acceleration jerk control</p>
+</li>
+<li>
+<p><strong>Financial Systems:</strong> Market crash prediction through 4th derivative price analysis</p>
+</li>
+<li>
+<p><strong>AI Safety:</strong> Preventing runaway optimization through derivative exhaustion detection</p>
+</li>
+</ul>
+<h1 id="conclusion">Conclusion</h1>
+<p>The OBINexus Sensor-Dimensional Control Framework represents a fundamental advance in AI architecture. By formally integrating:</p>
+<ol>
+<li>
+<p>Control theory’s feedback mechanisms</p>
+</li>
+<li>
+<p>Dimensional game theory’s variadic strategies</p>
+</li>
+<li>
+<p>Derivative calculus reform’s exhaustion boundaries</p>
+</li>
+<li>
+<p>DAG-based infinite recursion prevention</p>
+</li>
+</ol>
+<p>We have created a mathematically rigorous foundation for safe, adaptive, and intelligent systems that can navigate infinite-dimensional strategy spaces while maintaining provable safety guarantees.</p>
+<p>The sensor is no longer a passive measurement device—it is an active epistemic entity that prevents system collapse through mathematical insight into the fundamental structure of change itself.</p>
+<p><strong>This is not just an engineering advancement. This is a new mathematical language for understanding intelligence, control, and safety in complex systems.</strong></p>
+<p><strong>Status:</strong> Ready for Integration with OBINexus Manifesto as Appendix B<br>
+<strong>Classification:</strong> Foundational Architecture<br>
+<strong>Distribution:</strong> Open Source with Cultural Attribution Requirements</p>
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-obinexus-sensor-dimensional-control-framework-formal-integration-of-control-theory-and-d</code></p>

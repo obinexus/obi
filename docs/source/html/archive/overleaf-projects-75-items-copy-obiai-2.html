@@ -67,9 +67,15 @@
 <h1 id="component-architecture-tree">Component Architecture Tree</h1>
 <p>The OBIAI system implements a three-tier component isolation architecture:</p>
 <ul>
-<li><p><strong>Stable Tier</strong>: Production-verified components with mathematical proof validation</p></li>
-<li><p><strong>Experimental Tier</strong>: Development components under active testing and peer review</p></li>
-<li><p><strong>Legacy Tier</strong>: Archived components maintained for audit replay and compatibility</p></li>
+<li>
+<p><strong>Stable Tier</strong>: Production-verified components with mathematical proof validation</p>
+</li>
+<li>
+<p><strong>Experimental Tier</strong>: Development components under active testing and peer review</p>
+</li>
+<li>
+<p><strong>Legacy Tier</strong>: Archived components maintained for audit replay and compatibility</p>
+</li>
 </ul>
 <h2 id="active-component-hierarchy">Active Component Hierarchy</h2>
 <figure data-latex-placement="h">
@@ -137,70 +143,80 @@
 |   +-- filter_flash_experimental.tex
 +-- legacy/
     |-- proof_concepts_legacy.tex
-    +-- archived_implementations_legacy.tex</code></pre>
+    +-- archived_implementations_legacy.tex
+</code></pre>
 <h1 id="stable-tier-components">Stable Tier Components</h1>
 <h2 id="mathematical-foundation-components">Mathematical Foundation Components</h2>
 <h3 id="aegis-proof-11-cost-knowledge-function">AEGIS-PROOF-1.1: Cost-Knowledge Function</h3>
-<p><strong>Status</strong>: <span style="color: green"><strong>[STABLE]</strong> Stable v1.1.0</span><br />
+<p><strong>Status</strong>: <span style="color: green"><strong>[STABLE]</strong> Stable v1.1.0</span><br>
 <strong>Mathematical Foundation</strong>:</p>
-<p><span class="math display"><em>C</em>(<em>K</em><sub><em>t</em></sub>, <em>S</em>) = <em>H</em>(<em>S</em>) ⋅ exp (−<em>K</em><sub><em>t</em></sub>)</span></p>
-<p><strong>Verification</strong>: Monotonicity proven, boundary conditions validated<br />
-<strong>Dependencies</strong>: None<br />
+<pre><code class="language-math">\begin{equation}
+C(K_t, S) = H(S) \cdot \exp(-K_t)
+\end{equation}
+</code></pre>
+<p><strong>Verification</strong>: Monotonicity proven, boundary conditions validated<br>
+<strong>Dependencies</strong>: None<br>
 <strong>Deployment Clearance</strong>: Clinical Production Ready</p>
 <h3 id="aegis-proof-12-traversal-cost-function">AEGIS-PROOF-1.2: Traversal Cost Function</h3>
-<p><strong>Status</strong>: <span style="color: green"><strong>[STABLE]</strong> Stable v1.2.0</span><br />
+<p><strong>Status</strong>: <span style="color: green"><strong>[STABLE]</strong> Stable v1.2.0</span><br>
 <strong>Mathematical Foundation</strong>:</p>
-<p><span class="math display"><em>C</em>(<em>N</em><em>o</em><em>d</em><em>e</em><sub><em>i</em></sub> → <em>N</em><em>o</em><em>d</em><em>e</em><sub><em>j</em></sub>) = <em>α</em> ⋅ <em>K</em><em>L</em>(<em>P</em><sub><em>i</em></sub> ∥ <em>P</em><sub><em>j</em></sub>) + <em>β</em> ⋅ <em>Δ</em><em>H</em>(<em>S</em><sub><em>i</em>, <em>j</em></sub>)</span></p>
-<p><strong>Verification</strong>: Non-negativity proven, stability confirmed<br />
-<strong>Dependencies</strong>: Cost-Knowledge Function v1.1.0<br />
+<pre><code class="language-math">\begin{equation}
+C(Node_i \rightarrow Node_j) = \alpha \cdot KL(P_i \parallel P_j) + \beta \cdot \Delta H(S_{i,j})
+\end{equation}
+</code></pre>
+<p><strong>Verification</strong>: Non-negativity proven, stability confirmed<br>
+<strong>Dependencies</strong>: Cost-Knowledge Function v1.1.0<br>
 <strong>Deployment Clearance</strong>: Clinical Production Ready</p>
 <h3 id="swapper-engine-core">Swapper Engine Core</h3>
-<p><strong>Status</strong>: <span style="color: green"><strong>[STABLE]</strong> Stable v2.0.0</span><br />
-<strong>Function</strong>: Tier isolation enforcement and component compatibility validation<br />
-<strong>Verification</strong>: Runtime tier validation confirmed<br />
-<strong>Dependencies</strong>: Traversal Cost Function v1.2.0<br />
+<p><strong>Status</strong>: <span style="color: green"><strong>[STABLE]</strong> Stable v2.0.0</span><br>
+<strong>Function</strong>: Tier isolation enforcement and component compatibility validation<br>
+<strong>Verification</strong>: Runtime tier validation confirmed<br>
+<strong>Dependencies</strong>: Traversal Cost Function v1.2.0<br>
 <strong>Deployment Clearance</strong>: Production Infrastructure Ready</p>
 <h1 id="experimental-tier-components">Experimental Tier Components</h1>
 <p><strong>Warning</strong>: Experimental components are under active development and have not achieved production verification status. They are loaded in shadow-mode for testing and validation purposes only.</p>
 <h2 id="advanced-reasoning-components">Advanced Reasoning Components</h2>
 <h3 id="triangle-convergence-logic">Triangle Convergence Logic</h3>
-<p><strong>Status</strong>: <span style="color: orange"><strong>[EXPERIMENTAL]</strong> Experimental v1.5.0</span><br />
-<strong>Development Phase</strong>: Inverted triangle cost reasoning implementation<br />
+<p><strong>Status</strong>: <span style="color: orange"><strong>[EXPERIMENTAL]</strong> Experimental v1.5.0</span><br>
+<strong>Development Phase</strong>: Inverted triangle cost reasoning implementation<br>
 <strong>Core Algorithm</strong>:</p>
-<p><span class="math display"><em>S</em><sub><em>k</em></sub> = {<em>N</em><em>o</em><em>d</em><em>e</em><sub><em>j</em></sub> ∈ <em>S</em><sub><em>k</em> − 1</sub>|<em>I</em><em>m</em><em>p</em><em>o</em><em>r</em><em>t</em>_<em>C</em><em>r</em><em>i</em><em>t</em><em>i</em><em>c</em><em>a</em><em>l</em>_<em>C</em><em>o</em><em>s</em><em>t</em><em>s</em>(<em>N</em><em>o</em><em>d</em><em>e</em><sub><em>j</em></sub>) ≤ <em>T</em><em>h</em><em>r</em><em>e</em><em>s</em><em>h</em><em>o</em><em>l</em><em>d</em><sub><em>k</em></sub>}</span></p>
-<p><strong>Dependencies</strong>: Traversal Cost Function v1.2.0<br />
-<strong>Testing Status</strong>: Component integration under validation<br />
+<pre><code class="language-math">\begin{equation}
+S_k = \{Node_j \in S_{k-1} | Import\_Critical\_Costs(Node_j) \leq Threshold_k\}
+\end{equation}
+</code></pre>
+<p><strong>Dependencies</strong>: Traversal Cost Function v1.2.0<br>
+<strong>Testing Status</strong>: Component integration under validation<br>
 <strong>Deployment Clearance</strong>: Development Only</p>
 <h3 id="uncertainty-handling-framework">Uncertainty Handling Framework</h3>
-<p><strong>Status</strong>: <span style="color: orange"><strong>[EXPERIMENTAL]</strong> Experimental v1.6.0</span><br />
-<strong>Development Phase</strong>: Three-tier uncertainty classification system<br />
-<strong>Classification Zones</strong>: Known-Knowns, Known-Unknowns, Unknown-Unknowns<br />
-<strong>Dependencies</strong>: Triangle Convergence v1.5.0<br />
-<strong>Testing Status</strong>: Architectural specification phase<br />
+<p><strong>Status</strong>: <span style="color: orange"><strong>[EXPERIMENTAL]</strong> Experimental v1.6.0</span><br>
+<strong>Development Phase</strong>: Three-tier uncertainty classification system<br>
+<strong>Classification Zones</strong>: Known-Knowns, Known-Unknowns, Unknown-Unknowns<br>
+<strong>Dependencies</strong>: Triangle Convergence v1.5.0<br>
+<strong>Testing Status</strong>: Architectural specification phase<br>
 <strong>Deployment Clearance</strong>: Development Only</p>
 <h3 id="filter-flash-integration">Filter-Flash Integration</h3>
-<p><strong>Status</strong>: <span style="color: orange"><strong>[EXPERIMENTAL]</strong> Experimental v1.5.1</span><br />
-<strong>Development Phase</strong>: Consciousness-aware inference triggering<br />
-<strong>Integration Protocol</strong>: Filter/Flash threshold modulation with cost functions<br />
-<strong>Dependencies</strong>: Triangle Convergence v1.5.0<br />
-<strong>Testing Status</strong>: Algorithm design validation<br />
+<p><strong>Status</strong>: <span style="color: orange"><strong>[EXPERIMENTAL]</strong> Experimental v1.5.1</span><br>
+<strong>Development Phase</strong>: Consciousness-aware inference triggering<br>
+<strong>Integration Protocol</strong>: Filter/Flash threshold modulation with cost functions<br>
+<strong>Dependencies</strong>: Triangle Convergence v1.5.0<br>
+<strong>Testing Status</strong>: Algorithm design validation<br>
 <strong>Deployment Clearance</strong>: Development Only</p>
 <h1 id="legacy-tier-components">Legacy Tier Components</h1>
 <p><strong>Security Notice</strong>: Legacy components are maintained in strict isolation for audit replay purposes only. They cannot interact with active inference cycles and are prohibited from live deployment.</p>
 <h2 id="archived-implementations">Archived Implementations</h2>
 <h3 id="archived-proof-concepts">Archived Proof Concepts</h3>
-<p><strong>Status</strong>: <span style="color: red"><strong>[LEGACY]</strong> Legacy v0.x.x</span><br />
-<strong>Archive Date</strong>: Pre-AEGIS validation framework<br />
-<strong>Content</strong>: Initial mathematical explorations and proof-of-concept implementations<br />
-<strong>Security Isolation</strong>: Strict sandboxing enforced<br />
-<strong>Interaction Policy</strong>: Audit replay only, no live inference integration<br />
+<p><strong>Status</strong>: <span style="color: red"><strong>[LEGACY]</strong> Legacy v0.x.x</span><br>
+<strong>Archive Date</strong>: Pre-AEGIS validation framework<br>
+<strong>Content</strong>: Initial mathematical explorations and proof-of-concept implementations<br>
+<strong>Security Isolation</strong>: Strict sandboxing enforced<br>
+<strong>Interaction Policy</strong>: Audit replay only, no live inference integration<br>
 <strong>Access Control</strong>: Legacy tier components prohibited from production use</p>
 <h3 id="historical-implementation-archive">Historical Implementation Archive</h3>
-<p><strong>Status</strong>: <span style="color: red"><strong>[LEGACY]</strong> Legacy v0.x.x</span><br />
-<strong>Archive Date</strong>: Pre-component tier architecture<br />
-<strong>Content</strong>: Deprecated algorithms and experimental approaches<br />
-<strong>Preservation Purpose</strong>: Audit trail and compatibility reference<br />
-<strong>Security Notice</strong>: Cannot interact with Stable or Experimental components<br />
+<p><strong>Status</strong>: <span style="color: red"><strong>[LEGACY]</strong> Legacy v0.x.x</span><br>
+<strong>Archive Date</strong>: Pre-component tier architecture<br>
+<strong>Content</strong>: Deprecated algorithms and experimental approaches<br>
+<strong>Preservation Purpose</strong>: Audit trail and compatibility reference<br>
+<strong>Security Notice</strong>: Cannot interact with Stable or Experimental components<br>
 <strong>Documentation Status</strong>: Maintained for regulatory compliance only</p>
 <h1 id="active-tier-summary">Active Tier Summary</h1>
 <h2 id="current-production-configuration">Current Production Configuration</h2>
@@ -255,19 +271,26 @@
 <p>OBIAI Tier Status Matrix</p>
 <h2 id="semantic-versioning-status">Semantic Versioning Status</h2>
 <ul>
-<li><p><strong>Stable Release Branch</strong>: <code>v1.2.x</code> - Production ready</p></li>
-<li><p><strong>Experimental Development</strong>: <code>v1.5.x-1.6.x</code> - Under validation</p></li>
-<li><p><strong>Legacy Archive</strong>: <code>v0.x.x</code> - Maintenance mode</p></li>
+<li>
+<p><strong>Stable Release Branch</strong>: <code>v1.2.x</code> - Production ready</p>
+</li>
+<li>
+<p><strong>Experimental Development</strong>: <code>v1.5.x-1.6.x</code> - Under validation</p>
+</li>
+<li>
+<p><strong>Legacy Archive</strong>: <code>v0.x.x</code> - Maintenance mode</p>
+</li>
 </ul>
 <h1 id="cost-function-framework-integration">Cost Function Framework Integration</h1>
 <h2 id="import-driven-cost-model">Import-Driven Cost Model</h2>
 <p>The OBIAI cost framework implements the following hierarchical structure:</p>
-<p><span class="math display">$$\begin{align}
+<pre><code class="language-math">\begin{align}
 C_{total}(Node_i \rightarrow Node_j) &amp;= Import\_Critical\_Costs(Node_j) + C_{path}(Node_i \rightarrow Node_j) \\
 Import\_Critical\_Costs(Node_j) &amp;= \lambda_1 \cdot FairnessPenalty(Node_j) \\
 &amp;\quad + \lambda_2 \cdot EntropyPenalty(Node_j) \\
 &amp;\quad + \lambda_3 \cdot ConsciousnessRisk(Node_j)
-\end{align}$$</span></p>
+\end{align}
+</code></pre>
 <h2 id="tier-aware-cost-computation">Tier-Aware Cost Computation</h2>
 <table>
 <thead>
@@ -345,14 +368,25 @@ Import\_Critical\_Costs(Node_j) &amp;= \lambda_1 \cdot FairnessPenalty(Node_j) \
 <p>Tier Interaction Compatibility Matrix</p>
 <h2 id="non-commutative-version-constraints">Non-Commutative Version Constraints</h2>
 <p>The OBIAI architecture enforces non-commutative versioning where:</p>
-<p><span class="math display"><em>V</em>(<em>c</em><em>o</em><em>m</em><em>p</em><em>o</em><em>n</em><em>e</em><em>n</em><em>t</em><sub><em>a</em></sub>) + <em>V</em>(<em>c</em><em>o</em><em>m</em><em>p</em><em>o</em><em>n</em><em>e</em><em>n</em><em>t</em><sub><em>b</em></sub>) ≠ <em>V</em>(<em>c</em><em>o</em><em>m</em><em>p</em><em>o</em><em>n</em><em>e</em><em>n</em><em>t</em><sub><em>b</em></sub>) + <em>V</em>(<em>c</em><em>o</em><em>m</em><em>p</em><em>o</em><em>n</em><em>e</em><em>n</em><em>t</em><sub><em>a</em></sub>)</span></p>
+<pre><code class="language-math">\begin{equation}
+V(component_a) + V(component_b) \neq V(component_b) + V(component_a)
+\end{equation}
+</code></pre>
 <p>This constraint ensures that component loading order determines system behavior and maintains deterministic inference pathways.</p>
 <h2 id="swapper-engine-compatibility-validation">Swapper Engine Compatibility Validation</h2>
-<ol type="1">
-<li><p><strong>Tier Isolation Enforcement</strong>: Runtime validation prevents cross-tier component interaction</p></li>
-<li><p><strong>Semantic Version Verification</strong>: Automated compatibility checking using semiver signatures</p></li>
-<li><p><strong>Dependency Chain Validation</strong>: Topological sorting with chronological constraints</p></li>
-<li><p><strong>Safety Circuit Breaker</strong>: Automatic fallback to stable-only component stacks on tier violations</p></li>
+<ol>
+<li>
+<p><strong>Tier Isolation Enforcement</strong>: Runtime validation prevents cross-tier component interaction</p>
+</li>
+<li>
+<p><strong>Semantic Version Verification</strong>: Automated compatibility checking using semiver signatures</p>
+</li>
+<li>
+<p><strong>Dependency Chain Validation</strong>: Topological sorting with chronological constraints</p>
+</li>
+<li>
+<p><strong>Safety Circuit Breaker</strong>: Automatic fallback to stable-only component stacks on tier violations</p>
+</li>
 </ol>
 <h1 id="deployment-safety-protocols">Deployment Safety Protocols</h1>
 <h2 id="clinical-deployment-readiness">Clinical Deployment Readiness</h2>
@@ -400,38 +434,69 @@ Import\_Critical\_Costs(Node_j) &amp;= \lambda_1 \cdot FairnessPenalty(Node_j) \
 <p>Clinical Deployment Safety Checklist</p>
 <h1 id="implementation-roadmap">Implementation Roadmap</h1>
 <h2 id="phase-progression-timeline">Phase Progression Timeline</h2>
-<ol type="1">
-<li><p><strong>Phase 1.5</strong>: Triangle convergence logic promotion to stable tier</p></li>
-<li><p><strong>Phase 1.6</strong>: Uncertainty handling framework validation</p></li>
-<li><p><strong>Phase 2.0</strong>: Clinical dataset integration and validation</p></li>
-<li><p><strong>Phase 2.1</strong>: Production deployment with full tier isolation</p></li>
+<ol>
+<li>
+<p><strong>Phase 1.5</strong>: Triangle convergence logic promotion to stable tier</p>
+</li>
+<li>
+<p><strong>Phase 1.6</strong>: Uncertainty handling framework validation</p>
+</li>
+<li>
+<p><strong>Phase 2.0</strong>: Clinical dataset integration and validation</p>
+</li>
+<li>
+<p><strong>Phase 2.1</strong>: Production deployment with full tier isolation</p>
+</li>
 </ol>
 <h2 id="critical-success-factors">Critical Success Factors</h2>
 <ul>
-<li><p>Maintaining mathematical rigor throughout component development</p></li>
-<li><p>Preserving 85% bias reduction requirement across all tier transitions</p></li>
-<li><p>Ensuring real-time performance constraints for clinical deployment</p></li>
-<li><p>Implementing comprehensive audit trails for regulatory compliance</p></li>
+<li>
+<p>Maintaining mathematical rigor throughout component development</p>
+</li>
+<li>
+<p>Preserving 85% bias reduction requirement across all tier transitions</p>
+</li>
+<li>
+<p>Ensuring real-time performance constraints for clinical deployment</p>
+</li>
+<li>
+<p>Implementing comprehensive audit trails for regulatory compliance</p>
+</li>
 </ul>
 <h1 id="technical-references">Technical References</h1>
 <ul>
-<li><p>OBIAI Repository: <a href="https://github.com/obinexus/obiai">https://github.com/obinexus/obiai</a></p></li>
-<li><p>AEGIS-PROOF-1.1: Monotonicity of Cost-Knowledge Function</p></li>
-<li><p>AEGIS-PROOF-1.2: Traversal Cost Function Verification</p></li>
-<li><p>Triangle Convergence Specification: Phase 1.5 Documentation</p></li>
-<li><p>Uncertainty Handling Framework: Phase 1.6 Specification</p></li>
+<li>
+<p>OBIAI Repository: <a href="https://github.com/obinexus/obiai">https://github.com/obinexus/obiai</a></p>
+</li>
+<li>
+<p>AEGIS-PROOF-1.1: Monotonicity of Cost-Knowledge Function</p>
+</li>
+<li>
+<p>AEGIS-PROOF-1.2: Traversal Cost Function Verification</p>
+</li>
+<li>
+<p>Triangle Convergence Specification: Phase 1.5 Documentation</p>
+</li>
+<li>
+<p>Uncertainty Handling Framework: Phase 1.6 Specification</p>
+</li>
 </ul>
 <h2 id="collaborative-development-team">Collaborative Development Team</h2>
 <ul>
-<li><p><strong>Lead Mathematician</strong>: Nnamdi Michael Okpala</p></li>
-<li><p><strong>Technical Engineering</strong>: Claude (Systems Architecture)</p></li>
-<li><p><strong>Organization</strong>: OBINexus Computing - Aegis Framework Division</p></li>
+<li>
+<p><strong>Lead Mathematician</strong>: Nnamdi Michael Okpala</p>
+</li>
+<li>
+<p><strong>Technical Engineering</strong>: Claude (Systems Architecture)</p>
+</li>
+<li>
+<p><strong>Organization</strong>: OBINexus Computing - Aegis Framework Division</p>
+</li>
 </ul>
-<p><strong>Document Classification</strong>: Technical Implementation Specification<br />
-<strong>Security Level</strong>: Internal Development<br />
-<strong>Last Updated</strong>: June 2025<br />
+<p><strong>Document Classification</strong>: Technical Implementation Specification<br>
+<strong>Security Level</strong>: Internal Development<br>
+<strong>Last Updated</strong>: June 2025<br>
 <strong>Next Review</strong>: Component promotion to Phase 1.6</p>
-
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-obiai-2</code></p>

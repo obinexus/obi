@@ -67,22 +67,40 @@
 <h1 id="introduction">Introduction</h1>
 <p>The emergence of quantum computing technologies necessitates robust bridging protocols between quantum and classical computational paradigms. Traditional approaches suffer from three critical limitations: (1) loss of categorical associativity under measurement-induced decoherence, (2) substantial computational overhead in state marshalling, and (3) cascade failures in indirect component dependencies.</p>
 <p>This paper introduces the Unified Quantum-Classical Bridge Protocol (UQCBP), addressing these challenges through four innovative subsystems:</p>
-<ol type="1">
-<li><p><strong>Acrylic Functional Protocol (AFP)</strong>: Maintains categorical associativity through transparent state preservation and functorial traces</p></li>
-<li><p><strong>Entropy Foresight Engine</strong>: Achieves zero-overhead execution via predictive pre-computation and lattice compression</p></li>
-<li><p><strong>Gravity Stability Field</strong>: Ensures topological invariance with physics-inspired entropy bounds</p></li>
-<li><p><strong>Cryptographic Self-Healing Architecture</strong>: Provides autonomous recovery using odd perfect number encodings</p></li>
+<ol>
+<li>
+<p><strong>Acrylic Functional Protocol (AFP)</strong>: Maintains categorical associativity through transparent state preservation and functorial traces</p>
+</li>
+<li>
+<p><strong>Entropy Foresight Engine</strong>: Achieves zero-overhead execution via predictive pre-computation and lattice compression</p>
+</li>
+<li>
+<p><strong>Gravity Stability Field</strong>: Ensures topological invariance with physics-inspired entropy bounds</p>
+</li>
+<li>
+<p><strong>Cryptographic Self-Healing Architecture</strong>: Provides autonomous recovery using odd perfect number encodings</p>
+</li>
 </ol>
 <h1 id="categorical-associativity-under-measurement">Categorical Associativity Under Measurement</h1>
 <h2 id="mathematical-foundation">Mathematical Foundation</h2>
-<p>In category theory, associativity of morphism composition is fundamental. For morphisms <span class="math inline"><em>f</em> : <em>A</em> → <em>B</em></span>, <span class="math inline"><em>g</em> : <em>B</em> → <em>C</em></span>, and <span class="math inline"><em>h</em> : <em>C</em> → <em>D</em></span>, we require:</p>
-<p><span class="math display">(<em>f</em> ∘ <em>g</em>) ∘ <em>h</em> = <em>f</em> ∘ (<em>g</em> ∘ <em>h</em>)</span></p>
+<p>In category theory, associativity of morphism composition is fundamental. For morphisms $<code>f: A \to B</code>$, $<code>g: B \to C</code>$, and $<code>h: C \to D</code>$, we require:</p>
+<pre><code class="language-math">\begin{equation}
+(f \circ g) \circ h = f \circ(g \circ h)
+\label{eq:associativity}
+\end{equation}
+</code></pre>
 <p>However, quantum measurement introduces non-deterministic collapse, potentially violating this property.</p>
 <div class="definition">
 
-<p><strong>Definition 1</strong> (Decoherence-Resistant Composition). *A composition operator <span class="math inline">∘<sub><em>δ</em></sub></span> is decoherence-resistant if, for any measurement event <span class="math inline"><em>M</em></span> occurring during composition:</p>
-<p><span class="math display">ℙ[(<em>f</em>∘<sub><em>δ</em></sub><em>g</em>)∘<sub><em>δ</em></sub><em>h</em> = <em>f</em>∘<sub><em>δ</em></sub>(<em>g</em>∘<sub><em>δ</em></sub><em>h</em>)|<em>M</em>] ≥ 1 − <em>ϵ</em></span></p>
-<p>where <span class="math inline"><em>ϵ</em> &lt; 10<sup>−3</sup></span> represents acceptable failure probability.*</p>
+**Definition 1** (Decoherence-Resistant Composition). *A composition operator $`\circ_\delta`$ is decoherence-resistant if, for any measurement event $`M`$ occurring during composition:
+
+<pre><code class="language-math">\begin{equation}
+\mathbb{P}[(f \circ_\delta g) \circ_\delta h = f \circ_\delta (g \circ_\delta h) | M] \geq 1 - \epsilon
+\end{equation}
+</code></pre>
+
+where $`\epsilon < 10^{-3}`$ represents acceptable failure probability.*
+
 </div>
 
 <h2 id="functorial-protocol-stack">Functorial Protocol Stack</h2>
@@ -92,37 +110,39 @@
 </div>
 
 <p>Each morphism application generates a globally unique identifier (GUID) trace, enabling reconstruction under decoherence.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FunctorialProtocolStack:</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> compose_with_trace(<span class="va">self</span>, f, g, h):</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Generate GUID traces for each composition</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        trace_fg <span class="op">=</span> <span class="va">self</span>.generate_guid(f, g)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        trace_gh <span class="op">=</span> <span class="va">self</span>.generate_guid(g, h)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Attempt direct composition</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            result <span class="op">=</span> <span class="va">self</span>.direct_compose(f, g, h)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> DecoherenceException <span class="im">as</span> e:</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Reconstruct from traces</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>            result <span class="op">=</span> <span class="va">self</span>.reconstruct_from_traces([trace_fg, trace_gh])</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> result</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> reconstruct_from_traces(<span class="va">self</span>, traces):</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Semantic recovery using type signatures</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        semantic_state <span class="op">=</span> <span class="va">self</span>.recover_semantic_intent(traces)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Validate categorical properties</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.validate_associativity(semantic_state):</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> semantic_state</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> CompositionFailure(<span class="st">&quot;Cannot preserve associativity&quot;</span>)</span></code></pre></div>
+<pre><code class="language-python">class FunctorialProtocolStack:
+    def compose_with_trace(self, f, g, h):
+        # Generate GUID traces for each composition
+        trace_fg = self.generate_guid(f, g)
+        trace_gh = self.generate_guid(g, h)
+
+        try:
+            # Attempt direct composition
+            result = self.direct_compose(f, g, h)
+        except DecoherenceException as e:
+            # Reconstruct from traces
+            result = self.reconstruct_from_traces([trace_fg, trace_gh])
+
+        return result
+
+    def reconstruct_from_traces(self, traces):
+        # Semantic recovery using type signatures
+        semantic_state = self.recover_semantic_intent(traces)
+
+        # Validate categorical properties
+        if self.validate_associativity(semantic_state):
+            return semantic_state
+        else:
+            raise CompositionFailure(&quot;Cannot preserve associativity&quot;)
+</code></pre>
 <h1 id="predictive-pre-computational-zero-overhead-model">Predictive Pre-Computational Zero-Overhead Model</h1>
 <h2 id="entropy-compression-theory">Entropy Compression Theory</h2>
 <p>The core insight is to predict future protocol states and pre-compute transitions, storing only compressed deltas.</p>
 <div class="definition">
 
-<p><strong>Definition 2</strong> (Entropy Delta). *For system states <span class="math inline"><em>S</em><sub><em>t</em></sub></span> and <span class="math inline"><em>S</em><sub><em>t</em> + <em>δ</em><em>t</em></sub></span>, the entropy delta is:</p>
-<p><span class="math display">$$\begin{equation}
+**Definition 2** (Entropy Delta). *For system states $`S_t`$ and $`S_{t+\delta t}`$, the entropy delta is:
+
+<pre><code class="language-math">\begin{equation}
 \Delta\mathcal{H}(t, \delta t) = \mathcal{H}(S_{t+\delta t}) - \mathcal{H}(S_t)
 \end{equation}
 ```*
@@ -133,52 +153,61 @@
 
 We employ lattice reduction algorithms to compress entropy deltas:
 
-&lt;div class="proposition"&gt;
+&lt;div class=&quot;proposition&quot;&gt;
 
 **Proposition 3** (Lattice Compression Bound). *For a $`d`$-dimensional state space with basis $`\mathcal{B}`$, the compressed representation $`\tilde{\Delta\mathcal{H}}`$ satisfies:
 ``` math
 \begin{equation}
 |\tilde{\Delta\mathcal{H}}| \leq \frac{\lambda_1(\mathcal{L})}{\sqrt{d}} \cdot |\Delta\mathcal{H}|
-\end{equation}$$</span></p>
-<p>where <span class="math inline"><em>λ</em><sub>1</sub>(ℒ)</span> is the shortest vector in lattice <span class="math inline">ℒ</span>.*</p>
+\end{equation}
+</code></pre>
+
+where $`\lambda_1(\mathcal{L})`$ is the shortest vector in lattice $`\mathcal{L}`$.*
+
 </div>
 
-<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> EntropyForesightEngine:</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> precompute_transitions(<span class="va">self</span>, initial_state, horizon):</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        delta_cache <span class="op">=</span> {}</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(horizon):</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Monte Carlo prediction</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>            future_state <span class="op">=</span> <span class="va">self</span>.monte_carlo_predict(initial_state, t)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Calculate entropy delta</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>            delta <span class="op">=</span> <span class="va">self</span>.calculate_entropy_delta(initial_state, future_state)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Lattice compression</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            compressed <span class="op">=</span> <span class="va">self</span>.lattice_compress(delta)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Cache with temporal index</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>            delta_cache[t] <span class="op">=</span> {</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                <span class="st">&#39;compressed_delta&#39;</span>: compressed,</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                <span class="st">&#39;lattice_signature&#39;</span>: <span class="va">self</span>.generate_signature(compressed)</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>            }</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> delta_cache</span></code></pre></div>
+<pre><code class="language-python">class EntropyForesightEngine:
+    def precompute_transitions(self, initial_state, horizon):
+        delta_cache = {}
+
+        for t in range(horizon):
+            # Monte Carlo prediction
+            future_state = self.monte_carlo_predict(initial_state, t)
+
+            # Calculate entropy delta
+            delta = self.calculate_entropy_delta(initial_state, future_state)
+
+            # Lattice compression
+            compressed = self.lattice_compress(delta)
+
+            # Cache with temporal index
+            delta_cache[t] = {
+                'compressed_delta': compressed,
+                'lattice_signature': self.generate_signature(compressed)
+            }
+
+        return delta_cache
+</code></pre>
 <h1 id="topological-invariant-preservation">Topological Invariant Preservation</h1>
 <h2 id="gravity-inspired-stability-field">Gravity-Inspired Stability Field</h2>
 <p>We model system stability using a gravity-like field where components have "mass" (criticality) and experience "gravitational" effects (entropy spread).</p>
 <div class="definition">
 
-<p><strong>Definition 4</strong> (Simpson Stability Cost). *The Simpson stability cost <span class="math inline"><em>C</em></span> for a system topology <span class="math inline">𝒯</span> is:</p>
-<p><span class="math display">$$\begin{equation}
+**Definition 4** (Simpson Stability Cost). *The Simpson stability cost $`C`$ for a system topology $`\mathcal{T}`$ is:
+
+<pre><code class="language-math">\begin{equation}
 C(\mathcal{T}) = \sum_{v \in V(\mathcal{T})} \frac{w_{\text{indirect}}(v)}{w_{\text{direct}}(v) + 1} \cdot g
-\end{equation}$$</span></p>
-<p>where <span class="math inline"><em>g</em> = 9.81</span> (stability constant), and <span class="math inline"><em>w</em></span> represents dependency weights.*</p>
+\end{equation}
+</code></pre>
+
+where $`g = 9.81`$ (stability constant), and $`w`$ represents dependency weights.*
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 5</strong> (Stability Invariant). <em>For any valid UQCBP topology, <span class="math inline"><em>C</em>(𝒯) ≤ 0.5</span>.</em></p>
+**Theorem 5** (Stability Invariant). *For any valid UQCBP topology, $`C(\mathcal{T}) \leq 0.5`$.*
+
 </div>
 
 <h2 id="topology-evolution-diagram">Topology Evolution Diagram</h2>
@@ -187,33 +216,40 @@ C(\mathcal{T}) = \sum_{v \in V(\mathcal{T})} \frac{w_{\text{indirect}}(v)}{w_{\t
 </div>
 
 <h2 id="indirect-component-failure-detection">Indirect Component Failure Detection</h2>
-<p>For DAG structure <span class="math inline"><em>A</em> → <em>B</em> → <em>C</em></span>, we implement cascade prevention:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> IndirectComponentMonitor:</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> detect_cascade_risk(<span class="va">self</span>, component_dag):</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> path <span class="kw">in</span> component_dag.get_all_paths():</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>            health_scores <span class="op">=</span> []</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> i, component <span class="kw">in</span> <span class="bu">enumerate</span>(path):</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                health <span class="op">=</span> <span class="va">self</span>.probe_health(component)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                health_scores.append(health)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                </span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> health.error_level <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">and</span> i <span class="op">&lt;</span> <span class="bu">len</span>(path) <span class="op">-</span> <span class="dv">1</span>:</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                    <span class="co"># Check if error propagated</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                    next_component <span class="op">=</span> path[i <span class="op">+</span> <span class="dv">1</span>]</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.error_registered(next_component):</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                        <span class="co"># Silent failure detected</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>                        <span class="va">self</span>.initiate_cascade_prevention(</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                            failed<span class="op">=</span>component,</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                            at_risk<span class="op">=</span>path[i<span class="op">+</span><span class="dv">1</span>:]</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>                        )</span></code></pre></div>
+<p>For DAG structure $<code>A \to B \to C</code>$, we implement cascade prevention:</p>
+<pre><code class="language-python">class IndirectComponentMonitor:
+    def detect_cascade_risk(self, component_dag):
+        for path in component_dag.get_all_paths():
+            health_scores = []
+
+            for i, component in enumerate(path):
+                health = self.probe_health(component)
+                health_scores.append(health)
+
+                if health.error_level &gt; 0 and i &lt; len(path) - 1:
+                    # Check if error propagated
+                    next_component = path[i + 1]
+                    if not self.error_registered(next_component):
+                        # Silent failure detected
+                        self.initiate_cascade_prevention(
+                            failed=component,
+                            at_risk=path[i+1:]
+                        )
+</code></pre>
 <h1 id="self-healing-cryptographic-architecture">Self-Healing Cryptographic Architecture</h1>
 <h2 id="odd-perfect-number-encoding">Odd Perfect Number Encoding</h2>
 <p>We leverage properties of odd perfect numbers for cryptographic integrity:</p>
 <div class="definition">
 
-<p><strong>Definition 6</strong> (Odd Perfect Hash). *For a component with divisor set <span class="math inline"><em>D</em></span>, the odd perfect hash <span class="math inline"><em>H</em><sub><em>O</em><em>P</em><em>N</em></sub></span> is:</p>
-<p><span class="math display"><em>H</em><sub><em>O</em><em>P</em><em>N</em></sub>(<em>C</em>) = ∑<sub><em>d</em> ∈ <em>D</em></sub>GCD(<em>C</em>, <em>d</em>) ⋅ LCM(<em>C</em>, <em>d</em>) mod  <em>p</em></span></p>
-<p>where <span class="math inline"><em>p</em></span> is a large prime.*</p>
+**Definition 6** (Odd Perfect Hash). *For a component with divisor set $`D`$, the odd perfect hash $`H_{OPN}`$ is:
+
+<pre><code class="language-math">\begin{equation}
+H_{OPN}(C) = \sum_{d \in D} \text{GCD}(C, d) \cdot \text{LCM}(C, d) \mod p
+\end{equation}
+</code></pre>
+
+where $`p`$ is a large prime.*
+
 </div>
 
 <h2 id="recovery-architecture">Recovery Architecture</h2>
@@ -221,116 +257,97 @@ C(\mathcal{T}) = \sum_{v \in V(\mathcal{T})} \frac{w_{\text{indirect}}(v)}{w_{\t
 
 </div>
 
-<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CryptographicSelfHealing:</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> create_healable_component(<span class="va">self</span>, component):</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Generate cryptographic identity</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        merkle_proof <span class="op">=</span> <span class="va">self</span>.merkle_forest.add_leaf(component)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Apply odd perfect encoding</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        integrity_sig <span class="op">=</span> <span class="va">self</span>.odd_perfect_encoder.encode(</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>            merkle_proof,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>            divisors<span class="op">=</span>component.dependencies</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> HealableComponent(</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            base<span class="op">=</span>component,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            merkle<span class="op">=</span>merkle_proof,</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            integrity<span class="op">=</span>integrity_sig,</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>            intent<span class="op">=</span><span class="va">self</span>.extract_semantic_intent(component)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> initiate_recovery(<span class="va">self</span>, failed_component):</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Layer 1: Semantic recovery</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        semantic <span class="op">=</span> <span class="va">self</span>.recover_from_intent(failed_component.intent)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Layer 2: Structural recovery</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        structural <span class="op">=</span> <span class="va">self</span>.recover_from_dag(failed_component)</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Layer 3: Cryptographic validation</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.validate_integrity(structural, failed_component.integrity):</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> structural</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">self</span>.deep_recovery(failed_component)</span></code></pre></div>
+<pre><code class="language-python">class CryptographicSelfHealing:
+    def create_healable_component(self, component):
+        # Generate cryptographic identity
+        merkle_proof = self.merkle_forest.add_leaf(component)
+
+        # Apply odd perfect encoding
+        integrity_sig = self.odd_perfect_encoder.encode(
+            merkle_proof,
+            divisors=component.dependencies
+        )
+
+        return HealableComponent(
+            base=component,
+            merkle=merkle_proof,
+            integrity=integrity_sig,
+            intent=self.extract_semantic_intent(component)
+        )
+
+    def initiate_recovery(self, failed_component):
+        # Layer 1: Semantic recovery
+        semantic = self.recover_from_intent(failed_component.intent)
+
+        # Layer 2: Structural recovery
+        structural = self.recover_from_dag(failed_component)
+
+        # Layer 3: Cryptographic validation
+        if self.validate_integrity(structural, failed_component.integrity):
+            return structural
+        else:
+            return self.deep_recovery(failed_component)
+</code></pre>
 <h1 id="system-validation-and-metrics">System Validation and Metrics</h1>
 <h2 id="performance-guarantees">Performance Guarantees</h2>
 <div id="tab:metrics">
 
-<table>
-<thead>
-<tr>
-<th style="text-align: left;"><strong>Component</strong></th>
-<th style="text-align: left;"><strong>Target</strong></th>
-<th style="text-align: left;"><strong>Achieved</strong></th>
-<th style="text-align: center;"><strong>Status</strong></th>
-<th style="text-align: left;"><strong>Remarks</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">Categorical Associativity</td>
-<td style="text-align: left;">99.9%</td>
-<td style="text-align: left;">99.7%</td>
-<td style="text-align: center;"></td>
-<td style="text-align: left;">Functor trace validation</td>
-</tr>
-<tr>
-<td style="text-align: left;">Runtime Overhead</td>
-<td style="text-align: left;">&lt; 0.1%</td>
-<td style="text-align: left;">0.08%</td>
-<td style="text-align: center;"></td>
-<td style="text-align: left;">Precomputed delta application</td>
-</tr>
-<tr>
-<td style="text-align: left;">Topology Invariance</td>
-<td style="text-align: left;">100%</td>
-<td style="text-align: left;">98.5%</td>
-<td style="text-align: center;"><span class="math inline">△</span></td>
-<td style="text-align: left;">Minor degradation under extreme load</td>
-</tr>
-<tr>
-<td style="text-align: left;">Recovery Success</td>
-<td style="text-align: left;">&gt; 95%</td>
-<td style="text-align: left;">96.2%</td>
-<td style="text-align: center;"></td>
-<td style="text-align: left;">Multi-layer healing effective</td>
-</tr>
-<tr>
-<td style="text-align: left;">Simpson Cost</td>
-<td style="text-align: left;"><span class="math inline"> ≤ 0.5</span></td>
-<td style="text-align: left;">0.42</td>
-<td style="text-align: center;"></td>
-<td style="text-align: left;">Well within stability bounds</td>
-</tr>
-</tbody>
-</table>
-<p>UQCBP System Validation Metrics</p>
+| **Component** | **Target** | **Achieved** | **Status** | **Remarks** |
+|:---|:---|:---|:--:|:---|
+| Categorical Associativity | 99.9% | 99.7% |  | Functor trace validation |
+| Runtime Overhead | \< 0.1% | 0.08% |  | Precomputed delta application |
+| Topology Invariance | 100% | 98.5% | $`\triangle`$ | Minor degradation under extreme load |
+| Recovery Success | \> 95% | 96.2% |  | Multi-layer healing effective |
+| Simpson Cost | $`\leq 0.5`$ | 0.42 |  | Well within stability bounds |
+
+UQCBP System Validation Metrics
+
 </div>
 
 <h1 id="conclusion-and-recommendations">Conclusion and Recommendations</h1>
 <h2 id="formal-recommendation">Formal Recommendation</h2>
 <p>Based on comprehensive analysis and validation results, we issue a <strong>CONDITIONAL PROCEED</strong> recommendation for UQCBP implementation, subject to:</p>
-<ol type="1">
-<li><p>Continuous monitoring of topology invariance metrics</p></li>
-<li><p>Implementation of fail-safe protocols for extreme decoherence scenarios</p></li>
-<li><p>Regular validation of Simpson stability cost</p></li>
+<ol>
+<li>
+<p>Continuous monitoring of topology invariance metrics</p>
+</li>
+<li>
+<p>Implementation of fail-safe protocols for extreme decoherence scenarios</p>
+</li>
+<li>
+<p>Regular validation of Simpson stability cost</p>
+</li>
 </ol>
 <h2 id="research-gaps">Research Gaps</h2>
 <p>Several areas require further investigation:</p>
 <ul>
-<li><p><strong>Quantum Gravity Unification</strong>: Extension of gravity stability model to quantum gravitational effects</p></li>
-<li><p><strong>Infinite Topology Scaling</strong>: Behavior analysis when topology evolution reaches theoretical limits</p></li>
-<li><p><strong>Post-Quantum Cryptography</strong>: Resistance of odd perfect encodings to quantum attacks</p></li>
+<li>
+<p><strong>Quantum Gravity Unification</strong>: Extension of gravity stability model to quantum gravitational effects</p>
+</li>
+<li>
+<p><strong>Infinite Topology Scaling</strong>: Behavior analysis when topology evolution reaches theoretical limits</p>
+</li>
+<li>
+<p><strong>Post-Quantum Cryptography</strong>: Resistance of odd perfect encodings to quantum attacks</p>
+</li>
 </ul>
 <h2 id="implementation-roadmap">Implementation Roadmap</h2>
-<ol type="1">
-<li><p><strong>Phase 1</strong>: LibPolyCall integration with basic AFP implementation</p></li>
-<li><p><strong>Phase 2</strong>: RIFT compliance validation and entropy engine deployment</p></li>
-<li><p><strong>Phase 3</strong>: Full cryptographic self-healing activation</p></li>
-<li><p><strong>Phase 4</strong>: Production deployment with continuous monitoring</p></li>
+<ol>
+<li>
+<p><strong>Phase 1</strong>: LibPolyCall integration with basic AFP implementation</p>
+</li>
+<li>
+<p><strong>Phase 2</strong>: RIFT compliance validation and entropy engine deployment</p>
+</li>
+<li>
+<p><strong>Phase 3</strong>: Full cryptographic self-healing activation</p>
+</li>
+<li>
+<p><strong>Phase 4</strong>: Production deployment with continuous monitoring</p>
+</li>
 </ol>
 <h1 id="acknowledgments">Acknowledgments</h1>
 <p>The author thanks the OBINexus Computing team for their invaluable contributions to the theoretical framework and implementation architecture.</p>
-
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-unified-quantum-classical-bridge-protocol-uqcbp</code></p>

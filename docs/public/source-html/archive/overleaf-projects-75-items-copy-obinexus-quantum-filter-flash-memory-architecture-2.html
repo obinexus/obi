@@ -136,18 +136,29 @@
 
 <h1 id="mathematical-formulation">Mathematical Formulation</h1>
 <h2 id="filter-flash-operator-definition">Filter-Flash Operator Definition</h2>
-<p>The quantum filter-flash operator <span class="math inline"><em>Φ</em><sub><em>F</em><em>F</em></sub></span> is defined as:</p>
-<p><span class="math display"><em>Φ</em><sub><em>F</em><em>F</em></sub> = <em>U</em><sub><em>F</em><em>l</em><em>a</em><em>s</em><em>h</em></sub> ⋅ <em>F</em><sub><em>F</em><em>i</em><em>l</em><em>t</em><em>e</em><em>r</em></sub> ⋅ <em>U</em><sub><em>C</em><em>N</em><em>O</em><em>T</em></sub> ⋅ <em>U</em><sub><em>N</em><em>O</em><em>R</em></sub></span></p>
+<p>The quantum filter-flash operator $<code>\Phi_{FF}</code>$ is defined as:</p>
+<pre><code class="language-math">\begin{equation}
+\Phi_{FF} = U_{Flash} \cdot F_{Filter} \cdot U_{CNOT} \cdot U_{NOR}
+\end{equation}
+</code></pre>
 <p>Where:</p>
 <ul>
-<li><p><span class="math inline"><em>U</em><sub><em>N</em><em>O</em><em>R</em></sub></span> is the quantum NOR gate unitary</p></li>
-<li><p><span class="math inline"><em>U</em><sub><em>C</em><em>N</em><em>O</em><em>T</em></sub></span> is the standard CNOT gate</p></li>
-<li><p><span class="math inline"><em>F</em><sub><em>F</em><em>i</em><em>l</em><em>t</em><em>e</em><em>r</em></sub></span> is the filtering operation (measurement-based)</p></li>
-<li><p><span class="math inline"><em>U</em><sub><em>F</em><em>l</em><em>a</em><em>s</em><em>h</em></sub></span> is the flash memory update operation</p></li>
+<li>
+<p>$<code>U_{NOR}</code>$ is the quantum NOR gate unitary</p>
+</li>
+<li>
+<p>$<code>U_{CNOT}</code>$ is the standard CNOT gate</p>
+</li>
+<li>
+<p>$<code>F_{Filter}</code>$ is the filtering operation (measurement-based)</p>
+</li>
+<li>
+<p>$<code>U_{Flash}</code>$ is the flash memory update operation</p>
+</li>
 </ul>
 <h2 id="matrix-representation">Matrix Representation</h2>
 <p>The complete operator matrix for the 4-qubit system (16×16):</p>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 \Phi_{FF} = \begin{pmatrix}
 1 &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\
 0 &amp; 0 &amp; 1 &amp; 0 &amp; \cdots &amp; 0 \\
@@ -156,7 +167,8 @@
 \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
 0 &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 1
 \end{pmatrix}_{16 \times 16}
-\end{equation}$$</span></p>
+\end{equation}
+</code></pre>
 <h1 id="integration-with-obinexus-obiai-framework">Integration with OBINexus OBIAI Framework</h1>
 <h2 id="epistemic-flash-indexing">Epistemic Flash Indexing</h2>
 <figure data-latex-placement="h">
@@ -166,25 +178,26 @@
 
 <h1 id="implementation-specification">Implementation Specification</h1>
 <h2 id="quantum-circuit-code">Quantum Circuit Code</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> QuantumFilterFlashGate:</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.circuit <span class="op">=</span> QuantumCircuit(<span class="dv">4</span>)  <span class="co"># A, B, Memory, Flash</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> apply_filter_flash_logic(<span class="va">self</span>, a, b):</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># NOR operation</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.circuit.x([<span class="dv">0</span>, <span class="dv">1</span>])  <span class="co"># NOT gates</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.circuit.ccx(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>)  <span class="co"># Toffoli for AND</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.circuit.x(<span class="dv">2</span>)  <span class="co"># Final NOT for NOR</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Filter operation (measurement-based)</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.circuit.measure(<span class="dv">2</span>, classical_reg[<span class="dv">0</span>])</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> classical_reg[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">1</span>:</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.circuit.h(<span class="dv">3</span>)  <span class="co"># Hadamard for superposition</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Flash operation</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.circuit.cx(<span class="dv">2</span>, <span class="dv">3</span>)  <span class="co"># CNOT for entanglement</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.circuit</span></code></pre></div>
+<pre><code class="language-python">class QuantumFilterFlashGate:
+    def __init__(self):
+        self.circuit = QuantumCircuit(4)  # A, B, Memory, Flash
+
+    def apply_filter_flash_logic(self, a, b):
+        # NOR operation
+        self.circuit.x([0, 1])  # NOT gates
+        self.circuit.ccx(0, 1, 2)  # Toffoli for AND
+        self.circuit.x(2)  # Final NOT for NOR
+
+        # Filter operation (measurement-based)
+        self.circuit.measure(2, classical_reg[0])
+        if classical_reg[0] == 1:
+            self.circuit.h(3)  # Hadamard for superposition
+
+        # Flash operation
+        self.circuit.cx(2, 3)  # CNOT for entanglement
+
+        return self.circuit
+</code></pre>
 <h1 id="compliance-and-validation">Compliance and Validation</h1>
 <h2 id="obinexus-compliance-matrix">OBINexus Compliance Matrix</h2>
 <table>
@@ -222,14 +235,23 @@
 <h1 id="conclusion">Conclusion</h1>
 <p>This specification provides a complete quantum-classical hybrid architecture that integrates:</p>
 <ul>
-<li><p>CNOT-based quantum logic gates</p></li>
-<li><p>Filter-Flash consciousness model</p></li>
-<li><p>Three-layer memory architecture</p></li>
-<li><p>OBINexus OBIAI framework compliance</p></li>
-<li><p>Epistemic indexing for knowledge provenance</p></li>
+<li>
+<p>CNOT-based quantum logic gates</p>
+</li>
+<li>
+<p>Filter-Flash consciousness model</p>
+</li>
+<li>
+<p>Three-layer memory architecture</p>
+</li>
+<li>
+<p>OBINexus OBIAI framework compliance</p>
+</li>
+<li>
+<p>Epistemic indexing for knowledge provenance</p>
+</li>
 </ul>
 <p>The system achieves 99.5% categorical preservation under quantum decoherence while maintaining consciousness continuity through the filter-flash mechanism.</p>
-
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-obinexus-quantum-filter-flash-memory-architecture-2</code></p>

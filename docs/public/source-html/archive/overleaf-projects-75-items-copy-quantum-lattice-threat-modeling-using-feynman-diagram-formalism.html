@@ -88,8 +88,8 @@
 <td style="text-align: left;">Interaction point (exploit attempt)</td>
 </tr>
 <tr>
-<td style="text-align: left;">Coupling constant <span class="math inline"><em>g</em></span></td>
-<td style="text-align: left;">System susceptibility <span class="math inline"><em>g</em><sub><em>s</em><em>y</em><em>s</em></sub></span></td>
+<td style="text-align: left;">Coupling constant $<code>g</code>$</td>
+<td style="text-align: left;">System susceptibility $<code>g_{sys}</code>$</td>
 </tr>
 <tr>
 <td style="text-align: left;">Vacuum state</td>
@@ -100,7 +100,7 @@
 <td style="text-align: left;">Transient threat state</td>
 </tr>
 <tr>
-<td style="text-align: left;">Amplitude <span class="math inline">ℳ</span></td>
+<td style="text-align: left;">Amplitude $<code>\mathcal{M}</code>$</td>
 <td style="text-align: left;">Incident probability amplitude</td>
 </tr>
 </tbody>
@@ -108,51 +108,67 @@
 <p>Mapping between QFT and cybersecurity concepts</p>
 <h2 id="integration-with-3d-lattice-model">Integration with 3D Lattice Model</h2>
 <p>The threat function from the quantum lattice model:</p>
-<p><span class="math display"><em>T</em>(<em>x</em>, <em>y</em>, <em>z</em>) = <em>α</em><em>X</em><sub><em>q</em><em>a</em></sub> + <em>β</em><em>Y</em><sub><em>q</em><em>u</em><em>a</em><em>n</em><em>t</em><em>u</em><em>m</em></sub> + <em>γ</em><em>Z</em><sub><em>b</em><em>l</em><em>o</em><em>c</em><em>k</em><em>c</em><em>h</em><em>a</em><em>i</em><em>n</em></sub></span></p>
-<p>where <span class="math inline"><em>X</em><sub><em>q</em><em>a</em></sub>, <em>Y</em><sub><em>q</em><em>u</em><em>a</em><em>n</em><em>t</em><em>u</em><em>m</em></sub>, <em>Z</em><sub><em>b</em><em>l</em><em>o</em><em>c</em><em>k</em><em>c</em><em>h</em><em>a</em><em>i</em><em>n</em></sub> ∈ [−12, 12]</span> and <span class="math inline"><em>α</em> + <em>β</em> + <em>γ</em> = 1</span>.</p>
+<pre><code class="language-math">\begin{equation}
+T(x,y,z) = \alpha X_{qa} + \beta Y_{quantum} + \gamma Z_{blockchain}
+\end{equation}
+</code></pre>
+<p>where $<code>X_{qa}, Y_{quantum}, Z_{blockchain} \in [-12, 12]</code>$ and $<code>\alpha + \beta + \gamma = 1</code>$.</p>
 <h1 id="feynman-rules-for-quantum-threat-diagrams">Feynman Rules for Quantum Threat Diagrams</h1>
 <h2 id="propagators">Propagators</h2>
 <p>We define four types of propagators corresponding to different information flows:</p>
 <div class="definition">
 
-<p><strong>Definition 1</strong> (Threat Propagator). *For an external threat <span class="math inline"><em>T</em></span> with momentum <span class="math inline"><em>p</em></span>:</p>
-<p><span class="math display">$$\begin{equation}
+**Definition 1** (Threat Propagator). *For an external threat $`T`$ with momentum $`p`$:
+
+<pre><code class="language-math">\begin{equation}
 \feynmandiagram [inline=(a.base), horizontal=a to b] {
   a -- [fermion, edge label=$T$, momentum=$p$, red] b,
 };
 \quad \rightarrow \quad \frac{i}{p^2 - m_T^2 + i\epsilon}
-\end{equation}$$</span></p>
-<p>where <span class="math inline"><em>m</em><sub><em>T</em></sub></span> represents the threat’s "mass" (complexity).*</p>
+\end{equation}
+</code></pre>
+
+where $`m_T`$ represents the threat’s "mass" (complexity).*
+
 </div>
 
 <div class="definition">
 
-<p><strong>Definition 2</strong> (Vulnerability Propagator). *For a system vulnerability <span class="math inline"><em>V</em></span>:</p>
-<p><span class="math display">$$\begin{equation}
+**Definition 2** (Vulnerability Propagator). *For a system vulnerability $`V`$:
+
+<pre><code class="language-math">\begin{equation}
 \feynmandiagram [inline=(a.base), horizontal=a to b] {
   a -- [charged scalar, edge label=$V$, blue] b,
 };
 \quad \rightarrow \quad \frac{i\Delta_V(p)}{p^2 - m_V^2 + i\epsilon}
-\end{equation}$$</span></p>
-<p>where <span class="math inline"><em>Δ</em><sub><em>V</em></sub>(<em>p</em>)</span> is the vulnerability persistence factor.*</p>
+\end{equation}
+</code></pre>
+
+where $`\Delta_V(p)`$ is the vulnerability persistence factor.*
+
 </div>
 
 <div class="definition">
 
-<p><strong>Definition 3</strong> (Quantum State Propagator). *For quantum system states <span class="math inline"><em>Q</em></span>:</p>
-<p><span class="math display">$$\begin{equation}
+**Definition 3** (Quantum State Propagator). *For quantum system states $`Q`$:
+
+<pre><code class="language-math">\begin{equation}
 \feynmandiagram [inline=(a.base), horizontal=a to b] {
   a -- [gluon, edge label=$Q$, quantumpurple] b,
 };
 \quad \rightarrow \quad \frac{i\eta_{\mu\nu}}{p^2} \cdot e^{-\lambda_{decoherence} \cdot t}
-\end{equation}$$</span></p>
-<p>accounting for decoherence over time <span class="math inline"><em>t</em></span>.*</p>
+\end{equation}
+</code></pre>
+
+accounting for decoherence over time $`t`$.*
+
 </div>
 
 <div class="definition">
 
-<p><strong>Definition 4</strong> (Information Propagator). *For malicious information/exploit code <span class="math inline"><em>I</em></span>:</p>
-<p><span class="math display">$$\begin{equation}
+**Definition 4** (Information Propagator). *For malicious information/exploit code $`I`$:
+
+<pre><code class="language-math">\begin{equation}
 \feynmandiagram [inline=(a.base), horizontal=a to b] {
   a -- [photon, edge label=$I$] b,
 };
@@ -166,7 +182,7 @@
 
 The primary interaction vertex is the Threat-Vulnerability-Information (T-V-I) vertex:
 
-&lt;div class="center"&gt;
+&lt;div class=&quot;center&quot;&gt;
 
 &lt;/div&gt;
 
@@ -180,237 +196,260 @@ The gating functions from the 3D lattice model modify amplitudes:
 G_x &amp;= \mathbb{I}[\|v - L_{qa}\| \leq \tau_{qa}] \quad \text{(Software QA gate)} \\
 G_y &amp;= \mathbb{I}[\|v - L_{quantum}\| \leq \tau_{quantum}] \quad \text{(Quantum integration gate)} \\
 G_z &amp;= \mathbb{I}[\|v - L_{blockchain}\| \leq \tau_{blockchain}] \quad \text{(Blockchain verification gate)}
-\end{align}$$</span></p>
-<p>The total amplitude for any threat diagram <span class="math inline"><em>D</em></span> becomes:</p>
-<p><span class="math display">ℳ<sub><em>D</em></sub><sup>(total)</sup> = <em>S</em> ⋅ ℳ<sub><em>D</em></sub> = (<em>G</em><sub><em>x</em></sub> ⋅ <em>G</em><sub><em>y</em></sub> ⋅ <em>G</em><sub><em>z</em></sub>) ⋅ ℳ<sub><em>D</em></sub></span></p>
-<h1 id="worked-example-remote-code-execution-attack">Worked Example: Remote Code Execution Attack</h1>
-<h2 id="scenario-description">Scenario Description</h2>
-<p>Consider a quantum-enabled edge computing system with:</p>
-<ul>
-<li><p><strong>Initial state <span class="math inline">|<em>i</em>⟩</span></strong>: System with open SSH port (port 22) and unpatched quantum random number generator</p></li>
-<li><p><strong>Final state <span class="math inline">|<em>f</em>⟩</span></strong>: Remote code execution achieved through quantum-enhanced timing attack</p></li>
-<li><p><strong>Threat values</strong>: <span class="math inline"><em>X</em><sub><em>q</em><em>a</em></sub> = −3</span> (unverified hotfix), <span class="math inline"><em>Y</em><sub><em>q</em><em>u</em><em>a</em><em>n</em><em>t</em><em>u</em><em>m</em></sub> = +5</span> (degraded quantum source), <span class="math inline"><em>Z</em><sub><em>b</em><em>l</em><em>o</em><em>c</em><em>k</em><em>c</em><em>h</em><em>a</em><em>i</em><em>n</em></sub> = −2</span> (pending smart contract verification)</p></li>
-</ul>
-<h2 id="lowest-order-feynman-diagram">Lowest-Order Feynman Diagram</h2>
-<p>The primary attack path involves a single T-V-I vertex:</p>
+\end{align}
+</code></pre>
+
+
+The total amplitude for any threat diagram $`D`$ becomes:
+
+<pre><code class="language-math">\begin{equation}
+\mathcal{M}_D^{\text{(total)}} = S \cdot \mathcal{M}_D = (G_x \cdot G_y \cdot G_z) \cdot \mathcal{M}_D
+\end{equation}
+</code></pre>
+
+
+# Worked Example: Remote Code Execution Attack
+
+## Scenario Description
+
+Consider a quantum-enabled edge computing system with:
+
+- **Initial state $`|i\rangle`$**: System with open SSH port (port 22) and unpatched quantum random number generator
+
+- **Final state $`|f\rangle`$**: Remote code execution achieved through quantum-enhanced timing attack
+
+- **Threat values**: $`X_{qa} = -3`$ (unverified hotfix), $`Y_{quantum} = +5`$ (degraded quantum source), $`Z_{blockchain} = -2`$ (pending smart contract verification)
+
+## Lowest-Order Feynman Diagram
+
+The primary attack path involves a single T-V-I vertex:
+
 <div class="center">
 
 </div>
 
-<h2 id="matrix-element-calculation">Matrix Element Calculation</h2>
-<p>Using the Feynman rules, the amplitude for this diagram is:</p>
-<p><span class="math display">$$\begin{align}
+## Matrix Element Calculation
+
+Using the Feynman rules, the amplitude for this diagram is:
+
+
+<pre><code class="language-math">\begin{align}
 \mathcal{M}_1 &amp;= (ig_{sys}) \cdot \frac{i}{p_T^2 - m_T^2} \cdot \frac{i\Delta_V(p_V)}{p_V^2 - m_V^2} \cdot \frac{i}{p_I^2 - m_I^2} \cdot S \\
 &amp;= \frac{-ig_{sys} \Delta_V(p_V)}{(p_T^2 - m_T^2)(p_V^2 - m_V^2)(p_I^2 - m_I^2)} \cdot (G_x \cdot G_y \cdot G_z)
-\end{align}$$</span></p>
-<p>Given our scenario:</p>
-<ul>
-<li><p><span class="math inline"><em>G</em><sub><em>x</em></sub> = 0</span> (unverified hotfix fails QA gate)</p></li>
-<li><p><span class="math inline"><em>G</em><sub><em>y</em></sub> = 1</span> (quantum degradation within tolerance)</p></li>
-<li><p><span class="math inline"><em>G</em><sub><em>z</em></sub></span> depends on Node Zero verification</p></li>
-</ul>
-<p>Initially, <span class="math inline"><em>S</em> = 0 ⋅ 1 ⋅ <em>G</em><sub><em>z</em></sub> = 0</span>, so <span class="math inline">ℳ<sub>1</sub> = 0</span> (attack blocked).</p>
-<h2 id="node-zero-mitigation">Node Zero Mitigation</h2>
-<p>Node Zero intervenes with ZKP verification:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Alice (defender) challenges Bob (system)</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npx</span> z0 challenge <span class="at">--identity</span> alice_identity.json</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Bob generates proof of secure state</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">npx</span> z0 proof <span class="at">--challenge</span> challenge.bin <span class="at">--output</span> proof.bin</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Verification updates blockchain gate</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">npx</span> z0 verify proof.bin</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Result: G_z = 1 if proof valid</span></span></code></pre></div>
-<p>However, since <span class="math inline"><em>G</em><sub><em>x</em></sub> = 0</span>, the system remains in fail-safe mode despite successful blockchain verification.</p>
-<h2 id="incident-rate-calculation">Incident Rate Calculation</h2>
-<p>Using Fermi’s Golden Rule:</p>
-<p><span class="math display"><em>Γ</em><sub><em>f</em><em>i</em></sub> = 2<em>π</em>|ℳ<sub>1</sub>|<sup>2</sup><em>ρ</em>(<em>E</em><sub><em>f</em></sub>) = 0</span></p>
-<p>The incident rate is zero due to the multiplicative safety function. To enable the system:</p>
-<ol type="1">
-<li><p>Fix the unverified hotfix: <span class="math inline"><em>G</em><sub><em>x</em></sub> → 1</span></p></li>
-<li><p>Maintain quantum source: <span class="math inline"><em>G</em><sub><em>y</em></sub> = 1</span></p></li>
-<li><p>Complete Node Zero verification: <span class="math inline"><em>G</em><sub><em>z</em></sub> = 1</span></p></li>
-</ol>
-<p>Only when <span class="math inline"><em>S</em> = 1 ⋅ 1 ⋅ 1 = 1</span> does the system become operational.</p>
-<h2 id="higher-order-corrections">Higher-Order Corrections</h2>
-<p>Second-order diagrams involve intermediate states, such as privilege escalation:</p>
+\end{align}
+</code></pre>
+
+
+Given our scenario:
+
+- $`G_x = 0`$ (unverified hotfix fails QA gate)
+
+- $`G_y = 1`$ (quantum degradation within tolerance)
+
+- $`G_z`$ depends on Node Zero verification
+
+Initially, $`S = 0 \cdot 1 \cdot G_z = 0`$, so $`\mathcal{M}_1 = 0`$ (attack blocked).
+
+## Node Zero Mitigation
+
+Node Zero intervenes with ZKP verification:
+
+
+<pre><code class="language-bash"># Alice (defender) challenges Bob (system)
+npx z0 challenge --identity alice_identity.json
+
+# Bob generates proof of secure state
+npx z0 proof --challenge challenge.bin --output proof.bin
+
+# Verification updates blockchain gate
+npx z0 verify proof.bin
+# Result: G_z = 1 if proof valid
+</code></pre>
+
+
+However, since $`G_x = 0`$, the system remains in fail-safe mode despite successful blockchain verification.
+
+## Incident Rate Calculation
+
+Using Fermi’s Golden Rule:
+
+<pre><code class="language-math">\begin{equation}
+\Gamma_{fi} = 2\pi |\mathcal{M}_1|^2 \rho(E_f) = 0
+\end{equation}
+</code></pre>
+
+
+The incident rate is zero due to the multiplicative safety function. To enable the system:
+
+1.  Fix the unverified hotfix: $`G_x \to 1`$
+
+2.  Maintain quantum source: $`G_y = 1`$
+
+3.  Complete Node Zero verification: $`G_z = 1`$
+
+Only when $`S = 1 \cdot 1 \cdot 1 = 1`$ does the system become operational.
+
+## Higher-Order Corrections
+
+Second-order diagrams involve intermediate states, such as privilege escalation:
+
 <div class="center">
 
 </div>
 
-<p>The amplitude includes an additional propagator:</p>
-<p><span class="math display">$$\begin{equation}
+The amplitude includes an additional propagator:
+
+<pre><code class="language-math">\begin{equation}
 \mathcal{M}_2 \sim g_{sys}^2 \cdot \prod_i \frac{1}{p_i^2 - m_i^2} \cdot S
-\end{equation}$$</span></p>
-<h1 id="discussion">Discussion</h1>
-<h2 id="threat-function-analysis">Threat Function Analysis</h2>
-<p>Computing the threat function for our example:</p>
-<p><span class="math display">$$\begin{align}
+\end{equation}
+</code></pre>
+
+
+# Discussion
+
+## Threat Function Analysis
+
+Computing the threat function for our example:
+
+<pre><code class="language-math">\begin{align}
 T(x,y,z) &amp;= 0.4(-3) + 0.3(+5) + 0.3(-2) \\
 &amp;= -1.2 + 1.5 - 0.6 = -0.3
-\end{align}$$</span></p>
-<p>The negative value indicates net threat presence, confirming the need for <span class="math inline"><em>S</em> = 0</span> fail-safe.</p>
-<h2 id="comparison-with-traditional-models">Comparison with Traditional Models</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;"><strong>Feature</strong></th>
-<th style="text-align: center;"><strong>Traditional</strong></th>
-<th style="text-align: center;"><strong>Feynman-Lattice</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">Quantitative risk</td>
-<td style="text-align: center;">CVSS scores</td>
-<td style="text-align: center;">Amplitude calculations</td>
-</tr>
-<tr>
-<td style="text-align: left;">Visualization</td>
-<td style="text-align: center;">Attack trees</td>
-<td style="text-align: center;">Feynman diagrams</td>
-</tr>
-<tr>
-<td style="text-align: left;">Fail-safe</td>
-<td style="text-align: center;">Manual checks</td>
-<td style="text-align: center;">Automatic <span class="math inline"><em>S</em> = 0</span></td>
-</tr>
-<tr>
-<td style="text-align: left;">Quantum threats</td>
-<td style="text-align: center;">Not addressed</td>
-<td style="text-align: center;">Native integration</td>
-</tr>
-<tr>
-<td style="text-align: left;">ZKP integration</td>
-<td style="text-align: center;">External</td>
-<td style="text-align: center;">Built-in (Node Zero)</td>
-</tr>
-</tbody>
-</table>
-<p>Comparison of threat modeling approaches</p>
-<h2 id="obinexus-implementation">OBINexus Implementation</h2>
-<p>Integration with the OBINexus toolchain:</p>
-<ol type="1">
-<li><p><strong>riftlang.exe</strong>: Generates threat propagator definitions</p></li>
-<li><p><strong>.so.a</strong>: Compiles lattice verification libraries</p></li>
-<li><p><strong>rift.exe</strong>: Enforces gating policies (<span class="math inline"><em>G</em><sub><em>x</em></sub>, <em>G</em><sub><em>y</em></sub>, <em>G</em><sub><em>z</em></sub></span>)</p></li>
-<li><p><strong>gosilang</strong>: Coordinates polyglot threat analysis</p></li>
-<li><p><strong>nlink → polybuild</strong>: Builds integrated verification pipeline</p></li>
-</ol>
-<h1 id="advanced-examples">Advanced Examples</h1>
-<h2 id="example-quantum-oracle-attack">Example: Quantum Oracle Attack</h2>
-<p>For Grover’s algorithm targeting blockchain keys:</p>
+\end{align}
+</code></pre>
+
+
+The negative value indicates net threat presence, confirming the need for $`S = 0`$ fail-safe.
+
+## Comparison with Traditional Models
+
+| **Feature**       | **Traditional** |  **Feynman-Lattice**   |
+|:------------------|:---------------:|:----------------------:|
+| Quantitative risk |   CVSS scores   | Amplitude calculations |
+| Visualization     |  Attack trees   |    Feynman diagrams    |
+| Fail-safe         |  Manual checks  |  Automatic $`S = 0`$   |
+| Quantum threats   |  Not addressed  |   Native integration   |
+| ZKP integration   |    External     |  Built-in (Node Zero)  |
+
+Comparison of threat modeling approaches
+
+## OBINexus Implementation
+
+Integration with the OBINexus toolchain:
+
+1.  **riftlang.exe**: Generates threat propagator definitions
+
+2.  **.so.a**: Compiles lattice verification libraries
+
+3.  **rift.exe**: Enforces gating policies ($`G_x, G_y, G_z`$)
+
+4.  **gosilang**: Coordinates polyglot threat analysis
+
+5.  **nlink → polybuild**: Builds integrated verification pipeline
+
+# Advanced Examples
+
+## Example: Quantum Oracle Attack
+
+For Grover’s algorithm targeting blockchain keys:
+
 <div class="center">
 
 </div>
 
-<p>Amplitude with quantum speedup:</p>
-<p><span class="math display">$$\begin{equation}
+Amplitude with quantum speedup:
+
+<pre><code class="language-math">\begin{equation}
 \mathcal{M}_{Grover} \sim \frac{g_{quantum}}{\sqrt{N}} \cdot e^{i\phi_{oracle}} \cdot S
-\end{equation}$$</span></p>
-<h2 id="example-supply-chain-attack-via-smart-contract">Example: Supply Chain Attack via Smart Contract</h2>
-<p>Multi-vertex diagram for npm package compromise:</p>
+\end{equation}
+</code></pre>
+
+
+## Example: Supply Chain Attack via Smart Contract
+
+Multi-vertex diagram for npm package compromise:
+
 <div class="center">
 
 </div>
 
-<h1 id="conclusion">Conclusion</h1>
-<p>The Quantum Threat Feynman Diagram model provides:</p>
-<ol type="1">
-<li><p><strong>Visual intuition</strong>: Complex attack paths become readable diagrams</p></li>
-<li><p><strong>Quantitative analysis</strong>: Precise amplitude and rate calculations</p></li>
-<li><p><strong>Fail-safe design</strong>: Multiplicative safety function <span class="math inline"><em>S</em> = <em>G</em><sub><em>x</em></sub> ⋅ <em>G</em><sub><em>y</em></sub> ⋅ <em>G</em><sub><em>z</em></sub></span></p></li>
-<li><p><strong>Post-quantum readiness</strong>: Native quantum threat modeling</p></li>
-<li><p><strong>Seamless integration</strong>: Works with OBINexus toolchain and Node Zero</p></li>
-</ol>
-<p>Future work includes:</p>
-<ul>
-<li><p>Automated diagram generation from threat intelligence</p></li>
-<li><p>Monte Carlo summation over all possible attack diagrams</p></li>
-<li><p>Coupling constant extraction from real-world incident data</p></li>
-<li><p>Integration with #NoGhosting and OpenSense policies</p></li>
-</ul>
-<h1 id="node-zero-command-reference">Node Zero Command Reference</h1>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identity management (lattice-based)</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npx</span> z0 create alice_identity.json</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">npx</span> z0 create bob_identity.json</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Challenge-response protocol</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">npx</span> z0 challenge <span class="at">--from</span> alice_identity.json <span class="dt">\</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">--to</span> bob_identity.json <span class="dt">\</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">--output</span> challenge.bin</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">npx</span> z0 proof <span class="at">--challenge</span> challenge.bin <span class="dt">\</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">--identity</span> bob_identity.json <span class="dt">\</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">--output</span> proof.bin</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Verification (updates G_z)</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="ex">npx</span> z0 verify <span class="at">--proof</span> proof.bin <span class="dt">\</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">--challenger</span> alice_identity.json</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Key derivation (no trusted setup)</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="ex">npx</span> z0 derive <span class="at">--shared-secret</span> secret.bin <span class="dt">\</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">--alice</span> alice_identity.json <span class="dt">\</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">--bob</span> bob_identity.json</span></code></pre></div>
-<h1 id="threat-scale-reference">Threat Scale Reference</h1>
+# Conclusion
+
+The Quantum Threat Feynman Diagram model provides:
+
+1.  **Visual intuition**: Complex attack paths become readable diagrams
+
+2.  **Quantitative analysis**: Precise amplitude and rate calculations
+
+3.  **Fail-safe design**: Multiplicative safety function $`S = G_x \cdot G_y \cdot G_z`$
+
+4.  **Post-quantum readiness**: Native quantum threat modeling
+
+5.  **Seamless integration**: Works with OBINexus toolchain and Node Zero
+
+Future work includes:
+
+- Automated diagram generation from threat intelligence
+
+- Monte Carlo summation over all possible attack diagrams
+
+- Coupling constant extraction from real-world incident data
+
+- Integration with \#NoGhosting and OpenSense policies
+
+# Node Zero Command Reference
+
+
+<pre><code class="language-bash"># Identity management (lattice-based)
+npx z0 create alice_identity.json
+npx z0 create bob_identity.json
+
+# Challenge-response protocol
+npx z0 challenge --from alice_identity.json \
+                 --to bob_identity.json \
+                 --output challenge.bin
+
+npx z0 proof --challenge challenge.bin \
+             --identity bob_identity.json \
+             --output proof.bin
+
+# Verification (updates G_z)
+npx z0 verify --proof proof.bin \
+              --challenger alice_identity.json
+
+# Key derivation (no trusted setup)
+npx z0 derive --shared-secret secret.bin \
+              --alice alice_identity.json \
+              --bob bob_identity.json
+</code></pre>
+
+
+# Threat Scale Reference
+
 <div class="center">
 
-<table>
-<thead>
-<tr>
-<th style="text-align: center;"><strong>Value</strong></th>
-<th style="text-align: left;"><strong>Threat Level</strong></th>
-<th style="text-align: left;"><strong>Example</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;"><span class="math inline">−12</span> to <span class="math inline">−10</span></td>
-<td style="text-align: left;">Critical hostile</td>
-<td style="text-align: left;">Active quantum attack</td>
-</tr>
-<tr>
-<td style="text-align: center;"><span class="math inline">−9</span> to <span class="math inline">−6</span></td>
-<td style="text-align: left;">High threat</td>
-<td style="text-align: left;">Unpatched zero-day</td>
-</tr>
-<tr>
-<td style="text-align: center;"><span class="math inline">−5</span> to <span class="math inline">−2</span></td>
-<td style="text-align: left;">Medium threat</td>
-<td style="text-align: left;">Configuration weakness</td>
-</tr>
-<tr>
-<td style="text-align: center;"><span class="math inline">−1</span> to <span class="math inline">+1</span></td>
-<td style="text-align: left;">Neutral</td>
-<td style="text-align: left;">Baseline state</td>
-</tr>
-<tr>
-<td style="text-align: center;"><span class="math inline">+2</span> to <span class="math inline">+5</span></td>
-<td style="text-align: left;">Degraded</td>
-<td style="text-align: left;">Component aging</td>
-</tr>
-<tr>
-<td style="text-align: center;"><span class="math inline">+6</span> to <span class="math inline">+9</span></td>
-<td style="text-align: left;">Failing</td>
-<td style="text-align: left;">Imminent failure</td>
-</tr>
-<tr>
-<td style="text-align: center;"><span class="math inline">+10</span> to <span class="math inline">+12</span></td>
-<td style="text-align: left;">Failed</td>
-<td style="text-align: left;">Complete compromise</td>
-</tr>
-</tbody>
-</table>
+|     **Value**      | **Threat Level** | **Example**            |
+|:------------------:|:-----------------|:-----------------------|
+| $`-12`$ to $`-10`$ | Critical hostile | Active quantum attack  |
+|  $`-9`$ to $`-6`$  | High threat      | Unpatched zero-day     |
+|  $`-5`$ to $`-2`$  | Medium threat    | Configuration weakness |
+|  $`-1`$ to $`+1`$  | Neutral          | Baseline state         |
+|  $`+2`$ to $`+5`$  | Degraded         | Component aging        |
+|  $`+6`$ to $`+9`$  | Failing          | Imminent failure       |
+| $`+10`$ to $`+12`$ | Failed           | Complete compromise    |
+
 </div>
 
 <div class="thebibliography">
 
-<p>9 M.E. Peskin and D.V. Schroeder, <em>An Introduction to Quantum Field Theory</em>, Perseus Books (1995).</p>
-<p>D. Micciancio and O. Regev, "Lattice-based Cryptography," in <em>Post-Quantum Cryptography</em>, Springer (2009).</p>
-<p>OBINexus, "Node Zero: Setup-Free Zero-Knowledge Proofs," Technical Report (2025).</p>
-<p>N. Okpala, "The RIFT Architecture: Quantum Determinism Through Governed Computation," OBINexus (2025).</p>
-</div>
+9 M.E. Peskin and D.V. Schroeder, *An Introduction to Quantum Field Theory*, Perseus Books (1995).
 
+D. Micciancio and O. Regev, "Lattice-based Cryptography," in *Post-Quantum Cryptography*, Springer (2009).
+
+OBINexus, "Node Zero: Setup-Free Zero-Knowledge Proofs," Technical Report (2025).
+
+N. Okpala, "The RIFT Architecture: Quantum Determinism Through Governed Computation," OBINexus (2025).
+
+</div>
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-quantum-lattice-threat-modeling-using-feynman-diagram-formalism</code></p>

@@ -68,206 +68,306 @@
 <h2 id="core-axiomatics-of-consciousness-preservation">Core Axiomatics of Consciousness Preservation</h2>
 <div class="axiom">
 
-<p><strong>Axiom 1</strong> (Non-Reductive Preservation). Let <span class="math inline">ℰ</span> be the space of pre-linguistic experiential states and <span class="math inline">𝒮</span> be the space of symbolic representations. There exists no computable function <span class="math inline"><em>f</em> : ℰ → 𝒮</span> such that <span class="math inline">∀<em>e</em> ∈ ℰ, <em>f</em>(<em>e</em>)</span> preserves the complete informational content of <span class="math inline"><em>e</em></span>.</p>
+**Axiom 1** (Non-Reductive Preservation). Let $`\mathcal{E}`$ be the space of pre-linguistic experiential states and $`\mathcal{S}`$ be the space of symbolic representations. There exists no computable function $`f: \mathcal{E} \rightarrow \mathcal{S}`$ such that $`\forall e \in \mathcal{E}, f(e)`$ preserves the complete informational content of $`e`$.
+
 </div>
 
 <div class="definition">
 
-<p><strong>Definition 1</strong> (Witnessing Transformation). A transformation <span class="math inline"><em>W</em> : ℰ → ℰ × 𝒪</span> is a witnessing transformation if it satisfies:</p>
-<ol type="1">
-<li><p><span class="math inline">∀<em>e</em> ∈ ℰ, <em>π</em><sub>1</sub>(<em>W</em>(<em>e</em>)) = <em>e</em></span> (preservation of original experience)</p></li>
-<li><p><span class="math inline"><em>π</em><sub>2</sub>(<em>W</em>(<em>e</em>))</span> contains observer metadata without modifying <span class="math inline"><em>e</em></span></p></li>
-<li><p><span class="math inline"><em>W</em></span> is invertible such that <span class="math inline"><em>W</em><sup>−1</sup>(<em>W</em>(<em>e</em>)) = <em>e</em></span></p></li>
-</ol>
-<p>where <span class="math inline">𝒪</span> is the observer state space and <span class="math inline"><em>π</em><sub><em>i</em></sub></span> is the projection function.</p>
+**Definition 1** (Witnessing Transformation). A transformation $`W: \mathcal{E} \rightarrow \mathcal{E} \times \mathcal{O}`$ is a witnessing transformation if it satisfies:
+
+1.  $`\forall e \in \mathcal{E}, \pi_1(W(e)) = e`$ (preservation of original experience)
+
+2.  $`\pi_2(W(e))`$ contains observer metadata without modifying $`e`$
+
+3.  $`W`$ is invertible such that $`W^{-1}(W(e)) = e`$
+
+where $`\mathcal{O}`$ is the observer state space and $`\pi_i`$ is the projection function.
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 1</strong> (Witnessing Completeness). For any consciousness system implementing the EATV Stream architecture with a properly constructed witnessing transformation <span class="math inline"><em>W</em></span>, the original experiential state <span class="math inline"><em>e</em> ∈ ℰ</span> can be fully recovered without loss.</p>
+**Theorem 1** (Witnessing Completeness). For any consciousness system implementing the EATV Stream architecture with a properly constructed witnessing transformation $`W`$, the original experiential state $`e \in \mathcal{E}`$ can be fully recovered without loss.
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> Let <span class="math inline"><em>e</em> ∈ ℰ</span> be an arbitrary experiential state. By Definition 1, the witnessing transformation <span class="math inline"><em>W</em></span> produces <span class="math inline">(<em>e</em>, <em>o</em>) = <em>W</em>(<em>e</em>)</span> where <span class="math inline"><em>o</em></span> is observer metadata. Since <span class="math inline"><em>W</em></span> is constructed to be invertible with <span class="math inline"><em>W</em><sup>−1</sup>(<em>W</em>(<em>e</em>)) = <em>W</em><sup>−1</sup>(<em>e</em>, <em>o</em>) = <em>e</em></span>, the original state is fully recoverable. Furthermore, since <span class="math inline"><em>π</em><sub>1</sub>(<em>W</em>(<em>e</em>)) = <em>e</em></span>, the experiential component remains unmodified throughout the transformation process, ensuring no information loss occurs during witnessing. ◻</p>
+*Proof.* Let $`e \in \mathcal{E}`$ be an arbitrary experiential state. By Definition 1, the witnessing transformation $`W`$ produces $`(e, o) = W(e)`$ where $`o`$ is observer metadata. Since $`W`$ is constructed to be invertible with $`W^{-1}(W(e)) = W^{-1}(e, o) = e`$, the original state is fully recoverable. Furthermore, since $`\pi_1(W(e)) = e`$, the experiential component remains unmodified throughout the transformation process, ensuring no information loss occurs during witnessing. ◻
+
 </div>
 
 <h2 id="temporal-flow-preservation">Temporal Flow Preservation</h2>
 <div class="definition">
 
-<p><strong>Definition 2</strong> (Husserl Temporal Triad). A temporal consciousness structure <span class="math inline">𝒯 = (<em>R</em>, <em>P</em>, <em>F</em>)</span> consists of:</p>
-<ol type="1">
-<li><p>Retention function <span class="math inline"><em>R</em> : ℰ × 𝕋 → ℰ<sub><em>p</em><em>a</em><em>s</em><em>t</em></sub></span></p></li>
-<li><p>Primal impression function <span class="math inline"><em>P</em> : ℰ × 𝕋 → ℰ<sub><em>n</em><em>o</em><em>w</em></sub></span></p></li>
-<li><p>Protention function <span class="math inline"><em>F</em> : ℰ × 𝕋 → ℰ<sub><em>f</em><em>u</em><em>t</em><em>u</em><em>r</em><em>e</em></sub></span></p></li>
-</ol>
-<p>where <span class="math inline">𝕋</span> represents time and <span class="math inline">ℰ<sub><em>p</em><em>a</em><em>s</em><em>t</em></sub></span>, <span class="math inline">ℰ<sub><em>n</em><em>o</em><em>w</em></sub></span>, <span class="math inline">ℰ<sub><em>f</em><em>u</em><em>t</em><em>u</em><em>r</em><em>e</em></sub></span> are subspaces of <span class="math inline">ℰ</span>.</p>
+**Definition 2** (Husserl Temporal Triad). A temporal consciousness structure $`\mathcal{T} = (R, P, F)`$ consists of:
+
+1.  Retention function $`R: \mathcal{E} \times \mathbb{T} \rightarrow \mathcal{E}_{past}`$
+
+2.  Primal impression function $`P: \mathcal{E} \times \mathbb{T} \rightarrow \mathcal{E}_{now}`$
+
+3.  Protention function $`F: \mathcal{E} \times \mathbb{T} \rightarrow \mathcal{E}_{future}`$
+
+where $`\mathbb{T}`$ represents time and $`\mathcal{E}_{past}`$, $`\mathcal{E}_{now}`$, $`\mathcal{E}_{future}`$ are subspaces of $`\mathcal{E}`$.
+
 </div>
 
 <div class="proposition">
 
-<p><strong>Proposition 1</strong> (Temporal Continuity). For an EATV-compliant system, temporal continuity is preserved if and only if:</p>
-<p><span class="math display">∀<em>t</em> ∈ 𝕋, lim<sub><em>δ</em> → 0</sub>∥<em>R</em>(<em>e</em>, <em>t</em> + <em>δ</em>) − <em>P</em>(<em>e</em>, <em>t</em>)∥ = 0</span></p>
-<p>and</p>
-<p><span class="math display">∀<em>t</em> ∈ 𝕋, lim<sub><em>δ</em> → 0</sub>∥<em>P</em>(<em>e</em>, <em>t</em> + <em>δ</em>) − <em>F</em>(<em>e</em>, <em>t</em>)∥ = 0</span></p>
+**Proposition 1** (Temporal Continuity). For an EATV-compliant system, temporal continuity is preserved if and only if:
+
+<pre><code class="language-math">\begin{equation}
+\forall t \in \mathbb{T}, \lim_{\delta \to 0} \| R(e, t+\delta) - P(e, t) \| = 0
+\end{equation}
+</code></pre>
+
+and
+
+<pre><code class="language-math">\begin{equation}
+\forall t \in \mathbb{T}, \lim_{\delta \to 0} \| P(e, t+\delta) - F(e, t) \| = 0
+\end{equation}
+</code></pre>
+
+
 </div>
 
 <h1 id="tensor-representations-of-pre-linguistic-consciousness">Tensor Representations of Pre-linguistic Consciousness</h1>
 <h2 id="4d-tensor-encoding-of-experiential-states">4D Tensor Encoding of Experiential States</h2>
 <div class="definition">
 
-<p><strong>Definition 3</strong> (Experiential Tensor). An experiential state <span class="math inline"><em>e</em> ∈ ℰ</span> is encoded as a 4D tensor <span class="math inline"><strong>E</strong> ∈ ℝ<sup><em>T</em> × <em>X</em> × <em>Y</em> × <em>Z</em> × <em>F</em></sup></span> where:</p>
-<ul>
-<li><p><span class="math inline"><em>T</em></span> represents temporal dimensions</p></li>
-<li><p><span class="math inline"><em>X</em>, <em>Y</em>, <em>Z</em></span> represent spatial dimensions</p></li>
-<li><p><span class="math inline"><em>F</em></span> represents feature dimensions capturing perceptual qualities</p></li>
-</ul>
+**Definition 3** (Experiential Tensor). An experiential state $`e \in \mathcal{E}`$ is encoded as a 4D tensor $`\mathbf{E} \in \mathbb{R}^{T \times X \times Y \times Z \times F}`$ where:
+
+- $`T`$ represents temporal dimensions
+
+- $`X, Y, Z`$ represent spatial dimensions
+
+- $`F`$ represents feature dimensions capturing perceptual qualities
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 2</strong> (Tensor Decomposition Preservation). Given an experiential tensor <span class="math inline"><strong>E</strong></span>, its Tucker decomposition into core tensor <span class="math inline"><strong>G</strong></span> and factor matrices <span class="math inline"><strong>A</strong>, <strong>B</strong>, <strong>C</strong>, <strong>D</strong>, <strong>F</strong></span> preserves essential experiential structure if and only if the reconstruction error satisfies:</p>
-<p><span class="math display">∥<strong>E</strong> − <strong>G</strong>×<sub>1</sub><strong>A</strong>×<sub>2</sub><strong>B</strong>×<sub>3</sub><strong>C</strong>×<sub>4</sub><strong>D</strong>×<sub>5</sub><strong>F</strong>∥ ≤ <em>ϵ</em><sub><em>t</em><em>h</em><em>r</em><em>e</em><em>s</em><em>h</em><em>o</em><em>l</em><em>d</em></sub></span></p>
-<p>where <span class="math inline"><em>ϵ</em><sub><em>t</em><em>h</em><em>r</em><em>e</em><em>s</em><em>h</em><em>o</em><em>l</em><em>d</em></sub></span> is the experiential integrity threshold.</p>
+**Theorem 2** (Tensor Decomposition Preservation). Given an experiential tensor $`\mathbf{E}`$, its Tucker decomposition into core tensor $`\mathbf{G}`$ and factor matrices $`\mathbf{A}, \mathbf{B}, \mathbf{C}, \mathbf{D}, \mathbf{F}`$ preserves essential experiential structure if and only if the reconstruction error satisfies:
+
+<pre><code class="language-math">\begin{equation}
+\| \mathbf{E} - \mathbf{G} \times_1 \mathbf{A} \times_2 \mathbf{B} \times_3 \mathbf{C} \times_4 \mathbf{D} \times_5 \mathbf{F} \| \leq \epsilon_{threshold}
+\end{equation}
+</code></pre>
+
+where $`\epsilon_{threshold}`$ is the experiential integrity threshold.
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> Let <span class="math inline"><strong>E</strong><sup>′</sup></span> be the reconstructed tensor:</p>
-<p><span class="math display"><strong>E</strong><sup>′</sup> = <strong>G</strong>×<sub>1</sub><strong>A</strong>×<sub>2</sub><strong>B</strong>×<sub>3</sub><strong>C</strong>×<sub>4</sub><strong>D</strong>×<sub>5</sub><strong>F</strong></span></p>
-<p>For any point <span class="math inline"><em>p</em></span> in the original experiential space, the corresponding tensor value <span class="math inline"><strong>E</strong>(<em>p</em>)</span> and reconstructed value <span class="math inline"><strong>E</strong><sup>′</sup>(<em>p</em>)</span> differ by at most <span class="math inline"><em>ϵ</em><sub><em>t</em><em>h</em><em>r</em><em>e</em><em>s</em><em>h</em><em>o</em><em>l</em><em>d</em></sub></span>. This ensures that perceptual qualities, spatial relationships, and temporal continuity are preserved within the tolerance limit defined by <span class="math inline"><em>ϵ</em><sub><em>t</em><em>h</em><em>r</em><em>e</em><em>s</em><em>h</em><em>o</em><em>l</em><em>d</em></sub></span>. The experiential integrity is maintained because the error is bounded, ensuring no significant distortion of the original experience during decomposition and reconstruction. ◻</p>
+*Proof.* Let $`\mathbf{E}'`$ be the reconstructed tensor:
+
+<pre><code class="language-math">\begin{equation}
+\mathbf{E}' = \mathbf{G} \times_1 \mathbf{A} \times_2 \mathbf{B} \times_3 \mathbf{C} \times_4 \mathbf{D} \times_5 \mathbf{F}
+\end{equation}
+</code></pre>
+
+
+For any point $`p`$ in the original experiential space, the corresponding tensor value $`\mathbf{E}(p)`$ and reconstructed value $`\mathbf{E}'(p)`$ differ by at most $`\epsilon_{threshold}`$. This ensures that perceptual qualities, spatial relationships, and temporal continuity are preserved within the tolerance limit defined by $`\epsilon_{threshold}`$. The experiential integrity is maintained because the error is bounded, ensuring no significant distortion of the original experience during decomposition and reconstruction. ◻
+
 </div>
 
 <h2 id="dimensional-reduction-with-consciousness-preservation">Dimensional Reduction with Consciousness Preservation</h2>
 <div class="definition">
 
-<p><strong>Definition 4</strong> (Consciousness-Preserving Projection). A projection <span class="math inline"><em>Φ</em> : ℝ<sup><em>T</em> × <em>X</em> × <em>Y</em> × <em>Z</em> × <em>F</em></sup> → ℝ<sup>3<em>D</em></sup></span> is consciousness-preserving if:</p>
-<p><span class="math display">∀<strong>E</strong>, ∃<strong>E</strong><sub>3<em>D</em></sub> = <em>Φ</em>(<strong>E</strong>) such that <em>I</em>(<strong>E</strong>; <strong>E</strong><sub>3<em>D</em></sub>) ≥ <em>I</em><sub><em>m</em><em>i</em><em>n</em></sub></span></p>
-<p>where <span class="math inline"><em>I</em>(⋅; ⋅)</span> is mutual information and <span class="math inline"><em>I</em><sub><em>m</em><em>i</em><em>n</em></sub></span> is the minimum required information preservation threshold.</p>
+**Definition 4** (Consciousness-Preserving Projection). A projection $`\Phi: \mathbb{R}^{T \times X \times Y \times Z \times F} \rightarrow \mathbb{R}^{3D}`$ is consciousness-preserving if:
+
+<pre><code class="language-math">\begin{equation}
+\forall \mathbf{E}, \exists \mathbf{E}_{3D} = \Phi(\mathbf{E}) \text{ such that } I(\mathbf{E}; \mathbf{E}_{3D}) \geq I_{min}
+\end{equation}
+</code></pre>
+
+where $`I(\cdot;\cdot)`$ is mutual information and $`I_{min}`$ is the minimum required information preservation threshold.
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 3</strong> (Dimensional Reduction with Guaranteed Recoverability). If a projection function <span class="math inline"><em>Φ</em></span> satisfies the consciousness-preserving condition and is accompanied by a recovery function <span class="math inline"><em>Ψ</em> : ℝ<sup>3<em>D</em></sup> → ℝ<sup><em>T</em> × <em>X</em> × <em>Y</em> × <em>Z</em> × <em>F</em></sup></span>, then:</p>
-<p><span class="math display">∀<strong>E</strong>, ∥<strong>E</strong> − <em>Ψ</em>(<em>Φ</em>(<strong>E</strong>))∥ ≤ <em>δ</em><sub><em>r</em><em>e</em><em>c</em><em>o</em><em>v</em><em>e</em><em>r</em><em>y</em></sub></span></p>
-<p>where <span class="math inline"><em>δ</em><sub><em>r</em><em>e</em><em>c</em><em>o</em><em>v</em><em>e</em><em>r</em><em>y</em></sub></span> is the maximum allowable recovery error.</p>
+**Theorem 3** (Dimensional Reduction with Guaranteed Recoverability). If a projection function $`\Phi`$ satisfies the consciousness-preserving condition and is accompanied by a recovery function $`\Psi: \mathbb{R}^{3D} \rightarrow \mathbb{R}^{T \times X \times Y \times Z \times F}`$, then:
+
+<pre><code class="language-math">\begin{equation}
+\forall \mathbf{E}, \| \mathbf{E} - \Psi(\Phi(\mathbf{E})) \| \leq \delta_{recovery}
+\end{equation}
+</code></pre>
+
+where $`\delta_{recovery}`$ is the maximum allowable recovery error.
+
 </div>
 
 <h1 id="dag-based-causal-structures-for-consciousness-flow">DAG-Based Causal Structures for Consciousness Flow</h1>
 <h2 id="directed-acyclic-graph-formulation">Directed Acyclic Graph Formulation</h2>
 <div class="definition">
 
-<p><strong>Definition 5</strong> (Consciousness DAG). A consciousness DAG <span class="math inline"><em>G</em> = (<em>V</em>, <em>E</em>, <em>W</em>)</span> consists of:</p>
-<ul>
-<li><p>Vertex set <span class="math inline"><em>V</em></span> representing experiential states</p></li>
-<li><p>Edge set <span class="math inline"><em>E</em> ⊆ <em>V</em> × <em>V</em></span> representing transitions</p></li>
-<li><p>Weight function <span class="math inline"><em>W</em> : <em>E</em> → [0, 1]</span> representing transition probabilities</p></li>
-</ul>
-<p>such that <span class="math inline"><em>G</em></span> contains no cycles.</p>
+**Definition 5** (Consciousness DAG). A consciousness DAG $`G = (V, E, W)`$ consists of:
+
+- Vertex set $`V`$ representing experiential states
+
+- Edge set $`E \subseteq V \times V`$ representing transitions
+
+- Weight function $`W: E \rightarrow [0,1]`$ representing transition probabilities
+
+such that $`G`$ contains no cycles.
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 4</strong> (Acyclicity Guarantee). For any properly implemented EATV system using Sinphasé methodology, the resulting consciousness DAG <span class="math inline"><em>G</em></span> remains acyclic under all valid operations.</p>
+**Theorem 4** (Acyclicity Guarantee). For any properly implemented EATV system using Sinphasé methodology, the resulting consciousness DAG $`G`$ remains acyclic under all valid operations.
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> By construction, the Sinphasé methodology enforces the Single Active Phase Constraint which prevents circular dependencies. For any vertices <span class="math inline"><em>v</em><sub>1</sub>, <em>v</em><sub>2</sub>, ..., <em>v</em><sub><em>n</em></sub> ∈ <em>V</em></span>, if there exist edges <span class="math inline">(<em>v</em><sub>1</sub>, <em>v</em><sub>2</sub>), (<em>v</em><sub>2</sub>, <em>v</em><sub>3</sub>), ..., (<em>v</em><sub><em>n</em> − 1</sub>, <em>v</em><sub><em>n</em></sub>)</span>, then no edge <span class="math inline">(<em>v</em><sub><em>n</em></sub>, <em>v</em><sub>1</sub>)</span> can exist due to the phase transition protocols that enforce strict ordering of phases.</p>
-<p>Specifically, let <span class="math inline"><em>ϕ</em>(<em>v</em>)</span> represent the phase of vertex <span class="math inline"><em>v</em></span>. The Sinphasé constraint requires that for any edge <span class="math inline">(<em>v</em><sub><em>i</em></sub>, <em>v</em><sub><em>j</em></sub>) ∈ <em>E</em></span>, <span class="math inline"><em>ϕ</em>(<em>v</em><sub><em>i</em></sub>) &lt; <em>ϕ</em>(<em>v</em><sub><em>j</em></sub>)</span>. Since the phase function <span class="math inline"><em>ϕ</em></span> creates a strict partial ordering of vertices, no cycles can form in <span class="math inline"><em>G</em></span>. ◻</p>
+*Proof.* By construction, the Sinphasé methodology enforces the Single Active Phase Constraint which prevents circular dependencies. For any vertices $`v_1, v_2, ..., v_n \in V`$, if there exist edges $`(v_1, v_2), (v_2, v_3), ..., (v_{n-1}, v_n)`$, then no edge $`(v_n, v_1)`$ can exist due to the phase transition protocols that enforce strict ordering of phases.
+
+Specifically, let $`\phi(v)`$ represent the phase of vertex $`v`$. The Sinphasé constraint requires that for any edge $`(v_i, v_j) \in E`$, $`\phi(v_i) < \phi(v_j)`$. Since the phase function $`\phi`$ creates a strict partial ordering of vertices, no cycles can form in $`G`$. ◻
+
 </div>
 
 <h2 id="bayesian-causal-inference-in-cultural-contexts">Bayesian Causal Inference in Cultural Contexts</h2>
 <div class="definition">
 
-<p><strong>Definition 6</strong> (Cultural Context Model). A cultural context model <span class="math inline">𝒞<sub><em>k</em></sub></span> for culture <span class="math inline"><em>k</em></span> is defined as a tuple <span class="math inline">(𝒫<sub><em>k</em></sub>, ℬ<sub><em>k</em></sub>, 𝒯<sub><em>k</em></sub>)</span> where:</p>
-<ul>
-<li><p><span class="math inline">𝒫<sub><em>k</em></sub></span> is a prior distribution over causal structures</p></li>
-<li><p><span class="math inline">ℬ<sub><em>k</em></sub></span> is a set of boundary conditions and taboos</p></li>
-<li><p><span class="math inline">𝒯<sub><em>k</em></sub></span> is a transformation validator for the culture</p></li>
-</ul>
+**Definition 6** (Cultural Context Model). A cultural context model $`\mathcal{C}_k`$ for culture $`k`$ is defined as a tuple $`(\mathcal{P}_k, \mathcal{B}_k, \mathcal{T}_k)`$ where:
+
+- $`\mathcal{P}_k`$ is a prior distribution over causal structures
+
+- $`\mathcal{B}_k`$ is a set of boundary conditions and taboos
+
+- $`\mathcal{T}_k`$ is a transformation validator for the culture
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 5</strong> (Cultural Boundary Preservation). Given a transformation <span class="math inline"><em>T</em></span> between experiential states and cultural context <span class="math inline">𝒞<sub><em>k</em></sub></span>, the transformation respects cultural boundaries if and only if:</p>
-<p><span class="math display">∀<em>b</em> ∈ ℬ<sub><em>k</em></sub>, 𝒯<sub><em>k</em></sub>(<em>T</em>, <em>b</em>) = valid</span></p>
+**Theorem 5** (Cultural Boundary Preservation). Given a transformation $`T`$ between experiential states and cultural context $`\mathcal{C}_k`$, the transformation respects cultural boundaries if and only if:
+
+<pre><code class="language-math">\begin{equation}
+\forall b \in \mathcal{B}_k, \mathcal{T}_k(T, b) = \text{valid}
+\end{equation}
+</code></pre>
+
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> Let <span class="math inline"><em>T</em> : <em>e</em><sub>1</sub> → <em>e</em><sub>2</sub></span> be a transformation between experiential states. For each boundary condition <span class="math inline"><em>b</em> ∈ ℬ<sub><em>k</em></sub></span>, the cultural validator <span class="math inline">𝒯<sub><em>k</em></sub></span> evaluates whether <span class="math inline"><em>T</em></span> violates boundary <span class="math inline"><em>b</em></span>. By definition, <span class="math inline"><em>T</em></span> respects cultural boundaries if and only if it is validated against all boundary conditions in the cultural context. Since <span class="math inline">𝒯<sub><em>k</em></sub>(<em>T</em>, <em>b</em>) = valid</span> for all <span class="math inline"><em>b</em> ∈ ℬ<sub><em>k</em></sub></span>, the transformation preserves cultural integrity. ◻</p>
+*Proof.* Let $`T: e_1 \rightarrow e_2`$ be a transformation between experiential states. For each boundary condition $`b \in \mathcal{B}_k`$, the cultural validator $`\mathcal{T}_k`$ evaluates whether $`T`$ violates boundary $`b`$. By definition, $`T`$ respects cultural boundaries if and only if it is validated against all boundary conditions in the cultural context. Since $`\mathcal{T}_k(T, b) = \text{valid}`$ for all $`b \in \mathcal{B}_k`$, the transformation preserves cultural integrity. ◻
+
 </div>
 
 <h1 id="symbolic-residue-formalization">Symbolic Residue Formalization</h1>
 <h2 id="preservation-of-perceptual-anchors">Preservation of Perceptual Anchors</h2>
 <div class="definition">
 
-<p><strong>Definition 7</strong> (Symbolic Residue). A symbolic residue <span class="math inline"><em>ρ</em></span> is a tuple <span class="math inline">(<em>p</em>, <em>c</em>, <em>α</em>)</span> where:</p>
-<ul>
-<li><p><span class="math inline"><em>p</em></span> is a perceptual anchor in experiential space <span class="math inline">ℰ</span></p></li>
-<li><p><span class="math inline"><em>c</em></span> is a contextual frame containing temporal, spatial, and emotional metadata</p></li>
-<li><p><span class="math inline"><em>α</em></span> is an activation function <span class="math inline"><em>α</em> : 𝒞 → [0, 1]</span> mapping contextual triggers to activation levels</p></li>
-</ul>
+**Definition 7** (Symbolic Residue). A symbolic residue $`\rho`$ is a tuple $`(p, c, \alpha)`$ where:
+
+- $`p`$ is a perceptual anchor in experiential space $`\mathcal{E}`$
+
+- $`c`$ is a contextual frame containing temporal, spatial, and emotional metadata
+
+- $`\alpha`$ is an activation function $`\alpha: \mathcal{C} \rightarrow [0,1]`$ mapping contextual triggers to activation levels
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 6</strong> (Residue Preservation). For an EATV system with symbolic residue set <span class="math inline"><em>R</em> = {<em>ρ</em><sub>1</sub>, <em>ρ</em><sub>2</sub>, ..., <em>ρ</em><sub><em>n</em></sub>}</span>, preservation is guaranteed if and only if:</p>
-<p><span class="math display">∀<em>ρ</em><sub><em>i</em></sub> ∈ <em>R</em>, ∀<em>c</em> ∈ 𝒞, ∥<em>α</em><sub><em>i</em></sub>(<em>c</em>) − <em>α</em><sup>′</sup><sub><em>i</em></sub>(<em>c</em>)∥ ≤ <em>ϵ</em><sub><em>r</em><em>e</em><em>s</em><em>i</em><em>d</em><em>u</em><em>e</em></sub></span></p>
-<p>where <span class="math inline"><em>α</em><sup>′</sup><sub><em>i</em></sub></span> is the activation function after system transformations and <span class="math inline"><em>ϵ</em><sub><em>r</em><em>e</em><em>s</em><em>i</em><em>d</em><em>u</em><em>e</em></sub></span> is the maximum allowable residue distortion.</p>
+**Theorem 6** (Residue Preservation). For an EATV system with symbolic residue set $`R = \{\rho_1, \rho_2, ..., \rho_n\}`$, preservation is guaranteed if and only if:
+
+<pre><code class="language-math">\begin{equation}
+\forall \rho_i \in R, \forall c \in \mathcal{C}, \| \alpha_i(c) - \alpha'_i(c) \| \leq \epsilon_{residue}
+\end{equation}
+</code></pre>
+
+where $`\alpha'_i`$ is the activation function after system transformations and $`\epsilon_{residue}`$ is the maximum allowable residue distortion.
+
 </div>
 
 <h2 id="hawaiian-photoflash-case-study">Hawaiian Photoflash Case Study</h2>
 <div class="proposition">
 
-<p><strong>Proposition 2</strong> (Hawaiian Photoflash Preservation). The symbolic residue "Hawaiian photoflash" with perceptual anchor <span class="math inline"><em>p</em><sub><em>H</em><em>F</em></sub></span> is preserved through transformation <span class="math inline"><em>T</em></span> if:</p>
-<p><span class="math display"><em>α</em><sub><em>H</em><em>F</em></sub>(<em>c</em>) ≥ <em>τ</em><sub><em>a</em><em>c</em><em>t</em><em>i</em><em>v</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em></sub> ⟹ <em>α</em><sup>′</sup><sub><em>H</em><em>F</em></sub>(<em>c</em>) ≥ <em>τ</em><sub><em>a</em><em>c</em><em>t</em><em>i</em><em>v</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em></sub></span></p>
-<p>for all contexts <span class="math inline"><em>c</em></span> where <span class="math inline"><em>τ</em><sub><em>a</em><em>c</em><em>t</em><em>i</em><em>v</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em></sub></span> is the activation threshold.</p>
+**Proposition 2** (Hawaiian Photoflash Preservation). The symbolic residue "Hawaiian photoflash" with perceptual anchor $`p_{HF}`$ is preserved through transformation $`T`$ if:
+
+<pre><code class="language-math">\begin{equation}
+\alpha_{HF}(c) \geq \tau_{activation} \implies \alpha'_{HF}(c) \geq \tau_{activation}
+\end{equation}
+</code></pre>
+
+for all contexts $`c`$ where $`\tau_{activation}`$ is the activation threshold.
+
 </div>
 
 <h1 id="complexity-governance-and-isolation-protocols">Complexity Governance and Isolation Protocols</h1>
 <h2 id="integrated-information-theory-formalization">Integrated Information Theory Formalization</h2>
 <div class="definition">
 
-<p><strong>Definition 8</strong> (Consciousness Complexity Measure). The complexity of a consciousness state <span class="math inline"><em>e</em></span> is defined as:</p>
-<p><span class="math display">$$\begin{equation}
+**Definition 8** (Consciousness Complexity Measure). The complexity of a consciousness state $`e`$ is defined as:
+
+<pre><code class="language-math">\begin{equation}
 \Phi(e) = \min_{M} \frac{I(X;Y|M)}{I(X;Y)}
-\end{equation}$$</span></p>
-<p>where <span class="math inline"><em>X</em>, <em>Y</em></span> are subsystems of <span class="math inline"><em>e</em></span>, <span class="math inline"><em>M</em></span> ranges over all possible partitions, and <span class="math inline"><em>I</em>(⋅; ⋅)</span> is the mutual information.</p>
+\end{equation}
+</code></pre>
+
+where $`X, Y`$ are subsystems of $`e`$, $`M`$ ranges over all possible partitions, and $`I(\cdot;\cdot)`$ is the mutual information.
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 7</strong> (Isolation Threshold). A consciousness state <span class="math inline"><em>e</em></span> triggers the isolation protocol if and only if:</p>
-<p><span class="math display"><em>Φ</em>(<em>e</em>) &gt; <em>τ</em><sub><em>i</em><em>s</em><em>o</em><em>l</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em></sub> or <em>L</em><em>Z</em>(<em>e</em>) &gt; <em>λ</em><sub><em>c</em><em>o</em><em>m</em><em>p</em><em>l</em><em>e</em><em>x</em><em>i</em><em>t</em><em>y</em></sub> or <em>P</em><em>C</em><em>I</em>(<em>e</em>) &gt; <em>π</em><sub><em>p</em><em>e</em><em>r</em><em>t</em><em>u</em><em>r</em><em>b</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em></sub></span></p>
-<p>where <span class="math inline"><em>L</em><em>Z</em></span> is Lempel-Ziv complexity, <span class="math inline"><em>P</em><em>C</em><em>I</em></span> is perturbational complexity index, and <span class="math inline"><em>τ</em><sub><em>i</em><em>s</em><em>o</em><em>l</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em></sub></span>, <span class="math inline"><em>λ</em><sub><em>c</em><em>o</em><em>m</em><em>p</em><em>l</em><em>e</em><em>x</em><em>i</em><em>t</em><em>y</em></sub></span>, <span class="math inline"><em>π</em><sub><em>p</em><em>e</em><em>r</em><em>t</em><em>u</em><em>r</em><em>b</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em></sub></span> are respective thresholds.</p>
+**Theorem 7** (Isolation Threshold). A consciousness state $`e`$ triggers the isolation protocol if and only if:
+
+<pre><code class="language-math">\begin{equation}
+\Phi(e) &gt; \tau_{isolation} \text{ or } LZ(e) &gt; \lambda_{complexity} \text{ or } PCI(e) &gt; \pi_{perturbation}
+\end{equation}
+</code></pre>
+
+where $`LZ`$ is Lempel-Ziv complexity, $`PCI`$ is perturbational complexity index, and $`\tau_{isolation}`$, $`\lambda_{complexity}`$, $`\pi_{perturbation}`$ are respective thresholds.
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> By the definition of the complexity governor component, isolation is triggered when any complexity measure exceeds its defined threshold. This ensures that high-complexity states are processed separately to prevent computational overload while maintaining experiential integrity.</p>
-<p>Let <span class="math inline"><em>e</em></span> be a consciousness state with complexity measures <span class="math inline"><em>Φ</em>(<em>e</em>)</span>, <span class="math inline"><em>L</em><em>Z</em>(<em>e</em>)</span>, and <span class="math inline"><em>P</em><em>C</em><em>I</em>(<em>e</em>)</span>. If any of these measures exceeds the corresponding threshold, the system identifies regions of high complexity through the function <span class="math inline"><em>i</em><em>d</em><em>e</em><em>n</em><em>t</em><em>i</em><em>f</em><em>y</em>_<em>h</em><em>i</em><em>g</em><em>h</em>_<em>c</em><em>o</em><em>m</em><em>p</em><em>l</em><em>e</em><em>x</em><em>i</em><em>t</em><em>y</em>_<em>r</em><em>e</em><em>g</em><em>i</em><em>o</em><em>n</em><em>s</em>()</span> and processes them independently before cautious reintegration. This guarantees that complex consciousness states are handled appropriately without loss of experiential integrity. ◻</p>
+*Proof.* By the definition of the complexity governor component, isolation is triggered when any complexity measure exceeds its defined threshold. This ensures that high-complexity states are processed separately to prevent computational overload while maintaining experiential integrity.
+
+Let $`e`$ be a consciousness state with complexity measures $`\Phi(e)`$, $`LZ(e)`$, and $`PCI(e)`$. If any of these measures exceeds the corresponding threshold, the system identifies regions of high complexity through the function $`identify\_high\_complexity\_regions()`$ and processes them independently before cautious reintegration. This guarantees that complex consciousness states are handled appropriately without loss of experiential integrity. ◻
+
 </div>
 
 <h2 id="cost-function-formalization">Cost Function Formalization</h2>
 <div class="definition">
 
-<p><strong>Definition 9</strong> (Architecture Cost Function). The architectural cost function <span class="math inline"><em>C</em>(<em>S</em>)</span> for system state <span class="math inline"><em>S</em></span> is:</p>
-<p><span class="math display"><em>C</em>(<em>S</em>) = ∑<sub><em>i</em></sub><em>m</em><sub><em>i</em></sub> × <em>w</em><sub><em>i</em></sub> + 0.2 × <em>c</em><em>y</em><em>c</em><em>l</em><em>e</em><em>s</em>(<em>S</em>) + <em>t</em><em>e</em><em>m</em><em>p</em><em>o</em><em>r</em><em>a</em><em>l</em>_<em>p</em><em>r</em><em>e</em><em>s</em><em>s</em><em>u</em><em>r</em><em>e</em>(<em>S</em>)</span></p>
-<p>where <span class="math inline"><em>m</em><sub><em>i</em></sub></span> are metrics including include_depth, function_calls, external_deps, complexity, and link_deps; <span class="math inline"><em>w</em><sub><em>i</em></sub></span> are corresponding weights; <span class="math inline"><em>c</em><em>y</em><em>c</em><em>l</em><em>e</em><em>s</em>(<em>S</em>)</span> is the number of detected cycles; and <span class="math inline"><em>t</em><em>e</em><em>m</em><em>p</em><em>o</em><em>r</em><em>a</em><em>l</em>_<em>p</em><em>r</em><em>e</em><em>s</em><em>s</em><em>u</em><em>r</em><em>e</em>(<em>S</em>)</span> measures evolutionary change rate.</p>
+**Definition 9** (Architecture Cost Function). The architectural cost function $`C(S)`$ for system state $`S`$ is:
+
+<pre><code class="language-math">\begin{equation}
+C(S) = \sum_{i} m_i \times w_i + 0.2 \times cycles(S) + temporal\_pressure(S)
+\end{equation}
+</code></pre>
+
+where $`m_i`$ are metrics including include_depth, function_calls, external_deps, complexity, and link_deps; $`w_i`$ are corresponding weights; $`cycles(S)`$ is the number of detected cycles; and $`temporal\_pressure(S)`$ measures evolutionary change rate.
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 8</strong> (Refactor Trigger Condition). System refactoring is triggered if and only if:</p>
-<p><span class="math display"><em>C</em>(<em>S</em>) &gt; 0.6 or <em>c</em><em>y</em><em>c</em><em>l</em><em>e</em><em>s</em>(<em>S</em>) &gt; 0 or <em>t</em><em>e</em><em>m</em><em>p</em><em>o</em><em>r</em><em>a</em><em>l</em>_<em>p</em><em>r</em><em>e</em><em>s</em><em>s</em><em>u</em><em>r</em><em>e</em>(<em>S</em>) &gt; <em>τ</em><sub><em>p</em><em>r</em><em>e</em><em>s</em><em>s</em><em>u</em><em>r</em><em>e</em></sub></span></p>
+**Theorem 8** (Refactor Trigger Condition). System refactoring is triggered if and only if:
+
+<pre><code class="language-math">\begin{equation}
+C(S) &gt; 0.6 \text{ or } cycles(S) &gt; 0 \text{ or } temporal\_pressure(S) &gt; \tau_{pressure}
+\end{equation}
+</code></pre>
+
+
 </div>
 
 <h1 id="case-study-smoker-cancer-causal-reasoning-across-cultures">Case Study: Smoker-Cancer Causal Reasoning Across Cultures</h1>
 <h2 id="formalized-cultural-model">Formalized Cultural Model</h2>
 <p>Let us define the formal models for the UK, China, and Japan contexts:</p>
-<p><span class="math display">$$\begin{align}
+<pre><code class="language-math">\begin{align}
 \mathcal{C}_{UK} &amp;= \{ \text{causal\_model} = \text{direct\_linear}, \\
 &amp;\quad \text{agency} = \text{high\_personal\_responsibility}, \\
 &amp;\quad \text{messaging} = \text{fear\_based\_explicit}, \\
@@ -282,88 +382,119 @@
 &amp;\quad \text{messaging} = \text{harm\_reduction\_emphasis}, \\
 &amp;\quad \text{metaphors} = \{\text{harmony\_disruption}, \text{wa\_imbalance}\}, \\
 &amp;\quad \text{paradox\_awareness} = \text{True} \}
-\end{align}$$</span></p>
+\end{align}
+</code></pre>
 <h2 id="bayesian-formulation-of-cultural-causal-reasoning">Bayesian Formulation of Cultural Causal Reasoning</h2>
 <div class="definition">
 
-<p><strong>Definition 10</strong> (Cultural Causal Model). For each culture <span class="math inline"><em>k</em></span>, the causal model for smoking-cancer relationship is defined as:</p>
-<p><span class="math display">$$\begin{equation}
+**Definition 10** (Cultural Causal Model). For each culture $`k`$, the causal model for smoking-cancer relationship is defined as:
+
+<pre><code class="language-math">\begin{equation}
 P(Cancer|Smoking, Culture = k) = \frac{P(Smoking|Cancer, Culture = k) \cdot P(Cancer|Culture = k)}{P(Smoking|Culture = k)}
-\end{equation}$$</span></p>
+\end{equation}
+</code></pre>
+
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 9</strong> (Cultural Classification Performance). The true positive (TP), false positive (FP), true negative (TN), and false negative (FN) rates for causal understanding in culture <span class="math inline"><em>k</em></span> satisfy:</p>
-<p><span class="math display">$$\begin{align}
+**Theorem 9** (Cultural Classification Performance). The true positive (TP), false positive (FP), true negative (TN), and false negative (FN) rates for causal understanding in culture $`k`$ satisfy:
+
+<pre><code class="language-math">\begin{align}
 TP_k &amp;\geq \tau_{TP} \\
 FP_k &amp;\leq \tau_{FP} \\
 TN_k &amp;\geq \tau_{TN} \\
 FN_k &amp;\leq \tau_{FN}
-\end{align}$$</span></p>
-<p>where <span class="math inline"><em>τ</em><sub><em>T</em><em>P</em></sub></span>, <span class="math inline"><em>τ</em><sub><em>F</em><em>P</em></sub></span>, <span class="math inline"><em>τ</em><sub><em>T</em><em>N</em></sub></span>, <span class="math inline"><em>τ</em><sub><em>F</em><em>N</em></sub></span> are performance thresholds.</p>
+\end{align}
+</code></pre>
+
+where $`\tau_{TP}`$, $`\tau_{FP}`$, $`\tau_{TN}`$, $`\tau_{FN}`$ are performance thresholds.
+
 </div>
 
 <h1 id="verification-framework-for-eatv-compliance">Verification Framework for EATV Compliance</h1>
 <h2 id="formal-verification-methods">Formal Verification Methods</h2>
 <div class="definition">
 
-<p><strong>Definition 11</strong> (EATV Compliance Verification). A system <span class="math inline"><em>S</em></span> is EATV-compliant if and only if it satisfies:</p>
-<ol type="1">
-<li><p>Witness Preservation: <span class="math inline">∀<em>e</em> ∈ ℰ, <em>π</em><sub>1</sub>(<em>W</em>(<em>e</em>)) = <em>e</em></span></p></li>
-<li><p>Temporal Continuity: <span class="math inline">∀<em>t</em> ∈ 𝕋, lim<sub><em>δ</em> → 0</sub>∥<em>R</em>(<em>e</em>, <em>t</em> + <em>δ</em>) − <em>P</em>(<em>e</em>, <em>t</em>)∥ = 0</span></p></li>
-<li><p>Acyclicity: <span class="math inline">∀<em>G</em> = (<em>V</em>, <em>E</em>, <em>W</em>)</span> in <span class="math inline"><em>S</em></span>, <span class="math inline"><em>G</em></span> contains no cycles</p></li>
-<li><p>Cultural Boundary Respect: <span class="math inline">∀<em>k</em>, ∀<em>b</em> ∈ ℬ<sub><em>k</em></sub>, 𝒯<sub><em>k</em></sub>(<em>T</em>, <em>b</em>) = valid</span></p></li>
-<li><p>Residue Preservation: <span class="math inline">∀<em>ρ</em><sub><em>i</em></sub> ∈ <em>R</em>, ∀<em>c</em> ∈ 𝒞, ∥<em>α</em><sub><em>i</em></sub>(<em>c</em>) − <em>α</em><sup>′</sup><sub><em>i</em></sub>(<em>c</em>)∥ ≤ <em>ϵ</em><sub><em>r</em><em>e</em><em>s</em><em>i</em><em>d</em><em>u</em><em>e</em></sub></span></p></li>
-</ol>
+**Definition 11** (EATV Compliance Verification). A system $`S`$ is EATV-compliant if and only if it satisfies:
+
+1.  Witness Preservation: $`\forall e \in \mathcal{E}, \pi_1(W(e)) = e`$
+
+2.  Temporal Continuity: $`\forall t \in \mathbb{T}, \lim_{\delta \to 0} \| R(e, t+\delta) - P(e, t) \| = 0`$
+
+3.  Acyclicity: $`\forall G = (V, E, W)`$ in $`S`$, $`G`$ contains no cycles
+
+4.  Cultural Boundary Respect: $`\forall k, \forall b \in \mathcal{B}_k, \mathcal{T}_k(T, b) = \text{valid}`$
+
+5.  Residue Preservation: $`\forall \rho_i \in R, \forall c \in \mathcal{C}, \| \alpha_i(c) - \alpha'_i(c) \| \leq \epsilon_{residue}`$
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 10</strong> (Verification Completeness). The EATV compliance verification is complete if and only if all five conditions are independently verified through formal proofs or empirical validation.</p>
+**Theorem 10** (Verification Completeness). The EATV compliance verification is complete if and only if all five conditions are independently verified through formal proofs or empirical validation.
+
 </div>
 
 <h2 id="matrix-based-regulatory-compliance">Matrix-Based Regulatory Compliance</h2>
 <div class="definition">
 
-<p><strong>Definition 12</strong> (Compliance Matrix). The regulatory compliance matrix <span class="math inline"><em>M</em><sub><em>r</em><em>e</em><em>g</em></sub></span> for an EATV system is defined as:</p>
-<p><span class="math display">$$\begin{equation}
+**Definition 12** (Compliance Matrix). The regulatory compliance matrix $`M_{reg}`$ for an EATV system is defined as:
+
+<pre><code class="language-math">\begin{equation}
 M_{reg} = 
 \begin{pmatrix}
 v_{witness} &amp; v_{temporal} &amp; v_{acyclic} &amp; v_{cultural} &amp; v_{residue} \\
 \beta_{witness} &amp; \beta_{temporal} &amp; \beta_{acyclic} &amp; \beta_{cultural} &amp; \beta_{residue}
 \end{pmatrix}
-\end{equation}$$</span></p>
-<p>where <span class="math inline"><em>v</em><sub><em>i</em></sub></span> represents verification status (0 or 1) and <span class="math inline"><em>β</em><sub><em>i</em></sub></span> represents confidence level for each compliance dimension.</p>
+\end{equation}
+</code></pre>
+
+where $`v_i`$ represents verification status (0 or 1) and $`\beta_i`$ represents confidence level for each compliance dimension.
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 11</strong> (Regulatory Certification). An EATV system achieves regulatory certification if and only if:</p>
-<p><span class="math display">∑<sub><em>i</em></sub><em>v</em><sub><em>i</em></sub> = 5 and min<sub><em>i</em></sub><em>β</em><sub><em>i</em></sub> ≥ <em>β</em><sub><em>m</em><em>i</em><em>n</em></sub></span></p>
-<p>where <span class="math inline"><em>β</em><sub><em>m</em><em>i</em><em>n</em></sub></span> is the minimum required confidence level.</p>
+**Theorem 11** (Regulatory Certification). An EATV system achieves regulatory certification if and only if:
+
+<pre><code class="language-math">\begin{equation}
+\sum_{i} v_i = 5 \text{ and } \min_i \beta_i \geq \beta_{min}
+\end{equation}
+</code></pre>
+
+where $`\beta_{min}`$ is the minimum required confidence level.
+
 </div>
 
 <h1 id="obinexus-integration-architecture">OBINexus Integration Architecture</h1>
-<h2 id="sinphasé-compliant-component-organization">Sinphasé-Compliant Component Organization</h2>
+<h2 id="sinphase-compliant-component-organization">Sinphasé-Compliant Component Organization</h2>
 <div class="definition">
 
-<p><strong>Definition 13</strong> (OBINexus Component Structure). The OBINexus integration of EATV Stream follows a hierarchical structure:</p>
-<p><span class="math display">$$\begin{align}
+**Definition 13** (OBINexus Component Structure). The OBINexus integration of EATV Stream follows a hierarchical structure:
+
+<pre><code class="language-math">\begin{align}
 \text{OBINexus} &amp;\supset \text{core} \supset \text{eatv\_stream} \\
 \text{eatv\_stream} &amp;= \{\text{WitnessLayer}, \text{TemporalEngine}, \text{DAGProcessor}, \text{CulturalLens}, \text{SymbolicRegistry}\}
-\end{align}$$</span></p>
+\end{align}
+</code></pre>
+
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 12</strong> (Sinphasé Compliance). The OBINexus integration architecture is Sinphasé-compliant if and only if:</p>
-<ol type="1">
-<li><p>Each component has exactly one active phase at any time</p></li>
-<li><p>The dependency graph between components remains acyclic</p></li>
-<li><p>Component cost <span class="math inline"><em>C</em>(<em>c</em><sub><em>i</em></sub>) ≤ 0.6</span> for all components <span class="math inline"><em>c</em><sub><em>i</em></sub></span></p></li>
-<li><p>All interfaces follow the single-pass compilation requirement</p></li>
-</ol>
+**Theorem 12** (Sinphasé Compliance). The OBINexus integration architecture is Sinphasé-compliant if and only if:
+
+1.  Each component has exactly one active phase at any time
+
+2.  The dependency graph between components remains acyclic
+
+3.  Component cost $`C(c_i) \leq 0.6`$ for all components $`c_i`$
+
+4.  All interfaces follow the single-pass compilation requirement
+
 </div>
 
 <h2 id="isolation-protocol-implementation">Isolation Protocol Implementation</h2>
@@ -371,7 +502,8 @@ v_{witness} &amp; v_{temporal} &amp; v_{acyclic} &amp; v_{cultural} &amp; v_{res
 
 <div class="algorithmic">
 
-<p><span class="math inline"><em>i</em><em>s</em><em>o</em><em>l</em><em>a</em><em>t</em><em>e</em><em>d</em><em>D</em><em>i</em><em>r</em>←</span> "root-dynamic-c/" + <span class="math inline"><em>c</em><em>o</em><em>m</em><em>p</em><em>o</em><em>n</em><em>e</em><em>n</em><em>t</em>.<em>i</em><em>d</em></span> + "-v" + <span class="math inline"><em>c</em><em>o</em><em>m</em><em>p</em><em>o</em><em>n</em><em>e</em><em>n</em><em>t</em>.<em>v</em><em>e</em><em>r</em><em>s</em><em>i</em><em>o</em><em>n</em></span> CreateDirectory(<span class="math inline"><em>i</em><em>s</em><em>o</em><em>l</em><em>a</em><em>t</em><em>e</em><em>d</em><em>D</em><em>i</em><em>r</em></span>) GenerateBuildSystem(<span class="math inline"><em>i</em><em>s</em><em>o</em><em>l</em><em>a</em><em>t</em><em>e</em><em>d</em><em>D</em><em>i</em><em>r</em></span> + "/Makefile") ResolveCircularDependencies(<span class="math inline"><em>c</em><em>o</em><em>m</em><em>p</em><em>o</em><em>n</em><em>e</em><em>n</em><em>t</em></span>) DocumentDecision(<span class="math inline"><em>i</em><em>s</em><em>o</em><em>l</em><em>a</em><em>t</em><em>e</em><em>d</em><em>D</em><em>i</em><em>r</em></span> + "/ISOLATION_LOG.md") ValidateSinglePassCompilation(<span class="math inline"><em>i</em><em>s</em><em>o</em><em>l</em><em>a</em><em>t</em><em>e</em><em>d</em><em>D</em><em>i</em><em>r</em></span>) IsolatedComponent(<span class="math inline"><em>i</em><em>s</em><em>o</em><em>l</em><em>a</em><em>t</em><em>e</em><em>d</em><em>D</em><em>i</em><em>r</em></span>)</p>
+$`isolatedDir \gets`$ "root-dynamic-c/" + $`component.id`$ + "-v" + $`component.version`$ CreateDirectory($`isolatedDir`$) GenerateBuildSystem($`isolatedDir`$ + "/Makefile") ResolveCircularDependencies($`component`$) DocumentDecision($`isolatedDir`$ + "/ISOLATION_LOG.md") ValidateSinglePassCompilation($`isolatedDir`$) IsolatedComponent($`isolatedDir`$)
+
 </div>
 
 </div>
@@ -390,47 +522,47 @@ v_{witness} &amp; v_{temporal} &amp; v_{acyclic} &amp; v_{cultural} &amp; v_{res
 </thead>
 <tbody>
 <tr>
-<td style="text-align: center;"><span class="math inline">ℰ</span></td>
+<td style="text-align: center;">$<code>\mathcal{E}</code>$</td>
 <td style="text-align: left;">Space of pre-linguistic experiential states</td>
 </tr>
 <tr>
-<td style="text-align: center;"><span class="math inline">𝒮</span></td>
+<td style="text-align: center;">$<code>\mathcal{S}</code>$</td>
 <td style="text-align: left;">Space of symbolic representations</td>
 </tr>
 <tr>
-<td style="text-align: center;"><span class="math inline"><em>W</em></span></td>
+<td style="text-align: center;">$<code>W</code>$</td>
 <td style="text-align: left;">Witnessing transformation</td>
 </tr>
 <tr>
-<td style="text-align: center;"><span class="math inline">𝒯</span></td>
+<td style="text-align: center;">$<code>\mathcal{T}</code>$</td>
 <td style="text-align: left;">Temporal consciousness structure</td>
 </tr>
 <tr>
-<td style="text-align: center;"><span class="math inline"><strong>E</strong></span></td>
+<td style="text-align: center;">$<code>\mathbf{E}</code>$</td>
 <td style="text-align: left;">4D experiential tensor</td>
 </tr>
 <tr>
-<td style="text-align: center;"><span class="math inline"><em>G</em></span></td>
+<td style="text-align: center;">$<code>G</code>$</td>
 <td style="text-align: left;">Consciousness directed acyclic graph</td>
 </tr>
 <tr>
-<td style="text-align: center;"><span class="math inline">𝒞<sub><em>k</em></sub></span></td>
-<td style="text-align: left;">Cultural context model for culture <span class="math inline"><em>k</em></span></td>
+<td style="text-align: center;">$<code>\mathcal{C}_k</code>$</td>
+<td style="text-align: left;">Cultural context model for culture $<code>k</code>$</td>
 </tr>
 <tr>
-<td style="text-align: center;"><span class="math inline"><em>ρ</em></span></td>
+<td style="text-align: center;">$<code>\rho</code>$</td>
 <td style="text-align: left;">Symbolic residue</td>
 </tr>
 <tr>
-<td style="text-align: center;"><span class="math inline"><em>Φ</em></span></td>
+<td style="text-align: center;">$<code>\Phi</code>$</td>
 <td style="text-align: left;">Integrated information (complexity measure)</td>
 </tr>
 <tr>
-<td style="text-align: center;"><span class="math inline"><em>C</em>(<em>S</em>)</span></td>
+<td style="text-align: center;">$<code>C(S)</code>$</td>
 <td style="text-align: left;">Architecture cost function</td>
 </tr>
 <tr>
-<td style="text-align: center;"><span class="math inline"><em>M</em><sub><em>r</em><em>e</em><em>g</em></sub></span></td>
+<td style="text-align: center;">$<code>M_{reg}</code>$</td>
 <td style="text-align: left;">Regulatory compliance matrix</td>
 </tr>
 </tbody>
@@ -442,41 +574,42 @@ v_{witness} &amp; v_{temporal} &amp; v_{acyclic} &amp; v_{cultural} &amp; v_{res
     def __init__(self):
         self.experiential_buffer = ExperientialBuffer()
         self.pre_linguistic_states = {}
-        
+
     def witness_state(self, consciousness_event):
         # Preserve without reduction
         witnessed = self.observe_without_judgment(consciousness_event)
         self.experiential_buffer.store_intact(witnessed)
-        return witnessed  # Unmodified</code></pre>
+        return witnessed  # Unmodified
+</code></pre>
 <h2 id="tensor-transformation-engine">Tensor Transformation Engine</h2>
 <pre><code>class TensorTransformationEngine:
     def __init__(self):
         self.encoder_4d = PerceptualEncoder4D()
         self.cognitive_mapper_3d = CognitiveMapper3D()
-        
+
     def encode_pre_linguistic_percept(self, raw_percept):
         # 4D tensor: [time, spatial_x, spatial_y, spatial_z, features]
         tensor_4d = self.encoder_4d.embed_percept(
             raw_percept,
-            dimensions=[&#39;temporal&#39;, &#39;spatial_x&#39;, &#39;spatial_y&#39;, &#39;spatial_z&#39;, &#39;features&#39;]
+            dimensions=['temporal', 'spatial_x', 'spatial_y', 'spatial_z', 'features']
         )
-        
+
         # Preserve semantic structure during decomposition
         core_tensor, factors = self.tucker_decomposition(tensor_4d)
-        
+
         # Project to 3D cognitive space
         cognitive_map_3d = self.cognitive_mapper_3d.project(
             core_tensor,
             preserve_semantics=True,
             maintain_topology=True
         )
-        
+
         return TransformedPercept(
             original_4d=tensor_4d,
             cognitive_3d=cognitive_map_3d,
             semantic_preservation_score=self.calculate_preservation_score()
-        )</code></pre>
-
+        )
+</code></pre>
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-eatv-stream-integration-into-obinexus-framework-a-formalized-specification-with-matrix-v</code></p>

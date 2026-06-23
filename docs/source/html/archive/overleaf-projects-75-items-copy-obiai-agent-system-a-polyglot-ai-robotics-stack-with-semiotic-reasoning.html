@@ -68,34 +68,54 @@
 <h2 id="cultural-technical-foundation">Cultural-Technical Foundation</h2>
 <p>The OBIAI system draws inspiration from the Nsibidi proto-writing system of southeastern Nigeria, integrating centuries-old semiotic communication principles with contemporary AI architectures. This fusion enables:</p>
 <ul>
-<li><p><strong>Semantic Grounding</strong>: Verb-noun pairs as fundamental reasoning units</p></li>
-<li><p><strong>Cultural Fidelity</strong>: Preservation of indigenous knowledge systems</p></li>
-<li><p><strong>Ethical Computation</strong>: Credibility-based access control inspired by Ekpe society structures</p></li>
+<li>
+<p><strong>Semantic Grounding</strong>: Verb-noun pairs as fundamental reasoning units</p>
+</li>
+<li>
+<p><strong>Cultural Fidelity</strong>: Preservation of indigenous knowledge systems</p>
+</li>
+<li>
+<p><strong>Ethical Computation</strong>: Credibility-based access control inspired by Ekpe society structures</p>
+</li>
 </ul>
 <h2 id="system-purpose-function">System Purpose Function</h2>
-<p><span class="math display"><em>α</em>(<em>x</em>) = Create an agent system that adapts, governs, and executes polyglot behavior under OBIAI ethics</span></p>
-<p>Where <span class="math inline"><em>x</em></span> represents the global AI robotics stakeholder domain, mapping to interoperable, governed robotic agents in the codomain.</p>
+<pre><code class="language-math">\begin{equation}
+\alpha(x) = \text{Create an agent system that adapts, governs, and executes polyglot behavior under OBIAI ethics}
+\end{equation}
+</code></pre>
+<p>Where $<code>x</code>$ represents the global AI robotics stakeholder domain, mapping to interoperable, governed robotic agents in the codomain.</p>
 <h1 id="system-architecture-overview">System Architecture Overview</h1>
 <h2 id="core-components">Core Components</h2>
 <p>The OBIAI architecture consists of three primary modules:</p>
-<ol type="1">
-<li><p><strong>PyOBIAI</strong>: Python-based proof-of-concept implementing semiotic reasoning</p></li>
-<li><p><strong>OBIBuf</strong>: Real-time buffered communication interface for polyglot interactions</p></li>
-<li><p><strong>OBICall</strong>: System-level syscall orchestrator for cross-language execution</p></li>
+<ol>
+<li>
+<p><strong>PyOBIAI</strong>: Python-based proof-of-concept implementing semiotic reasoning</p>
+</li>
+<li>
+<p><strong>OBIBuf</strong>: Real-time buffered communication interface for polyglot interactions</p>
+</li>
+<li>
+<p><strong>OBICall</strong>: System-level syscall orchestrator for cross-language execution</p>
+</li>
 </ol>
 <h2 id="architectural-scope-function">Architectural Scope Function</h2>
-<p><span class="math display"><em>β</em>(<em>x</em>) = (Modular, Layered, Polyglot, Governed)</span></p>
+<pre><code class="language-math">\begin{equation}
+\beta(x) = (\text{Modular}, \text{Layered}, \text{Polyglot}, \text{Governed})
+\end{equation}
+</code></pre>
 <h3 id="layered-design-pattern">Layered Design Pattern</h3>
-<pre><code>Experimental → Beta → Stable → Legacy</code></pre>
+<pre><code>Experimental → Beta → Stable → Legacy
+</code></pre>
 <h3 id="directory-structure">Directory Structure</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/pyobiai/</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> core/       <span class="co"># Verb-noun reasoning engine</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> models/     <span class="co"># Supervised/reinforcement learning</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> buffer/     <span class="co"># OBIBuf polyglot messaging</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> syscall/    <span class="co"># OBICall bindings</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> data/       <span class="co"># Structured datasets</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> examples/   <span class="co"># Python/C integration samples</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> tests/      <span class="co"># Cross-language testing</span></span></code></pre></div>
+<pre><code class="language-bash">/pyobiai/
+├── core/       # Verb-noun reasoning engine
+├── models/     # Supervised/reinforcement learning
+├── buffer/     # OBIBuf polyglot messaging
+├── syscall/    # OBICall bindings
+├── data/       # Structured datasets
+├── examples/   # Python/C integration samples
+└── tests/      # Cross-language testing
+</code></pre>
 <h1 id="dual-naming-schema">Dual Naming Schema</h1>
 <h2 id="sibbidi-rooted-internal-naming">Sibbidi-Rooted Internal Naming</h2>
 <p>Drawing from Nsibidi’s pictographic tradition, internal module names follow semiotic patterns:</p>
@@ -132,57 +152,72 @@
 </table>
 <p>Dual Naming Registry Examples</p>
 <h2 id="implementation-schema">Implementation Schema</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> NamingSchema:</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Implements Sibbidi-rooted internal naming&quot;&quot;&quot;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> register_symbol(<span class="va">self</span>, </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                       sibbidi_name: <span class="bu">str</span>, </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                       global_name: <span class="bu">str</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                       verb: <span class="bu">str</span>, </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                       noun: <span class="bu">str</span>, </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                       semantic_fn: <span class="bu">callable</span>):</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.sibbidi_registry[sibbidi_name] <span class="op">=</span> {</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;verb&#39;</span>: verb,</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;noun&#39;</span>: noun,</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;semantic&#39;</span>: semantic_fn,</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;ocs_threshold&#39;</span>: <span class="fl">0.6</span>  <span class="co"># FMRS compliance</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        }</span></code></pre></div>
+<pre><code class="language-python">class NamingSchema:
+    &quot;&quot;&quot;Implements Sibbidi-rooted internal naming&quot;&quot;&quot;
+
+    def register_symbol(self, 
+                       sibbidi_name: str, 
+                       global_name: str,
+                       verb: str, 
+                       noun: str, 
+                       semantic_fn: callable):
+        self.sibbidi_registry[sibbidi_name] = {
+            'verb': verb,
+            'noun': noun,
+            'semantic': semantic_fn,
+            'ocs_threshold': 0.6  # FMRS compliance
+        }
+</code></pre>
 <h1 id="governance-and-the-credibility-score-ocs">Governance and the Credibility Score (OCS)</h1>
 <h2 id="obinexus-credibility-score-definition">OBINexus Credibility Score Definition</h2>
 <p>The OCS serves as both access gatekeeper and moral compass:</p>
-<p><span class="math display">OCS(<em>x</em>) = ∑(Trust Interactions) − ∑(Violations)</span></p>
+<pre><code class="language-math">\begin{equation}
+\text{OCS}(x) = \sum(\text{Trust Interactions}) - \sum(\text{Violations})
+\end{equation}
+</code></pre>
 <h2 id="credibility-gating-implementation">Credibility Gating Implementation</h2>
 <div class="algorithm">
 
 <div class="algorithmic">
 
-<p><strong>Input:</strong> User request <span class="math inline"><em>r</em></span>, User OCS <span class="math inline"><em>s</em><em>c</em><em>o</em><em>r</em><em>e</em></span> <strong>Output:</strong> Access decision <span class="math inline">{<em>g</em><em>r</em><em>a</em><em>n</em><em>t</em>, <em>d</em><em>e</em><em>n</em><em>y</em>}</span> Grant access to module Log positive interaction Deny access Suggest trust-building actions</p>
+**Input:** User request $`r`$, User OCS $`score`$ **Output:** Access decision $`\{grant, deny\}`$ Grant access to module Log positive interaction Deny access Suggest trust-building actions
+
 </div>
 
 </div>
 
 <h2 id="trust-accumulation-model">Trust Accumulation Model</h2>
 <ul>
-<li><p><strong>Positive Actions</strong>: Code contributions (+10), successful deployments (+5)</p></li>
-<li><p><strong>Violations</strong>: Policy breaches (-20), ghosting incidents (-50)</p></li>
-<li><p><strong>Temporal Decay</strong>: <span class="math inline"><em>O</em><em>C</em><em>S</em><sub><em>t</em></sub> = <em>O</em><em>C</em><em>S</em><sub><em>t</em> − 1</sub> × 0.95</span> (monthly)</p></li>
+<li>
+<p><strong>Positive Actions</strong>: Code contributions (+10), successful deployments (+5)</p>
+</li>
+<li>
+<p><strong>Violations</strong>: Policy breaches (-20), ghosting incidents (-50)</p>
+</li>
+<li>
+<p><strong>Temporal Decay</strong>: $<code>OCS_t = OCS_{t-1} \times 0.95</code>$ (monthly)</p>
+</li>
 </ul>
 <h1 id="nine-obiai-hypotheses">Nine OBIAI Hypotheses</h1>
 <h2 id="h1-layered-learning-architecture">H1: Layered Learning Architecture</h2>
 <p><strong>Statement</strong>: Effective AI agents require both top-down symbolic reasoning and bottom-up neural learning.</p>
 <p><strong>Implementation</strong>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> LayeredAgent:</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> reason(<span class="va">self</span>, context):</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        symbolic_output <span class="op">=</span> <span class="va">self</span>.top_down_inference(context)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        neural_output <span class="op">=</span> <span class="va">self</span>.bottom_up_learning(context)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.integrate(symbolic_output, neural_output)</span></code></pre></div>
+<pre><code class="language-python">class LayeredAgent:
+    def reason(self, context):
+        symbolic_output = self.top_down_inference(context)
+        neural_output = self.bottom_up_learning(context)
+        return self.integrate(symbolic_output, neural_output)
+</code></pre>
 <h2 id="h2-polyglot-core-interfacing">H2: Polyglot Core Interfacing</h2>
 <p><strong>Statement</strong>: Production AI systems must seamlessly integrate multiple programming paradigms.</p>
 <p><strong>Evidence</strong>: OBICall syscall orchestration enabling Python-C interoperability.</p>
 <h2 id="h3-verb-noun-semantic-coupling">H3: Verb-Noun Semantic Coupling</h2>
 <p><strong>Statement</strong>: Actions in AI should be represented as verb-noun pairs for intuitive reasoning.</p>
 <p><strong>Formalization</strong>:</p>
-<p><span class="math display"><em>γ</em>(<em>a</em><em>c</em><em>t</em><em>i</em><em>o</em><em>n</em>) = ⟨<em>v</em><em>e</em><em>r</em><em>b</em>, <em>n</em><em>o</em><em>u</em><em>n</em>⟩ → <em>S</em><em>e</em><em>m</em><em>a</em><em>n</em><em>t</em><em>i</em><em>c</em><em>F</em><em>u</em><em>n</em><em>c</em><em>t</em><em>i</em><em>o</em><em>n</em>()</span></p>
+<pre><code class="language-math">\begin{equation}
+\gamma(action) = \langle verb, noun \rangle \rightarrow SemanticFunction()
+\end{equation}
+</code></pre>
 <h2 id="h4-cultural-semiotics-integration">H4: Cultural Semiotics Integration</h2>
 <p><strong>Statement</strong>: AI systems benefit from incorporating human cultural communication patterns.</p>
 <p><strong>Application</strong>: Nsibidi symbols mapping to computational concepts.</p>
@@ -200,7 +235,7 @@
 <p><strong>Implementation</strong>: Non-LRU cache with temporal traceability.</p>
 <h2 id="h9-ethical-constraint-propagation">H9: Ethical Constraint Propagation</h2>
 <p><strong>Statement</strong>: Ethical constraints must propagate through all system layers.</p>
-<p><strong>Verification</strong>: Sinphasé compliance function <span class="math inline"><em>ε</em>(<em>x</em>) ≤ 0.6</span>.</p>
+<p><strong>Verification</strong>: Sinphasé compliance function $<code>\varepsilon(x) \leq 0.6</code>$.</p>
 <h1 id="polyglot-runtime-flow">Polyglot Runtime Flow</h1>
 <h2 id="example-cross-language-verb-noun-execution">Example: Cross-Language Verb-Noun Execution</h2>
 <figure data-latex-placement="h">
@@ -210,89 +245,140 @@
 
 <h2 id="performance-metrics">Performance Metrics</h2>
 <ul>
-<li><p><strong>Latency</strong>: <span class="math inline">&lt;</span> 10ms for verb-noun resolution</p></li>
-<li><p><strong>Throughput</strong>: 10,000 semantic operations/second</p></li>
-<li><p><strong>Memory</strong>: O(n) scaling with symbol registry size</p></li>
+<li>
+<p><strong>Latency</strong>: $<code>&lt;</code>$ 10ms for verb-noun resolution</p>
+</li>
+<li>
+<p><strong>Throughput</strong>: 10,000 semantic operations/second</p>
+</li>
+<li>
+<p><strong>Memory</strong>: O(n) scaling with symbol registry size</p>
+</li>
 </ul>
 <h1 id="use-cases">Use Cases</h1>
 <h2 id="multilingual-care-robotics">Multilingual Care Robotics</h2>
 <p>Deployment in households requiring code-switching between languages:</p>
 <ul>
-<li><p>Verb-noun pairs translate across linguistic boundaries</p></li>
-<li><p>Cultural context preserved through Sibbidi naming</p></li>
-<li><p>OCS ensures appropriate care provider matching</p></li>
+<li>
+<p>Verb-noun pairs translate across linguistic boundaries</p>
+</li>
+<li>
+<p>Cultural context preserved through Sibbidi naming</p>
+</li>
+<li>
+<p>OCS ensures appropriate care provider matching</p>
+</li>
 </ul>
 <h2 id="military-ethics-enforcement">Military Ethics Enforcement</h2>
 <p>Autonomous systems in conflict zones with hard ethical boundaries:</p>
 <ul>
-<li><p>Credibility scoring prevents unauthorized weapon activation</p></li>
-<li><p>Nsibidi-inspired symbols for non-verbal allied communication</p></li>
-<li><p>Audit trail via immutable OCS transaction log</p></li>
+<li>
+<p>Credibility scoring prevents unauthorized weapon activation</p>
+</li>
+<li>
+<p>Nsibidi-inspired symbols for non-verbal allied communication</p>
+</li>
+<li>
+<p>Audit trail via immutable OCS transaction log</p>
+</li>
 </ul>
 <h2 id="neurodivergent-accessibility">Neurodivergent Accessibility</h2>
 <p>Adaptive interfaces for varied cognitive processing styles:</p>
 <ul>
-<li><p>Multiple input modalities (visual symbols, verbal commands)</p></li>
-<li><p>Personalized verb-noun mappings per user profile</p></li>
-<li><p>Gradual OCS building for trust establishment</p></li>
+<li>
+<p>Multiple input modalities (visual symbols, verbal commands)</p>
+</li>
+<li>
+<p>Personalized verb-noun mappings per user profile</p>
+</li>
+<li>
+<p>Gradual OCS building for trust establishment</p>
+</li>
 </ul>
 <h1 id="licensing-and-ethics">Licensing and Ethics</h1>
 <h2 id="constructive-use-protection-clause">Constructive Use Protection Clause</h2>
 <p>All OBIAI implementations must adhere to:</p>
-<ol type="1">
-<li><p>No deployment for human harm</p></li>
-<li><p>Transparent credibility scoring</p></li>
-<li><p>Cultural artifact preservation</p></li>
-<li><p>Open audit mechanisms</p></li>
+<ol>
+<li>
+<p>No deployment for human harm</p>
+</li>
+<li>
+<p>Transparent credibility scoring</p>
+</li>
+<li>
+<p>Cultural artifact preservation</p>
+</li>
+<li>
+<p>Open audit mechanisms</p>
+</li>
 </ol>
 <h2 id="compliance-function">Compliance Function</h2>
-<p><span class="math display"><em>ε</em>(<em>x</em>) = Single-Pass Build + Isolation-by-Cost</span></p>
-<p>Where modules exceeding cost threshold <span class="math inline"><em>C</em> &gt; 0.6</span> are quarantined in <code>root-dynamic-c/</code>.</p>
+<pre><code class="language-math">\begin{equation}
+\varepsilon(x) = \text{Single-Pass Build} + \text{Isolation-by-Cost}
+\end{equation}
+</code></pre>
+<p>Where modules exceeding cost threshold $<code>C &gt; 0.6</code>$ are quarantined in <code>root-dynamic-c/</code>.</p>
 <h1 id="future-work">Future Work</h1>
 <h2 id="research-directions">Research Directions</h2>
 <ul>
-<li><p>Quantum-resistant OCS cryptography</p></li>
-<li><p>Expanded Nsibidi symbol corpus integration</p></li>
-<li><p>Neuromorphic hardware optimization</p></li>
-<li><p>Federated credibility score aggregation</p></li>
+<li>
+<p>Quantum-resistant OCS cryptography</p>
+</li>
+<li>
+<p>Expanded Nsibidi symbol corpus integration</p>
+</li>
+<li>
+<p>Neuromorphic hardware optimization</p>
+</li>
+<li>
+<p>Federated credibility score aggregation</p>
+</li>
 </ul>
 <h2 id="development-roadmap">Development Roadmap</h2>
-<ol type="1">
-<li><p>Q1 2025: PyOBIAI v1.0 release</p></li>
-<li><p>Q2 2025: OBIBuf performance optimization</p></li>
-<li><p>Q3 2025: OBICall hardware abstraction layer</p></li>
-<li><p>Q4 2025: Production deployment certification</p></li>
+<ol>
+<li>
+<p>Q1 2025: PyOBIAI v1.0 release</p>
+</li>
+<li>
+<p>Q2 2025: OBIBuf performance optimization</p>
+</li>
+<li>
+<p>Q3 2025: OBICall hardware abstraction layer</p>
+</li>
+<li>
+<p>Q4 2025: Production deployment certification</p>
+</li>
 </ol>
 <h1 id="conclusion">Conclusion</h1>
 <p>The OBINexus OBIAI system represents a paradigm shift in AI development, grounding computational intelligence in human cultural wisdom while maintaining rigorous technical standards. Through the integration of Nsibidi-inspired dual naming, credibility-based governance, and polyglot architectural principles, we establish a framework for AI systems that are simultaneously powerful, ethical, and culturally aware.</p>
 <h1 id="api-reference">API Reference</h1>
 <h2 id="core-obiai-functions">Core OBIAI Functions</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize agent with credibility check</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> Corewright(ocs_minimum<span class="op">=</span><span class="fl">0.6</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Execute verb-noun action</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> agent.act(verb<span class="op">=</span><span class="st">&quot;shine&quot;</span>, noun<span class="op">=</span><span class="st">&quot;light&quot;</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Register new Sibbidi symbol</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>agent.naming.register_symbol(</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    sibbidi_name<span class="op">=</span><span class="st">&quot;nsibidi_welcome&quot;</span>,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    global_name<span class="op">=</span><span class="st">&quot;obiai_greet_v1&quot;</span>,</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    verb<span class="op">=</span><span class="st">&quot;extend&quot;</span>,</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    noun<span class="op">=</span><span class="st">&quot;welcome&quot;</span>,</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    semantic_fn<span class="op">=</span><span class="kw">lambda</span>: <span class="bu">print</span>(<span class="st">&quot;Welcome&quot;</span>)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<h1 id="glossary">Glossary</h1>
-<p>Nsibidi<br />
-Proto-writing system from southeastern Nigeria</p>
-<p>OCS<br />
-OBINexus Credibility Score</p>
-<p>Sibbidi<br />
-Internal naming convention inspired by Nsibidi</p>
-<p>Sinphasé<br />
-Single-phase build compliance metric</p>
-<p>SylviaX<br />
-Hotwiring protocol for component swapping</p>
+<pre><code class="language-python"># Initialize agent with credibility check
+agent = Corewright(ocs_minimum=0.6)
 
+# Execute verb-noun action
+result = agent.act(verb=&quot;shine&quot;, noun=&quot;light&quot;)
+
+# Register new Sibbidi symbol
+agent.naming.register_symbol(
+    sibbidi_name=&quot;nsibidi_welcome&quot;,
+    global_name=&quot;obiai_greet_v1&quot;,
+    verb=&quot;extend&quot;,
+    noun=&quot;welcome&quot;,
+    semantic_fn=lambda: print(&quot;Welcome&quot;)
+)
+</code></pre>
+<h1 id="glossary">Glossary</h1>
+<p>Nsibidi<br>
+Proto-writing system from southeastern Nigeria</p>
+<p>OCS<br>
+OBINexus Credibility Score</p>
+<p>Sibbidi<br>
+Internal naming convention inspired by Nsibidi</p>
+<p>Sinphasé<br>
+Single-phase build compliance metric</p>
+<p>SylviaX<br>
+Hotwiring protocol for component swapping</p>
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-obiai-agent-system-a-polyglot-ai-robotics-stack-with-semiotic-reasoning</code></p>

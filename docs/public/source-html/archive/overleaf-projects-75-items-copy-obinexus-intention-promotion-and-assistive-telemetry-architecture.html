@@ -67,57 +67,70 @@
 <h1 id="executive-summary">Executive Summary</h1>
 <p>The OBINexus Intention Promotion System represents a paradigm shift in adaptive user interface design, specifically engineered to address the complex requirements of assistive technology deployment in privacy-sensitive environments. The architecture synthesizes multiple cutting-edge technologies:</p>
 <ul>
-<li><p><strong>Graph-theoretic behavioral modeling</strong> that transcends traditional Euclidean distance metrics</p></li>
-<li><p><strong>Cryptographically secure telemetry</strong> using Argon2i entropy seeding</p></li>
-<li><p><strong>Privacy-preserving aggregation</strong> through partial homomorphic encryption schemes</p></li>
-<li><p><strong>Adaptive visual signaling</strong> that provides contextual assistance without explicit labeling</p></li>
+<li>
+<p><strong>Graph-theoretic behavioral modeling</strong> that transcends traditional Euclidean distance metrics</p>
+</li>
+<li>
+<p><strong>Cryptographically secure telemetry</strong> using Argon2i entropy seeding</p>
+</li>
+<li>
+<p><strong>Privacy-preserving aggregation</strong> through partial homomorphic encryption schemes</p>
+</li>
+<li>
+<p><strong>Adaptive visual signaling</strong> that provides contextual assistance without explicit labeling</p>
+</li>
 </ul>
 <p>The system’s core innovation lies in its ability to detect user intention states—such as confusion, hesitation, or assistance readiness—without compromising user privacy or creating intrusive intervention patterns.</p>
 <h1 id="predictive-intention-architecture">Predictive Intention Architecture</h1>
 <h2 id="k-nn-graph-foundation">k-NN Graph Foundation</h2>
 <p>The intention detection system employs a modified k-nearest neighbor algorithm operating on a high-dimensional behavioral manifold. Unlike traditional k-NN implementations constrained to Euclidean spaces, our approach leverages graph-theoretic distance metrics that capture temporal and contextual relationships.</p>
-<p><span class="math display"><em>d</em><sub><em>g</em><em>r</em><em>a</em><em>p</em><em>h</em></sub>(<em>u</em><sub><em>i</em></sub>, <em>u</em><sub><em>j</em></sub>) = min<sub><em>p</em> ∈ 𝒫<sub><em>i</em><em>j</em></sub></sub>∑<sub><em>e</em> ∈ <em>p</em></sub><em>w</em>(<em>e</em>) ⋅ <em>τ</em>(<em>e</em>)</span></p>
-<p>where <span class="math inline">𝒫<sub><em>i</em><em>j</em></sub></span> represents all paths between behavioral states <span class="math inline"><em>u</em><sub><em>i</em></sub></span> and <span class="math inline"><em>u</em><sub><em>j</em></sub></span>, <span class="math inline"><em>w</em>(<em>e</em>)</span> denotes the edge weight representing transition probability, and <span class="math inline"><em>τ</em>(<em>e</em>)</span> captures temporal decay.</p>
+<pre><code class="language-math">\begin{equation}
+d_{graph}(u_i, u_j) = \min_{p \in \mathcal{P}_{ij}} \sum_{e \in p} w(e) \cdot \tau(e)
+\end{equation}
+</code></pre>
+<p>where $<code>\mathcal{P}_{ij}</code>$ represents all paths between behavioral states $<code>u_i</code>$ and $<code>u_j</code>$, $<code>w(e)</code>$ denotes the edge weight representing transition probability, and $<code>\tau(e)</code>$ captures temporal decay.</p>
 <div class="algorithm">
 
 <div class="algorithmic">
 
-<p><strong>Input:</strong> Current behavioral vector <span class="math inline"><strong>v</strong><sub><em>t</em></sub></span>, Historical graph <span class="math inline">𝒢</span> <strong>Output:</strong> Intention class <span class="math inline">ℐ</span>, Confidence score <span class="math inline"><em>θ</em></span> Compute graph embedding: <span class="math inline"><strong>e</strong><sub><em>t</em></sub> ← GraphEmbed(<strong>v</strong><sub><em>t</em></sub>, 𝒢)</span> Find k-nearest neighbors: <span class="math inline">𝒩<sub><em>k</em></sub> ← GraphKNN(<strong>e</strong><sub><em>t</em></sub>, 𝒢, <em>k</em>)</span> Weight calculation: <span class="math inline"><em>w</em><sub><em>n</em></sub> ← exp (−<em>d</em><sub><em>g</em><em>r</em><em>a</em><em>p</em><em>h</em></sub>(<strong>e</strong><sub><em>t</em></sub>, <em>n</em>)/<em>σ</em>)</span> Aggregate intention votes: <span class="math inline">ℐ<sub><em>n</em></sub> ← GetIntention(<em>n</em>)</span> <span class="math inline">ℐ, <em>θ</em> ← WeightedConsensus({(ℐ<sub><em>n</em></sub>, <em>w</em><sub><em>n</em></sub>)})</span> <span class="math inline">ℐ, <em>θ</em></span></p>
+**Input:** Current behavioral vector $`\mathbf{v}_t`$, Historical graph $`\mathcal{G}`$ **Output:** Intention class $`\mathcal{I}`$, Confidence score $`\theta`$ Compute graph embedding: $`\mathbf{e}_t \leftarrow \text{GraphEmbed}(\mathbf{v}_t, \mathcal{G})`$ Find k-nearest neighbors: $`\mathcal{N}_k \leftarrow \text{GraphKNN}(\mathbf{e}_t, \mathcal{G}, k)`$ Weight calculation: $`w_n \leftarrow \exp(-d_{graph}(\mathbf{e}_t, n) / \sigma)`$ Aggregate intention votes: $`\mathcal{I}_n \leftarrow \text{GetIntention}(n)`$ $`\mathcal{I}, \theta \leftarrow \text{WeightedConsensus}(\{(\mathcal{I}_n, w_n)\})`$ $`\mathcal{I}, \theta`$
+
 </div>
 
 </div>
 
 <h2 id="entropy-flow-via-argon2i-seeding">Entropy Flow via Argon2i Seeding</h2>
 <p>The system employs Argon2i for cryptographically secure session entropy generation, ensuring that each user interaction sequence maintains verifiable integrity while preventing timing-based side-channel attacks.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> <span class="op">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    uint8_t session_seed<span class="op">[</span><span class="dv">32</span><span class="op">];</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    uint64_t interaction_counter<span class="op">;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> entropy_gradient<span class="op">;</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    argon2_context ctx<span class="op">;</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> intention_entropy_state_t<span class="op">;</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> seed_intention_entropy<span class="op">(</span>intention_entropy_state_t<span class="op">*</span> state<span class="op">,</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                          <span class="dt">const</span> uint8_t<span class="op">*</span> user_id<span class="op">,</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                          size_t uid_len<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Initialize Argon2i context with disability-aware parameters</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    state<span class="op">-&gt;</span>ctx<span class="op">.</span>t_cost <span class="op">=</span> <span class="dv">3</span><span class="op">;</span>        <span class="co">// Time cost for assistive latency</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    state<span class="op">-&gt;</span>ctx<span class="op">.</span>m_cost <span class="op">=</span> <span class="dv">4096</span><span class="op">;</span>     <span class="co">// Memory cost (4MB)</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    state<span class="op">-&gt;</span>ctx<span class="op">.</span>lanes <span class="op">=</span> <span class="dv">4</span><span class="op">;</span>         <span class="co">// Parallelism factor</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Generate session-specific seed</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    argon2i_hash_raw<span class="op">(</span>state<span class="op">-&gt;</span>ctx<span class="op">.</span>t_cost<span class="op">,</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                     state<span class="op">-&gt;</span>ctx<span class="op">.</span>m_cost<span class="op">,</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                     state<span class="op">-&gt;</span>ctx<span class="op">.</span>lanes<span class="op">,</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>                     user_id<span class="op">,</span> uid_len<span class="op">,</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>                     state<span class="op">-&gt;</span>session_seed<span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span>state<span class="op">-&gt;</span>session_seed<span class="op">),</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                     state<span class="op">-&gt;</span>session_seed<span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span>state<span class="op">-&gt;</span>session_seed<span class="op">));</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Initialize entropy gradient tracker</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    state<span class="op">-&gt;</span>entropy_gradient <span class="op">=</span> <span class="fl">1.0f</span><span class="op">;</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    state<span class="op">-&gt;</span>interaction_counter <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> INTENTION_SUCCESS<span class="op">;</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<pre><code class="language-objectivec">typedef struct {
+    uint8_t session_seed[32];
+    uint64_t interaction_counter;
+    float entropy_gradient;
+    argon2_context ctx;
+} intention_entropy_state_t;
+
+int seed_intention_entropy(intention_entropy_state_t* state,
+                          const uint8_t* user_id,
+                          size_t uid_len) {
+    // Initialize Argon2i context with disability-aware parameters
+    state-&gt;ctx.t_cost = 3;        // Time cost for assistive latency
+    state-&gt;ctx.m_cost = 4096;     // Memory cost (4MB)
+    state-&gt;ctx.lanes = 4;         // Parallelism factor
+
+    // Generate session-specific seed
+    argon2i_hash_raw(state-&gt;ctx.t_cost,
+                     state-&gt;ctx.m_cost,
+                     state-&gt;ctx.lanes,
+                     user_id, uid_len,
+                     state-&gt;session_seed, sizeof(state-&gt;session_seed),
+                     state-&gt;session_seed, sizeof(state-&gt;session_seed));
+
+    // Initialize entropy gradient tracker
+    state-&gt;entropy_gradient = 1.0f;
+    state-&gt;interaction_counter = 0;
+
+    return INTENTION_SUCCESS;
+}
+</code></pre>
 <h2 id="taxonomic-dag-resolution">Taxonomic DAG Resolution</h2>
 <p>User intentions are modeled as states within a Directed Acyclic Graph (DAG), where transitions represent behavioral evolution patterns. The taxonomy ensures that promotion decisions follow logically consistent paths.</p>
 <figure id="fig:intention_dag" data-latex-placement="H">
@@ -128,97 +141,70 @@
 <h1 id="assistive-signaling-design">Assistive Signaling Design</h1>
 <h2 id="visual-modulation-patterns">Visual Modulation Patterns</h2>
 <p>The assistive signaling layer employs subtle visual cues that communicate system state without explicit labeling. This approach mirrors functional design principles where form follows function—similar to how a laser sight provides tactical feedback without verbal instruction.</p>
-<p><span class="math display"><em>S</em><sub><em>v</em><em>i</em><em>s</em><em>u</em><em>a</em><em>l</em></sub>(<em>t</em>) = <em>A</em> ⋅ sin (2<em>π</em><em>f</em><sub><em>b</em><em>a</em><em>s</em><em>e</em></sub><em>t</em> + <em>ϕ</em>(<em>I</em><sub><em>t</em></sub>)) ⋅ <em>H</em>(<em>I</em><sub><em>t</em></sub>)</span></p>
+<pre><code class="language-math">\begin{equation}
+S_{visual}(t) = A \cdot \sin(2\pi f_{base} t + \phi(I_t)) \cdot H(I_t)
+\end{equation}
+</code></pre>
 <p>where:</p>
 <ul>
-<li><p><span class="math inline"><em>A</em></span> represents amplitude modulated by urgency level</p></li>
-<li><p><span class="math inline"><em>f</em><sub><em>b</em><em>a</em><em>s</em><em>e</em></sub></span> is the base frequency (0.5-2 Hz for accessibility)</p></li>
-<li><p><span class="math inline"><em>ϕ</em>(<em>I</em><sub><em>t</em></sub>)</span> is phase shift determined by intention state</p></li>
-<li><p><span class="math inline"><em>H</em>(<em>I</em><sub><em>t</em></sub>)</span> is the hue function mapping intention to color spectrum</p></li>
+<li>
+<p>$<code>A</code>$ represents amplitude modulated by urgency level</p>
+</li>
+<li>
+<p>$<code>f_{base}</code>$ is the base frequency (0.5-2 Hz for accessibility)</p>
+</li>
+<li>
+<p>$<code>\phi(I_t)</code>$ is phase shift determined by intention state</p>
+</li>
+<li>
+<p>$<code>H(I_t)</code>$ is the hue function mapping intention to color spectrum</p>
+</li>
 </ul>
 <div id="tab:visual_signals">
 
-<table>
-<thead>
-<tr>
-<th style="text-align: left;"><strong>Intention State</strong></th>
-<th style="text-align: center;"><strong>Hue (°)</strong></th>
-<th style="text-align: center;"><strong>Frequency (Hz)</strong></th>
-<th style="text-align: center;"><strong>Pattern</strong></th>
-<th style="text-align: left;"><strong>Meaning</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">BASELINE</td>
-<td style="text-align: center;">120 (green)</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">Solid</td>
-<td style="text-align: left;">System ready</td>
-</tr>
-<tr>
-<td style="text-align: left;">HESITANT</td>
-<td style="text-align: center;">60 (yellow)</td>
-<td style="text-align: center;">0.5</td>
-<td style="text-align: center;">Pulse</td>
-<td style="text-align: left;">Mild uncertainty</td>
-</tr>
-<tr>
-<td style="text-align: left;">CONFUSED</td>
-<td style="text-align: center;">30 (orange)</td>
-<td style="text-align: center;">1.0</td>
-<td style="text-align: center;">Wave</td>
-<td style="text-align: left;">Navigation issues</td>
-</tr>
-<tr>
-<td style="text-align: left;">ERROR_LOOP</td>
-<td style="text-align: center;">0 (red)</td>
-<td style="text-align: center;">1.5</td>
-<td style="text-align: center;">Blink</td>
-<td style="text-align: left;">Repeated failures</td>
-</tr>
-<tr>
-<td style="text-align: left;">ASSIST_READY</td>
-<td style="text-align: center;">240 (blue)</td>
-<td style="text-align: center;">0.8</td>
-<td style="text-align: center;">Breathe</td>
-<td style="text-align: left;">Help available</td>
-</tr>
-</tbody>
-</table>
-<p>Visual Signal Encoding Matrix</p>
+| **Intention State** | **Hue (°)** | **Frequency (Hz)** | **Pattern** | **Meaning** |
+|:---|:--:|:--:|:--:|:---|
+| BASELINE | 120 (green) | 0 | Solid | System ready |
+| HESITANT | 60 (yellow) | 0.5 | Pulse | Mild uncertainty |
+| CONFUSED | 30 (orange) | 1.0 | Wave | Navigation issues |
+| ERROR_LOOP | 0 (red) | 1.5 | Blink | Repeated failures |
+| ASSIST_READY | 240 (blue) | 0.8 | Breathe | Help available |
+
+Visual Signal Encoding Matrix
+
 </div>
 
 <h2 id="morse-like-encoded-help-cues">Morse-Like Encoded Help Cues</h2>
 <p>For accessibility compliance, the system includes an optional Morse-like encoding layer that translates intention states into rhythmic patterns:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> <span class="op">{</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    uint8_t pattern<span class="op">[</span><span class="dv">32</span><span class="op">];</span>      <span class="co">// Bit pattern for morse encoding</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    uint16_t duration_ms<span class="op">;</span>     <span class="co">// Total pattern duration</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    uint8_t repeat_count<span class="op">;</span>     <span class="co">// Number of repetitions</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> morse_pattern_t<span class="op">;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> morse_pattern_t intention_patterns<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">[</span>INTENT_HESITANT<span class="op">]</span>   <span class="op">=</span> <span class="op">{{</span><span class="dv">0</span>b10101000<span class="op">},</span> <span class="dv">1200</span><span class="op">,</span> <span class="dv">2</span><span class="op">},</span>  <span class="co">// &quot;H&quot; in morse</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">[</span>INTENT_CONFUSED<span class="op">]</span>   <span class="op">=</span> <span class="op">{{</span><span class="dv">0</span>b10111010<span class="op">},</span> <span class="dv">1600</span><span class="op">,</span> <span class="dv">3</span><span class="op">},</span>  <span class="co">// &quot;C&quot; pattern</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">[</span>INTENT_ERROR_LOOP<span class="op">]</span> <span class="op">=</span> <span class="op">{{</span><span class="dv">0</span>b11101110<span class="op">},</span> <span class="dv">1000</span><span class="op">,</span> <span class="dv">5</span><span class="op">},</span>  <span class="co">// &quot;E&quot; rapid</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">[</span>INTENT_ASSIST_READY<span class="op">]</span> <span class="op">=</span> <span class="op">{{</span><span class="dv">0</span>b10111000<span class="op">},</span> <span class="dv">2000</span><span class="op">,</span> <span class="dv">1</span><span class="op">}</span> <span class="co">// &quot;A&quot; slow</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> encode_assistive_signal<span class="op">(</span>intention_class_t intention<span class="op">,</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                            audio_buffer_t<span class="op">*</span> buffer<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    morse_pattern_t pattern <span class="op">=</span> intention_patterns<span class="op">[</span>intention<span class="op">];</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> pattern<span class="op">.</span>repeat_count<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="kw">for</span> <span class="op">(</span><span class="dt">int</span> bit <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> bit <span class="op">&lt;</span> <span class="dv">8</span><span class="op">;</span> bit<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>            <span class="kw">if</span> <span class="op">(</span>pattern<span class="op">.</span>pattern<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">&amp;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">&lt;&lt;</span> bit<span class="op">))</span> <span class="op">{</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>                generate_tone<span class="op">(</span>buffer<span class="op">,</span> <span class="fl">440.0f</span><span class="op">,</span> <span class="dv">100</span><span class="op">);</span> <span class="co">// Dit</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>                generate_silence<span class="op">(</span>buffer<span class="op">,</span> <span class="dv">100</span><span class="op">);</span>      <span class="co">// Space</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        generate_silence<span class="op">(</span>buffer<span class="op">,</span> <span class="dv">300</span><span class="op">);</span> <span class="co">// Inter-pattern gap</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<pre><code class="language-objectivec">typedef struct {
+    uint8_t pattern[32];      // Bit pattern for morse encoding
+    uint16_t duration_ms;     // Total pattern duration
+    uint8_t repeat_count;     // Number of repetitions
+} morse_pattern_t;
+
+const morse_pattern_t intention_patterns[] = {
+    [INTENT_HESITANT]   = {{0b10101000}, 1200, 2},  // &quot;H&quot; in morse
+    [INTENT_CONFUSED]   = {{0b10111010}, 1600, 3},  // &quot;C&quot; pattern
+    [INTENT_ERROR_LOOP] = {{0b11101110}, 1000, 5},  // &quot;E&quot; rapid
+    [INTENT_ASSIST_READY] = {{0b10111000}, 2000, 1} // &quot;A&quot; slow
+};
+
+void encode_assistive_signal(intention_class_t intention,
+                            audio_buffer_t* buffer) {
+    morse_pattern_t pattern = intention_patterns[intention];
+
+    for (int i = 0; i &lt; pattern.repeat_count; i++) {
+        for (int bit = 0; bit &lt; 8; bit++) {
+            if (pattern.pattern[0] &amp; (1 &lt;&lt; bit)) {
+                generate_tone(buffer, 440.0f, 100); // Dit
+            } else {
+                generate_silence(buffer, 100);      // Space
+            }
+        }
+        generate_silence(buffer, 300); // Inter-pattern gap
+    }
+}
+</code></pre>
 <h1 id="secure-ticket-routing-system">Secure Ticket Routing System</h1>
 <h2 id="p2p-seeding-protocol">P2P Seeding Protocol</h2>
 <p>The ticket routing system employs a cryptographically secure P2P protocol that ensures user issues are directed to appropriate support tiers while maintaining complete privacy:</p>
@@ -226,7 +212,8 @@
 
 <div class="algorithmic">
 
-<p><strong>Input:</strong> Intention state <span class="math inline">ℐ</span>, User entropy <span class="math inline"><em>E</em><sub><em>u</em></sub></span>, Severity score <span class="math inline"><em>S</em></span> <strong>Output:</strong> Encrypted ticket <span class="math inline"><em>T</em><sub><em>e</em><em>n</em><em>c</em></sub></span>, Routing path <span class="math inline">ℛ</span> Generate ticket seed: <span class="math inline"><em>s</em><em>e</em><em>e</em><em>d</em> ← Argon2i(<em>E</em><sub><em>u</em></sub>||ℐ||<em>t</em><em>i</em><em>m</em><em>e</em><em>s</em><em>t</em><em>a</em><em>m</em><em>p</em>)</span> Determine priority: <span class="math inline"><em>P</em> ← ClassifyPriority(<em>S</em>, ℐ)</span> Create routing vector: <span class="math inline"><strong>r</strong> ← P2PRoute(<em>P</em>, <em>n</em><em>e</em><em>t</em><em>w</em><em>o</em><em>r</em><em>k</em>_<em>t</em><em>o</em><em>p</em><em>o</em><em>l</em><em>o</em><em>g</em><em>y</em>)</span> Apply homomorphic layer: <span class="math inline"><em>T</em><sub><em>h</em></sub> ← HE_Encrypt(<em>s</em><em>e</em><em>e</em><em>d</em>, <em>h</em><sub><em>p</em><em>u</em><em>b</em><em>k</em><em>e</em><em>y</em></sub>)</span> Attach zero-knowledge proof: <span class="math inline"><em>π</em><sub><em>h</em></sub> ← ZKP_Generate(<em>T</em><sub><em>h</em></sub>, ℐ)</span> <span class="math inline"><em>T</em><sub><em>e</em><em>n</em><em>c</em></sub> ← {<em>T</em><sub><em>h</em></sub>, <em>π</em><sub><em>h</em></sub>}<sub><em>h</em> ∈ <strong>r</strong></sub></span> <span class="math inline"><em>T</em><sub><em>e</em><em>n</em><em>c</em></sub>, <strong>r</strong></span></p>
+**Input:** Intention state $`\mathcal{I}`$, User entropy $`E_u`$, Severity score $`S`$ **Output:** Encrypted ticket $`T_{enc}`$, Routing path $`\mathcal{R}`$ Generate ticket seed: $`seed \leftarrow \text{Argon2i}(E_u || \mathcal{I} || timestamp)`$ Determine priority: $`P \leftarrow \text{ClassifyPriority}(S, \mathcal{I})`$ Create routing vector: $`\mathbf{r} \leftarrow \text{P2PRoute}(P, network\_topology)`$ Apply homomorphic layer: $`T_{h} \leftarrow \text{HE\_Encrypt}(seed, h_{pubkey})`$ Attach zero-knowledge proof: $`\pi_h \leftarrow \text{ZKP\_Generate}(T_h, \mathcal{I})`$ $`T_{enc} \leftarrow \{T_h, \pi_h\}_{h \in \mathbf{r}}`$ $`T_{enc}, \mathbf{r}`$
+
 </div>
 
 </div>
@@ -240,88 +227,97 @@
 
 <h1 id="federated-learning-for-promotion-thresholds">Federated Learning for Promotion Thresholds</h1>
 <p>The system employs federated learning to continuously optimize promotion thresholds without centralizing user data:</p>
-<p><span class="math display"><em>θ</em><sub><em>t</em> + 1</sub><sup>(<em>i</em>)</sup> = <em>θ</em><sub><em>t</em></sub><sup>(<em>i</em>)</sup> − <em>η</em>∇<sub><em>θ</em></sub>ℒ<sub><em>l</em><em>o</em><em>c</em><em>a</em><em>l</em></sub><sup>(<em>i</em>)</sup>(<em>θ</em><sub><em>t</em></sub>)</span></p>
-<p>where <span class="math inline"><em>θ</em><sup>(<em>i</em>)</sup></span> represents local model parameters for node <span class="math inline"><em>i</em></span>, and <span class="math inline">ℒ<sub><em>l</em><em>o</em><em>c</em><em>a</em><em>l</em></sub></span> is the local loss function computed on private user interactions.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FederatedPromotionLearner:</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, num_nodes, learning_rate<span class="op">=</span><span class="fl">0.01</span>):</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nodes <span class="op">=</span> [LocalNode(i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num_nodes)]</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.global_thresholds <span class="op">=</span> {</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;hesitation&#39;</span>: <span class="fl">0.5</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;confusion&#39;</span>: <span class="fl">0.6</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;error_loop&#39;</span>: <span class="fl">0.7</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;assist_ready&#39;</span>: <span class="fl">0.8</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.lr <span class="op">=</span> learning_rate</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> federated_round(<span class="va">self</span>):</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Local updates with privacy preservation</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        local_gradients <span class="op">=</span> []</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> node <span class="kw">in</span> <span class="va">self</span>.nodes:</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Compute gradient on local data with DP noise</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>            grad <span class="op">=</span> node.compute_gradient(<span class="va">self</span>.global_thresholds)</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>            noise <span class="op">=</span> np.random.laplace(<span class="dv">0</span>, <span class="dv">1</span><span class="op">/</span>node.privacy_budget)</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>            grad_private <span class="op">=</span> grad <span class="op">+</span> noise</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>            local_gradients.append(grad_private)</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Secure aggregation</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        avg_gradient <span class="op">=</span> <span class="va">self</span>.secure_aggregate(local_gradients)</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Update global thresholds</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> key <span class="kw">in</span> <span class="va">self</span>.global_thresholds:</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.global_thresholds[key] <span class="op">-=</span> <span class="va">self</span>.lr <span class="op">*</span> avg_gradient[key]</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.global_thresholds[key] <span class="op">=</span> np.clip(</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.global_thresholds[key], <span class="fl">0.1</span>, <span class="fl">0.95</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> secure_aggregate(<span class="va">self</span>, gradients):</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Homomorphic aggregation simulation</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        encrypted_sum <span class="op">=</span> <span class="va">self</span>.he_sum(gradients)</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.he_decrypt(encrypted_sum) <span class="op">/</span> <span class="bu">len</span>(gradients)</span></code></pre></div>
-<h1 id="compliance--privacy-architecture">Compliance &amp; Privacy Architecture</h1>
+<pre><code class="language-math">\begin{equation}
+\theta_{t+1}^{(i)} = \theta_t^{(i)} - \eta \nabla_{\theta} \mathcal{L}_{local}^{(i)}(\theta_t)
+\end{equation}
+</code></pre>
+<p>where $<code>\theta^{(i)}</code>$ represents local model parameters for node $<code>i</code>$, and $<code>\mathcal{L}_{local}</code>$ is the local loss function computed on private user interactions.</p>
+<pre><code class="language-python">class FederatedPromotionLearner:
+    def __init__(self, num_nodes, learning_rate=0.01):
+        self.nodes = [LocalNode(i) for i in range(num_nodes)]
+        self.global_thresholds = {
+            'hesitation': 0.5,
+            'confusion': 0.6,
+            'error_loop': 0.7,
+            'assist_ready': 0.8
+        }
+        self.lr = learning_rate
+
+    def federated_round(self):
+        # Local updates with privacy preservation
+        local_gradients = []
+        for node in self.nodes:
+            # Compute gradient on local data with DP noise
+            grad = node.compute_gradient(self.global_thresholds)
+            noise = np.random.laplace(0, 1/node.privacy_budget)
+            grad_private = grad + noise
+            local_gradients.append(grad_private)
+
+        # Secure aggregation
+        avg_gradient = self.secure_aggregate(local_gradients)
+
+        # Update global thresholds
+        for key in self.global_thresholds:
+            self.global_thresholds[key] -= self.lr * avg_gradient[key]
+            self.global_thresholds[key] = np.clip(
+                self.global_thresholds[key], 0.1, 0.95
+            )
+
+    def secure_aggregate(self, gradients):
+        # Homomorphic aggregation simulation
+        encrypted_sum = self.he_sum(gradients)
+        return self.he_decrypt(encrypted_sum) / len(gradients)
+</code></pre>
+<h1 id="compliance-privacy-architecture">Compliance &amp; Privacy Architecture</h1>
 <h2 id="zero-knowledge-proof-integration">Zero-Knowledge Proof Integration</h2>
 <p>Every intention state transition generates a zero-knowledge proof that validates the transition without revealing the actual state:</p>
-<p><span class="math display"><em>π</em><sub><em>t</em><em>r</em><em>a</em><em>n</em><em>s</em><em>i</em><em>t</em><em>i</em><em>o</em><em>n</em></sub> = ZKP.Prove{(<em>I</em><sub><em>p</em><em>r</em><em>e</em><em>v</em></sub>, <em>I</em><sub><em>c</em><em>u</em><em>r</em><em>r</em></sub>, <em>τ</em>) : ValidTransition(<em>I</em><sub><em>p</em><em>r</em><em>e</em><em>v</em></sub>, <em>I</em><sub><em>c</em><em>u</em><em>r</em><em>r</em></sub>, <em>τ</em>) = 1}</span></p>
+<pre><code class="language-math">\begin{equation}
+\pi_{transition} = \text{ZKP.Prove}\left\{(I_{prev}, I_{curr}, \tau): \text{ValidTransition}(I_{prev}, I_{curr}, \tau) = 1\right\}
+\end{equation}
+</code></pre>
 <h2 id="homomorphic-telemetry-aggregation">Homomorphic Telemetry Aggregation</h2>
 <p>The system employs partial homomorphic encryption to enable aggregate analysis while maintaining individual privacy:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> <span class="op">{</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    paillier_pubkey_t<span class="op">*</span> pubkey<span class="op">;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    paillier_prvkey_t<span class="op">*</span> prvkey<span class="op">;</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    mpz_t aggregate_state<span class="op">;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    uint32_t participant_count<span class="op">;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> he_telemetry_aggregator_t<span class="op">;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> aggregate_intention_telemetry<span class="op">(</span>he_telemetry_aggregator_t<span class="op">*</span> agg<span class="op">,</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                                 intention_telemetry_t<span class="op">*</span> telemetry<span class="op">[],</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                                 size_t count<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    mpz_init_set_ui<span class="op">(</span>agg<span class="op">-&gt;</span>aggregate_state<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">for</span> <span class="op">(</span>size_t i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Encrypt individual telemetry</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        paillier_plaintext_t<span class="op">*</span> pt <span class="op">=</span> paillier_plaintext_from_bytes<span class="op">(</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>            telemetry<span class="op">[</span>i<span class="op">]-&gt;</span>data<span class="op">,</span> telemetry<span class="op">[</span>i<span class="op">]-&gt;</span>len</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="op">);</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        paillier_ciphertext_t<span class="op">*</span> ct <span class="op">=</span> paillier_enc<span class="op">(</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>            NULL<span class="op">,</span> agg<span class="op">-&gt;</span>pubkey<span class="op">,</span> pt<span class="op">,</span> paillier_get_rand_devrandom</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">);</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Homomorphic addition</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        paillier_mul<span class="op">(</span>agg<span class="op">-&gt;</span>pubkey<span class="op">,</span> agg<span class="op">-&gt;</span>aggregate_state<span class="op">,</span> </span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                     agg<span class="op">-&gt;</span>aggregate_state<span class="op">,</span> ct<span class="op">);</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Clean up</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        paillier_freeplaintext<span class="op">(</span>pt<span class="op">);</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        paillier_freeciphertext<span class="op">(</span>ct<span class="op">);</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    agg<span class="op">-&gt;</span>participant_count <span class="op">=</span> count<span class="op">;</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> HE_SUCCESS<span class="op">;</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<pre><code class="language-objectivec">typedef struct {
+    paillier_pubkey_t* pubkey;
+    paillier_prvkey_t* prvkey;
+    mpz_t aggregate_state;
+    uint32_t participant_count;
+} he_telemetry_aggregator_t;
+
+int aggregate_intention_telemetry(he_telemetry_aggregator_t* agg,
+                                 intention_telemetry_t* telemetry[],
+                                 size_t count) {
+    mpz_init_set_ui(agg-&gt;aggregate_state, 0);
+
+    for (size_t i = 0; i &lt; count; i++) {
+        // Encrypt individual telemetry
+        paillier_plaintext_t* pt = paillier_plaintext_from_bytes(
+            telemetry[i]-&gt;data, telemetry[i]-&gt;len
+        );
+        paillier_ciphertext_t* ct = paillier_enc(
+            NULL, agg-&gt;pubkey, pt, paillier_get_rand_devrandom
+        );
+
+        // Homomorphic addition
+        paillier_mul(agg-&gt;pubkey, agg-&gt;aggregate_state, 
+                     agg-&gt;aggregate_state, ct);
+
+        // Clean up
+        paillier_freeplaintext(pt);
+        paillier_freeciphertext(ct);
+    }
+
+    agg-&gt;participant_count = count;
+    return HE_SUCCESS;
+}
+</code></pre>
 <h2 id="probabilistic-throttling-mechanism">Probabilistic Throttling Mechanism</h2>
 <p>To prevent assistance fatigue while maintaining responsiveness to genuine distress, the system implements probabilistic throttling:</p>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 P(\text{show\_assistance}) = \min\left(1, \frac{\exp(\alpha \cdot urgency)}{\exp(\alpha \cdot urgency) + \exp(\beta \cdot fatigue)}\right)
-\end{equation}$$</span></p>
-<p>where <span class="math inline"><em>u</em><em>r</em><em>g</em><em>e</em><em>n</em><em>c</em><em>y</em></span> increases with detected distress signals and <span class="math inline"><em>f</em><em>a</em><em>t</em><em>i</em><em>g</em><em>u</em><em>e</em></span> accumulates with repeated assistance offers.</p>
+\end{equation}
+</code></pre>
+<p>where $<code>urgency</code>$ increases with detected distress signals and $<code>fatigue</code>$ accumulates with repeated assistance offers.</p>
 <h1 id="entropy-flow-diagram">Entropy Flow Diagram</h1>
 <figure id="fig:entropy_flow" data-latex-placement="H">
 
@@ -329,135 +325,96 @@ P(\text{show\_assistance}) = \min\left(1, \frac{\exp(\alpha \cdot urgency)}{\exp
 </figure>
 
 <h1 id="reference-implementation-pseudocode">Reference Implementation Pseudocode</h1>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> IntentionPromotionEngine:</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.knn_graph <span class="op">=</span> BehavioralGraph()</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.entropy_tracker <span class="op">=</span> EntropyTracker()</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.he_aggregator <span class="op">=</span> HomomorphicAggregator()</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.signal_generator <span class="op">=</span> AssistiveSignalGenerator()</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.throttle_controller <span class="op">=</span> ProbabilisticThrottle()</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> process_interaction(<span class="va">self</span>, user_event):</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Update entropy with Argon2i seeding</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        entropy_delta <span class="op">=</span> <span class="va">self</span>.entropy_tracker.update(</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>            user_event, </span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            seed_function<span class="op">=</span>argon2i_hash</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Detect intention via k-NN graph</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        intention, confidence <span class="op">=</span> <span class="va">self</span>.knn_graph.classify(</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>            user_event,</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>            entropy_delta</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Check promotion criteria with ZKP</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.should_promote(intention, confidence):</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Generate ZK proof of valid promotion</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>            proof <span class="op">=</span> <span class="va">self</span>.generate_zkp(intention, confidence)</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Check throttling</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="va">self</span>.throttle_controller.allow_promotion():</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Create encrypted ticket</span></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>                ticket <span class="op">=</span> <span class="va">self</span>.create_secure_ticket(</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>                    intention,</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>                    proof,</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>                    <span class="va">self</span>.he_aggregator</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>                </span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Generate assistive signals</span></span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>                visual_signal <span class="op">=</span> <span class="va">self</span>.signal_generator.create_visual(</span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>                    intention</span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>                audio_signal <span class="op">=</span> <span class="va">self</span>.signal_generator.create_morse(</span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>                    intention</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>                </span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> PromotionResult(</span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>                    ticket<span class="op">=</span>ticket,</span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>                    visual<span class="op">=</span>visual_signal,</span>
-<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>                    audio<span class="op">=</span>audio_signal,</span>
-<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>                    confidence<span class="op">=</span>confidence</span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> should_promote(<span class="va">self</span>, intention, confidence):</span>
-<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Federated learned thresholds</span></span>
-<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>        threshold <span class="op">=</span> <span class="va">self</span>.get_federated_threshold(intention)</span>
-<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> confidence <span class="op">&gt;</span> threshold <span class="kw">and</span> intention <span class="op">!=</span> BASELINE</span>
-<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> create_secure_ticket(<span class="va">self</span>, intention, proof, aggregator):</span>
-<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>        <span class="co"># P2P routing based on severity</span></span>
-<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>        severity <span class="op">=</span> <span class="va">self</span>.map_intention_to_severity(intention)</span>
-<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>        route <span class="op">=</span> <span class="va">self</span>.determine_p2p_route(severity)</span>
-<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Encrypt with homomorphic scheme</span></span>
-<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>        ticket_data <span class="op">=</span> {</span>
-<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;intention&#39;</span>: intention,</span>
-<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;proof&#39;</span>: proof,</span>
-<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;timestamp&#39;</span>: time.time(),</span>
-<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;severity&#39;</span>: severity</span>
-<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>        encrypted_ticket <span class="op">=</span> aggregator.encrypt(ticket_data)</span>
-<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> P2PTicket(encrypted_ticket, route)</span></code></pre></div>
+<pre><code class="language-python">class IntentionPromotionEngine:
+    def __init__(self):
+        self.knn_graph = BehavioralGraph()
+        self.entropy_tracker = EntropyTracker()
+        self.he_aggregator = HomomorphicAggregator()
+        self.signal_generator = AssistiveSignalGenerator()
+        self.throttle_controller = ProbabilisticThrottle()
+
+    def process_interaction(self, user_event):
+        # Update entropy with Argon2i seeding
+        entropy_delta = self.entropy_tracker.update(
+            user_event, 
+            seed_function=argon2i_hash
+        )
+
+        # Detect intention via k-NN graph
+        intention, confidence = self.knn_graph.classify(
+            user_event,
+            entropy_delta
+        )
+
+        # Check promotion criteria with ZKP
+        if self.should_promote(intention, confidence):
+            # Generate ZK proof of valid promotion
+            proof = self.generate_zkp(intention, confidence)
+
+            # Check throttling
+            if self.throttle_controller.allow_promotion():
+                # Create encrypted ticket
+                ticket = self.create_secure_ticket(
+                    intention,
+                    proof,
+                    self.he_aggregator
+                )
+
+                # Generate assistive signals
+                visual_signal = self.signal_generator.create_visual(
+                    intention
+                )
+                audio_signal = self.signal_generator.create_morse(
+                    intention
+                )
+
+                return PromotionResult(
+                    ticket=ticket,
+                    visual=visual_signal,
+                    audio=audio_signal,
+                    confidence=confidence
+                )
+
+        return None
+
+    def should_promote(self, intention, confidence):
+        # Federated learned thresholds
+        threshold = self.get_federated_threshold(intention)
+        return confidence &gt; threshold and intention != BASELINE
+
+    def create_secure_ticket(self, intention, proof, aggregator):
+        # P2P routing based on severity
+        severity = self.map_intention_to_severity(intention)
+        route = self.determine_p2p_route(severity)
+
+        # Encrypt with homomorphic scheme
+        ticket_data = {
+            'intention': intention,
+            'proof': proof,
+            'timestamp': time.time(),
+            'severity': severity
+        }
+
+        encrypted_ticket = aggregator.encrypt(ticket_data)
+        return P2PTicket(encrypted_ticket, route)
+</code></pre>
 <h1 id="compliance-checklist">Compliance Checklist</h1>
 <div id="tab:compliance">
 
-<table>
-<thead>
-<tr>
-<th style="text-align: left;"><strong>Requirement</strong></th>
-<th style="text-align: center;"><strong>Status</strong></th>
-<th style="text-align: left;"><strong>Implementation</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">No plaintext intention logging</td>
-<td style="text-align: center;"></td>
-<td style="text-align: left;">All states encrypted via Argon2i</td>
-</tr>
-<tr>
-<td style="text-align: left;">Privacy-preserving aggregation</td>
-<td style="text-align: center;"></td>
-<td style="text-align: left;">Paillier homomorphic encryption</td>
-</tr>
-<tr>
-<td style="text-align: left;">Zero-knowledge transitions</td>
-<td style="text-align: center;"></td>
-<td style="text-align: left;">ZKP for each state change</td>
-</tr>
-<tr>
-<td style="text-align: left;">Disability mode protection</td>
-<td style="text-align: center;"></td>
-<td style="text-align: left;">Separate entropy pools</td>
-</tr>
-<tr>
-<td style="text-align: left;">Network isolation</td>
-<td style="text-align: center;"></td>
-<td style="text-align: left;">Local telemetry only</td>
-</tr>
-<tr>
-<td style="text-align: left;">Federated learning</td>
-<td style="text-align: center;"></td>
-<td style="text-align: left;">No centralized models</td>
-</tr>
-<tr>
-<td style="text-align: left;">ARIA compliance</td>
-<td style="text-align: center;"></td>
-<td style="text-align: left;">Full accessibility markup</td>
-</tr>
-<tr>
-<td style="text-align: left;">Throttling mechanism</td>
-<td style="text-align: center;"></td>
-<td style="text-align: left;">Probabilistic suppression</td>
-</tr>
-</tbody>
-</table>
-<p>Privacy and Compliance Verification Matrix</p>
-</div>
+| **Requirement**                | **Status** | **Implementation**               |
+|:-------------------------------|:----------:|:---------------------------------|
+| No plaintext intention logging |            | All states encrypted via Argon2i |
+| Privacy-preserving aggregation |            | Paillier homomorphic encryption  |
+| Zero-knowledge transitions     |            | ZKP for each state change        |
+| Disability mode protection     |            | Separate entropy pools           |
+| Network isolation              |            | Local telemetry only             |
+| Federated learning             |            | No centralized models            |
+| ARIA compliance                |            | Full accessibility markup        |
+| Throttling mechanism           |            | Probabilistic suppression        |
 
+Privacy and Compliance Verification Matrix
+
+</div>
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-obinexus-intention-promotion-and-assistive-telemetry-architecture</code></p>

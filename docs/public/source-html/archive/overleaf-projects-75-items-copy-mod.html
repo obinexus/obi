@@ -66,74 +66,116 @@
 <h2 id="main">main</h2>
 <div class="center">
 
-<p><a href="https://www.obinexus.org">https://www.obinexus.org</a></p>
+<https://www.obinexus.org>
+
 </div>
 
 <h1 id="introduction">Introduction</h1>
 <p>The OBINexus Proto-1 platform implements a dual-spline trajectory system designed to satisfy two critical operational requirements:</p>
-<ol type="1">
-<li><p>Terminal velocity targeting for hardened structure penetration</p></li>
-<li><p>Dynamic collision avoidance within hypersonic missile swarms</p></li>
+<ol>
+<li>
+<p>Terminal velocity targeting for hardened structure penetration</p>
+</li>
+<li>
+<p>Dynamic collision avoidance within hypersonic missile swarms</p>
+</li>
 </ol>
 <p>This document establishes the mathematical foundations, coordinate system transformations, and validation protocols necessary for autonomous operation under human-out-of-the-loop constraints. All modules are built using the Rift execution stage system with XML-based manifests (‘gov.riftrcN.in.xml‘) that govern the compilation pipeline from source to deployable artifacts.</p>
 <h1 id="dual-spline-system-definition">Dual-Spline System Definition</h1>
 <h2 id="spline-a-bunker-busting-trajectory">Spline A: Bunker-Busting Trajectory</h2>
 <div class="definition">
 
-<p><strong>Definition 1</strong> (Bunker-Busting Spline). Let <span class="math inline"><em>f</em><sub><em>A</em></sub> : [0, <em>x</em><sub><em>T</em></sub>] → ℝ<sup>3</sup></span> be a cubic spline function defined as:</p>
-<p><span class="math display"><em>f</em><sub><em>A</em></sub>(<em>x</em>) = <em>a</em><sub><em>A</em></sub><em>x</em><sup>3</sup> + <em>b</em><sub><em>A</em></sub><em>x</em><sup>2</sup> + <em>c</em><sub><em>A</em></sub><em>x</em> + <em>d</em><sub><em>A</em></sub></span></p>
-<p>where <span class="math inline"><em>x</em> ∈ [0, <em>x</em><sub><em>T</em></sub>]</span> represents normalized time, and coefficients <span class="math inline">{<em>a</em><sub><em>A</em></sub>, <em>b</em><sub><em>A</em></sub>, <em>c</em><sub><em>A</em></sub>, <em>d</em><sub><em>A</em></sub>} ∈ ℝ</span> are calibrated for terminal velocity <span class="math inline"><em>V</em><sub><em>T</em></sub> ∈ [10, 12] Mach</span>.</p>
+**Definition 1** (Bunker-Busting Spline). Let $`f_A: [0, x_T] \rightarrow \mathbb{R}^3`$ be a cubic spline function defined as:
+
+<pre><code class="language-math">\begin{equation}
+f_A(x) = a_Ax^3 + b_Ax^2 + c_Ax + d_A
+\end{equation}
+</code></pre>
+
+where $`x \in [0, x_T]`$ represents normalized time, and coefficients $`\{a_A, b_A, c_A, d_A\} \in \mathbb{R}`$ are calibrated for terminal velocity $`V_T \in [10, 12]\text{ Mach}`$.
+
 </div>
 
 <h3 id="derivative-hierarchy">Derivative Hierarchy</h3>
 <p>The complete derivative chain for Spline A is:</p>
-<p><span class="math display">$$\begin{align}
+<pre><code class="language-math">\begin{align}
 D_1[f_A](x) &amp;= f'_A(x) = 3a_Ax^2 + 2b_Ax + c_A \quad \text{(velocity)} \\
 D_2[f_A](x) &amp;= f''_A(x) = 6a_Ax + 2b_A \quad \text{(acceleration)} \\
 D_3[f_A](x) &amp;= f'''_A(x) = 6a_A \quad \text{(jerk)} \\
 D_4[f_A](x) &amp;= f^{(4)}_A(x) = 0 \quad \text{(snap)}
-\end{align}$$</span></p>
+\end{align}
+</code></pre>
 <div class="theorem">
 
-<p><strong>Theorem 1</strong> (Terminal Velocity Convergence). <em>For calibrated coefficients satisfying <span class="math inline">$a_A = -\frac{V_T - V_0}{3x_T^2}$</span>, the bunker-busting spline achieves terminal velocity <span class="math inline"><em>V</em><sub><em>T</em></sub></span> at time <span class="math inline"><em>x</em><sub><em>T</em></sub></span> with <span class="math inline"><em>D</em><sub>2</sub>[<em>f</em><sub><em>A</em></sub>](<em>x</em><sub><em>T</em></sub>) = 0</span>.</em></p>
+**Theorem 1** (Terminal Velocity Convergence). *For calibrated coefficients satisfying $`a_A = -\frac{V_T - V_0}{3x_T^2}`$, the bunker-busting spline achieves terminal velocity $`V_T`$ at time $`x_T`$ with $`D_2[f_A](x_T) = 0`$.*
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> Setting <span class="math inline"><em>D</em><sub>2</sub>[<em>f</em><sub><em>A</em></sub>](<em>x</em><sub><em>T</em></sub>) = 0</span>:</p>
-<p><span class="math display">$$\begin{equation}
+*Proof.* Setting $`D_2[f_A](x_T) = 0`$:
+
+<pre><code class="language-math">\begin{equation}
 6a_Ax_T + 2b_A = 0 \implies x_T = -\frac{b_A}{3a_A}
-\end{equation}$$</span></p>
-<p>Substituting calibrated coefficients:</p>
-<p><span class="math display"><em>D</em><sub>1</sub>[<em>f</em><sub><em>A</em></sub>](<em>x</em><sub><em>T</em></sub>) = 3<em>a</em><sub><em>A</em></sub><em>x</em><sub><em>T</em></sub><sup>2</sup> + 2<em>b</em><sub><em>A</em></sub><em>x</em><sub><em>T</em></sub> + <em>c</em><sub><em>A</em></sub> = <em>V</em><sub><em>T</em></sub></span></p>
-<p>Since <span class="math inline"><em>D</em><sub><em>n</em></sub>[<em>f</em><sub><em>A</em></sub>](<em>x</em>) = 0</span> for <span class="math inline"><em>n</em> ≥ 4</span>, velocity convergence is guaranteed. ◻</p>
+\end{equation}
+</code></pre>
+
+
+Substituting calibrated coefficients:
+
+<pre><code class="language-math">\begin{equation}
+D_1[f_A](x_T) = 3a_Ax_T^2 + 2b_Ax_T + c_A = V_T
+\end{equation}
+</code></pre>
+
+
+Since $`D_n[f_A](x) = 0`$ for $`n \geq 4`$, velocity convergence is guaranteed. ◻
+
 </div>
 
 <h2 id="spline-b-mutual-exclusion-trajectory">Spline B: Mutual Exclusion Trajectory</h2>
 <div class="definition">
 
-<p><strong>Definition 2</strong> (Mutual Exclusion Spline). For a swarm of <span class="math inline"><em>N</em></span> missiles, let <span class="math inline">{<em>f</em><sub><em>B</em>, <em>i</em></sub>}<sub><em>i</em> = 1</sub><sup><em>N</em></sup></span> be the set of mutual exclusion splines where each <span class="math inline"><em>f</em><sub><em>B</em>, <em>i</em></sub> : [0, <em>x</em><sub><em>T</em></sub>] → ℝ<sup>3</sup></span> maintains:</p>
-<p><span class="math display">∀<em>i</em> ≠ <em>j</em>, ∀<em>x</em> ∈ [0, <em>x</em><sub><em>T</em></sub>] : ||<em>f</em><sub><em>B</em>, <em>i</em></sub>(<em>x</em>) − <em>f</em><sub><em>B</em>, <em>j</em></sub>(<em>x</em>)||<sub>2</sub> &gt; <em>δ</em><sub>buffer</sub></span></p>
+**Definition 2** (Mutual Exclusion Spline). For a swarm of $`N`$ missiles, let $`\{f_{B,i}\}_{i=1}^N`$ be the set of mutual exclusion splines where each $`f_{B,i}: [0, x_T] \rightarrow \mathbb{R}^3`$ maintains:
+
+<pre><code class="language-math">\begin{equation}
+\forall i \neq j, \forall x \in [0, x_T]: ||f_{B,i}(x) - f_{B,j}(x)||_2 &gt; \delta_{\text{buffer}}
+\end{equation}
+</code></pre>
+
+
 </div>
 
 <h3 id="gradient-uniqueness-constraint">Gradient Uniqueness Constraint</h3>
 <div class="axiom">
 
-<p><strong>Axiom 1</strong> (Non-Intersecting Gradients). The gradient fields of distinct mutual exclusion splines must satisfy:</p>
-<p><span class="math display">∀<em>i</em> ≠ <em>j</em>, ∀<em>x</em> ∈ [0, <em>x</em><sub><em>T</em></sub>] : ∇<em>f</em><sub><em>B</em>, <em>i</em></sub>(<em>x</em>) ≠ ∇<em>f</em><sub><em>B</em>, <em>j</em></sub>(<em>x</em>)</span></p>
+**Axiom 1** (Non-Intersecting Gradients). The gradient fields of distinct mutual exclusion splines must satisfy:
+
+<pre><code class="language-math">\begin{equation}
+\forall i \neq j, \forall x \in [0, x_T]: \nabla f_{B,i}(x) \neq \nabla f_{B,j}(x)
+\end{equation}
+</code></pre>
+
+
 </div>
 
 <h1 id="coordinate-system-integration">Coordinate System Integration</h1>
 <h2 id="triaxial-coordinate-model">Triaxial Coordinate Model</h2>
 <p>The OBINexus system operates across three coordinate representations:</p>
-<ol type="1">
-<li><p><strong>Cartesian</strong>: <span class="math inline">(<em>x</em>, <em>y</em>, <em>z</em>) ∈ ℝ<sup>3</sup></span></p></li>
-<li><p><strong>Polar</strong>: <span class="math inline">(<em>r</em>, <em>θ</em>, <em>ϕ</em>)</span> where <span class="math inline"><em>r</em> = ||<em>f</em>(<em>x</em>)||<sub>2</sub></span></p></li>
-<li><p><strong>Hybrid Triaxial</strong>: <span class="math inline">(<em>ρ</em>, <em>ψ</em>, <em>z</em>)</span> combining cylindrical and Cartesian elements</p></li>
+<ol>
+<li>
+<p><strong>Cartesian</strong>: $<code>(x, y, z) \in \mathbb{R}^3</code>$</p>
+</li>
+<li>
+<p><strong>Polar</strong>: $<code>(r, \theta, \phi)</code>$ where $<code>r = ||f(x)||_2</code>$</p>
+</li>
+<li>
+<p><strong>Hybrid Triaxial</strong>: $<code>(\rho, \psi, z)</code>$ combining cylindrical and Cartesian elements</p>
+</li>
 </ol>
 <h3 id="coordinate-transformation-matrix">Coordinate Transformation Matrix</h3>
 <p>The transformation between coordinate systems is governed by:</p>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 \begin{bmatrix}
 x \\ y \\ z
 \end{bmatrix} = 
@@ -147,45 +189,63 @@ r\cos\phi
 \rho\sin\psi \\
 z
 \end{bmatrix}
-\end{equation}$$</span></p>
+\end{equation}
+</code></pre>
 <h2 id="zone-based-behavior-rules">Zone-Based Behavior Rules</h2>
 <div class="definition">
 
-<p><strong>Definition 3</strong> (Altitude Zones). The operational airspace is partitioned into three zones:</p>
-<p><span class="math display">$$\begin{align}
+**Definition 3** (Altitude Zones). The operational airspace is partitioned into three zones:
+
+<pre><code class="language-math">\begin{align}
 \text{High Zone}: \quad &amp; z \in [8, 10] \text{ km} \\
 \text{Mid Zone}: \quad &amp; z \in [4, 8] \text{ km} \\
 \text{Low Zone}: \quad &amp; z \in [0, 4] \text{ km}
-\end{align}$$</span></p>
+\end{align}
+</code></pre>
+
+
 </div>
 
 <p>Zone-specific spline adaptations:</p>
 <ul>
-<li><p><strong>High Zone</strong>: Maximum velocity, minimal curvature (<span class="math inline">|<em>D</em><sub>3</sub>[<em>f</em>]| &lt; <em>ϵ</em><sub><em>H</em></sub></span>)</p></li>
-<li><p><strong>Mid Zone</strong>: Evasive maneuvering, maximum jerk (<span class="math inline">|<em>D</em><sub>3</sub>[<em>f</em>]| = max </span>)</p></li>
-<li><p><strong>Low Zone</strong>: Terminal convergence, zero acceleration (<span class="math inline"><em>D</em><sub>2</sub>[<em>f</em>] → 0</span>)</p></li>
+<li>
+<p><strong>High Zone</strong>: Maximum velocity, minimal curvature ($<code>|D_3[f]| &lt; \epsilon_H</code>$)</p>
+</li>
+<li>
+<p><strong>Mid Zone</strong>: Evasive maneuvering, maximum jerk ($<code>|D_3[f]| = \max</code>$)</p>
+</li>
+<li>
+<p><strong>Low Zone</strong>: Terminal convergence, zero acceleration ($<code>D_2[f] \rightarrow 0</code>$)</p>
+</li>
 </ul>
 <h1 id="collision-buffer-layer">Collision Buffer Layer</h1>
 <h2 id="buffer-envelope-definition">Buffer Envelope Definition</h2>
 <div class="definition">
 
-<p><strong>Definition 4</strong> (Dynamic Buffer Zone). The collision buffer <span class="math inline"><em>δ</em><sub>buffer</sub>(<em>x</em>, <em>v</em>)</span> is velocity-dependent:</p>
-<p><span class="math display"><em>δ</em><sub>buffer</sub>(<em>x</em>, <em>v</em>) = <em>δ</em><sub>0</sub> + <em>α</em> ⋅ ||<em>v</em>||+<em>β</em> ⋅ ||<em>D</em><sub>2</sub>[<em>f</em>](<em>x</em>)||</span></p>
-<p>where <span class="math inline"><em>δ</em><sub>0</sub></span> is the minimum separation distance, <span class="math inline"><em>α</em></span> and <span class="math inline"><em>β</em></span> are scaling coefficients.</p>
+**Definition 4** (Dynamic Buffer Zone). The collision buffer $`\delta_{\text{buffer}}(x, v)`$ is velocity-dependent:
+
+<pre><code class="language-math">\begin{equation}
+\delta_{\text{buffer}}(x, v) = \delta_0 + \alpha \cdot ||v|| + \beta \cdot ||D_2[f](x)||
+\end{equation}
+</code></pre>
+
+where $`\delta_0`$ is the minimum separation distance, $`\alpha`$ and $`\beta`$ are scaling coefficients.
+
 </div>
 
 <h2 id="separation-guarantee-proof">Separation Guarantee Proof</h2>
 <div class="theorem">
 
-<p><strong>Theorem 2</strong> (Swarm Separation Invariant). *Given proper initialization, the mutual exclusion property is maintained:</p>
-<p><span class="math display">$$\begin{equation}
+**Theorem 2** (Swarm Separation Invariant). *Given proper initialization, the mutual exclusion property is maintained:
+
+<pre><code class="language-math">\begin{equation}
 \forall i \neq j, \forall x \in [0, x_T]: ||f_i(x) - f_j(x)||_2 &gt; \delta_{\text{buffer}}(x, v)
 \end{equation}
 ```*
 
 &lt;/div&gt;
 
-&lt;div class="proof"&gt;
+&lt;div class=&quot;proof&quot;&gt;
 
 *Proof.* By contradiction: Assume $`\exists x^* \in [0, x_T]`$ where $`||f_i(x^*) - f_j(x^*)||_2 \leq \delta_{\text{buffer}}`$.
 
@@ -193,21 +253,27 @@ Since $`\nabla f_i(x) \neq \nabla f_j(x)`$ (by Axiom 2.2), the trajectories have
 ``` math
 \begin{equation}
 \frac{d}{dx}||f_i(x) - f_j(x)||_2 &gt; 0 \text{ near } x^*
-\end{equation}$$</span></p>
-<p>This contradicts the assumption of intersection, proving separation is maintained. ◻</p>
+\end{equation}
+</code></pre>
+
+
+This contradicts the assumption of intersection, proving separation is maintained. ◻
+
 </div>
 
 <h1 id="inverse-kinematic-mitigation">Inverse Kinematic Mitigation</h1>
 <h2 id="ik-angle-derivation">IK Angle Derivation</h2>
 <p>The inverse kinematic mitigation angle adapts trajectory curvature based on instantaneous dynamics:</p>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 \theta_{IK}(x) = \arctan\left(\frac{D_1[f](x)}{1 + |D_2[f](x)|}\right)
-\end{equation}$$</span></p>
+\end{equation}
+</code></pre>
 <h2 id="curvature-adaptation-protocol">Curvature Adaptation Protocol</h2>
 <div class="proposition">
 
-<p><strong>Proposition 3</strong> (Adaptive Curvature). *The spline curvature <span class="math inline"><em>κ</em>(<em>x</em>)</span> relates to <span class="math inline"><em>θ</em><sub><em>I</em><em>K</em></sub></span> through:</p>
-<p><span class="math display">$$\begin{equation}
+**Proposition 3** (Adaptive Curvature). *The spline curvature $`\kappa(x)`$ relates to $`\theta_{IK}`$ through:
+
+<pre><code class="language-math">\begin{equation}
 \kappa(x) = \frac{|D_2[f](x)|}{(1 + |D_1[f](x)|^2)^{3/2}} \cdot \cos(\theta_{IK})
 \end{equation}
 ```*
@@ -218,7 +284,7 @@ This ensures smooth trajectory transitions while maintaining buffer constraints.
 
 # Graphical Trajectory Analysis
 
-&lt;figure data-latex-placement="htbp"&gt;
+&lt;figure data-latex-placement=&quot;htbp&quot;&gt;
 
 &lt;figcaption&gt;Dual-spline trajectory system showing Spline A (bunker-busting) and Spline B (mutual exclusion) paths with dynamic buffer zones and derivative annotations&lt;/figcaption&gt;
 &lt;/figure&gt;
@@ -227,9 +293,9 @@ This ensures smooth trajectory transitions while maintaining buffer constraints.
 
 ## Proof-Functor Architecture
 
-&lt;figure data-latex-placement="htbp"&gt;
+&lt;figure data-latex-placement=&quot;htbp&quot;&gt;
 
-&lt;figcaption&gt;Proof-Functor validation architecture with constructive (&lt;span class="math inline"&gt;ℱ&lt;sub&gt;&lt;em&gt;C&lt;/em&gt;&lt;/sub&gt;&lt;/span&gt;) and destructive (&lt;span class="math inline"&gt;ℱ&lt;sub&gt;&lt;em&gt;D&lt;/em&gt;&lt;/sub&gt;&lt;/span&gt;) paths&lt;/figcaption&gt;
+&lt;figcaption&gt;Proof-Functor validation architecture with constructive (&lt;span class=&quot;math inline&quot;&gt;ℱ&lt;sub&gt;&lt;em&gt;C&lt;/em&gt;&lt;/sub&gt;&lt;/span&gt;) and destructive (&lt;span class=&quot;math inline&quot;&gt;ℱ&lt;sub&gt;&lt;em&gt;D&lt;/em&gt;&lt;/sub&gt;&lt;/span&gt;) paths&lt;/figcaption&gt;
 &lt;/figure&gt;
 
 ## Validation Metrics
@@ -255,12 +321,17 @@ D_1[f](x) &amp;: \text{Velocity} \in [0, 12]\text{ Mach}\\
 D_2[f](x) &amp;: \text{Acceleration} \in [-g_{max}, g_{max}] \\
 D_3[f](x) &amp;: \text{Jerk} \in [-j_{max}, j_{max}] \\
 D_4[f](x) &amp;: \text{Snap} = 0 \text{ (cubic spline property)}
-\end{align}$$</span></p>
-<h2 id="terminal-convergence-verification">Terminal Convergence Verification</h2>
+\end{align}
+</code></pre>
+
+
+## Terminal Convergence Verification
+
 <div class="lemma">
 
-<p><strong>Lemma 4</strong> (Derivative Convergence). *At terminal point <span class="math inline"><em>x</em><sub><em>T</em></sub></span>:</p>
-<p><span class="math display">$$\begin{equation}
+**Lemma 4** (Derivative Convergence). *At terminal point $`x_T`$:
+
+<pre><code class="language-math">\begin{equation}
 \lim_{x \to x_T} D_n[f](x) = 
 \begin{cases}
 V_T &amp; n = 1 \\
@@ -315,7 +386,7 @@ All spline modules are tagged with state manifests using the rift execution stag
 
 ## Phase-Lock Protocol
 
-&lt;div class="definition"&gt;
+&lt;div class=&quot;definition&quot;&gt;
 
 **Definition 5** (Phase Transition Rules).
 ``` math
@@ -323,84 +394,123 @@ All spline modules are tagged with state manifests using the rift execution stag
 \text{Experimental} &amp;\rightarrow \text{Stable}: \quad \text{All validation metrics} &gt; 99.5\% \\
 \text{Stable} &amp;\rightarrow \text{Legacy}: \quad \text{Newer version deployed} \\
 \text{Legacy} &amp;\rightarrow \text{Archived}: \quad \text{No active deployments}
-\end{align}$$</span></p>
+\end{align}
+</code></pre>
+
+
 </div>
 
-<h2 id="rift-build-system-architecture">Rift Build System Architecture</h2>
-<p>The OBINexus build pipeline utilizes the Rift execution stage system:</p>
+## Rift Build System Architecture
+
+The OBINexus build pipeline utilizes the Rift execution stage system:
+
 <div class="definition">
 
-<p><strong>Definition 6</strong> (Rift Execution Stages). The build process progresses through numbered execution stages:</p>
-<p><span class="math display">$$\begin{align}
+**Definition 6** (Rift Execution Stages). The build process progresses through numbered execution stages:
+
+<pre><code class="language-math">\begin{align}
 \text{rift-0.exe} &amp;: \text{Initial compilation stage} \\
 \text{rift-1.exe} &amp;: \text{Dependency resolution} \\
 \text{rift-2.exe} &amp;: \text{Module linking} \\
 &amp;\vdots \\
 \text{rift-n.exe} &amp;: \text{Final deployment stage}
-\end{align}$$</span></p>
+\end{align}
+</code></pre>
+
+
 </div>
 
-<pre><code>Build Output Structure:
-+-- build/
-    +-- lib/
-    |   +-- libspline_core.so
-    |   +-- libspline_mutual_exclusion.so
-    |   +-- libspline_bunker_bust.so
-    +-- bin/
-    |   +-- spline_validator
-    |   +-- trajectory_compute
-    +-- obj/
-    |   +-- spline_core.o
-    |   +-- derivative_engine.o
-    |   +-- buffer_manager.o
-    +-- pkg/
-        +-- obinexus_spline_v3.2.1.pkg
-        +-- manifest.xml</code></pre>
-<p>Each ‘gov.riftrcN.in.xml‘ manifest governs the transformation from source modules to compiled artifacts, ensuring phase-locked builds across the execution pipeline.</p>
-<h2 id="build-system-nomenclature">Build System Nomenclature</h2>
+    Build Output Structure:
+    +-- build/
+        +-- lib/
+        |   +-- libspline_core.so
+        |   +-- libspline_mutual_exclusion.so
+        |   +-- libspline_bunker_bust.so
+        +-- bin/
+        |   +-- spline_validator
+        |   +-- trajectory_compute
+        +-- obj/
+        |   +-- spline_core.o
+        |   +-- derivative_engine.o
+        |   +-- buffer_manager.o
+        +-- pkg/
+            +-- obinexus_spline_v3.2.1.pkg
+            +-- manifest.xml
+
+Each ‘gov.riftrcN.in.xml‘ manifest governs the transformation from source modules to compiled artifacts, ensuring phase-locked builds across the execution pipeline.
+
+## Build System Nomenclature
+
 <div class="definition">
 
-<p><strong>Definition 7</strong> (Manifest Component Breakdown). The build manifest naming convention ‘gov.riftrcN.in.xml‘ decomposes as:</p>
-<ul>
-<li><p><code>gov</code>: Governance prefix indicating validated module</p></li>
-<li><p><code>riftrc</code>: Rift execution stage controller</p></li>
-<li><p><code>{N}</code>: Stage number (0 through n)</p></li>
-<li><p><code>.in</code>: Input module designation</p></li>
-<li><p><code>.xml</code>: eXtensible Markup Language build specification</p></li>
-</ul>
+**Definition 7** (Manifest Component Breakdown). The build manifest naming convention ‘gov.riftrcN.in.xml‘ decomposes as:
+
+- `gov`: Governance prefix indicating validated module
+
+- `riftrc`: Rift execution stage controller
+
+- `{N}`: Stage number (0 through n)
+
+- `.in`: Input module designation
+
+- `.xml`: eXtensible Markup Language build specification
+
 </div>
 
-<p>This nomenclature ensures traceable builds where each stage’s output becomes the next stage’s input, creating an auditable compilation chain from source to deployment.</p>
-<h1 id="conclusion">Conclusion</h1>
-<p>The OBINexus dual-spline trajectory system provides mathematically sound, operationally verified pathfinding for hypersonic missile swarms. Through fourth-order derivative analysis, triaxial coordinate transformations, and dynamic buffer management, the system achieves:</p>
-<ul>
-<li><p>Terminal velocity convergence at Mach 12</p></li>
-<li><p>Zero collision probability within swarms</p></li>
-<li><p>Complete validation coverage (no false negatives)</p></li>
-<li><p>SemVerX-compliant lifecycle governance</p></li>
-<li><p>Automated build pipeline via Rift execution stages (rift-0.exe through rift-n)</p></li>
-</ul>
-<p>All protocols presented herein are phase-locked, provable, and ready for production deployment under autonomous AI control. Build artifacts are generated through XML-based manifests (‘gov.riftrcN.in.xml‘) ensuring reproducible compilation and deployment across the OBINexus infrastructure.</p>
-<h1 id="spline-coefficient-calibration-formulas">Spline Coefficient Calibration Formulas</h1>
-<h2 id="bunker-busting-coefficients">Bunker-Busting Coefficients</h2>
-<p>Given initial velocity <span class="math inline"><em>V</em><sub>0</sub></span>, terminal velocity <span class="math inline"><em>V</em><sub><em>T</em></sub></span>, and terminal time <span class="math inline"><em>x</em><sub><em>T</em></sub></span>:</p>
-<p><span class="math display">$$\begin{align}
+This nomenclature ensures traceable builds where each stage’s output becomes the next stage’s input, creating an auditable compilation chain from source to deployment.
+
+# Conclusion
+
+The OBINexus dual-spline trajectory system provides mathematically sound, operationally verified pathfinding for hypersonic missile swarms. Through fourth-order derivative analysis, triaxial coordinate transformations, and dynamic buffer management, the system achieves:
+
+- Terminal velocity convergence at Mach 12
+
+- Zero collision probability within swarms
+
+- Complete validation coverage (no false negatives)
+
+- SemVerX-compliant lifecycle governance
+
+- Automated build pipeline via Rift execution stages (rift-0.exe through rift-n)
+
+All protocols presented herein are phase-locked, provable, and ready for production deployment under autonomous AI control. Build artifacts are generated through XML-based manifests (‘gov.riftrcN.in.xml‘) ensuring reproducible compilation and deployment across the OBINexus infrastructure.
+
+# Spline Coefficient Calibration Formulas
+
+## Bunker-Busting Coefficients
+
+Given initial velocity $`V_0`$, terminal velocity $`V_T`$, and terminal time $`x_T`$:
+
+
+<pre><code class="language-math">\begin{align}
 a_A &amp;= -\frac{V_T - V_0}{3x_T^2} \\
 b_A &amp;= \frac{3(V_T - V_0)}{2x_T} \\
 c_A &amp;= V_0 \\
 d_A &amp;= h_0 \quad \text{(initial altitude)}
-\end{align}$$</span></p>
-<h2 id="mutual-exclusion-coefficients">Mutual Exclusion Coefficients</h2>
-<p>For swarm member <span class="math inline"><em>i</em></span> with separation index <span class="math inline"><em>s</em><sub><em>i</em></sub></span>:</p>
-<p><span class="math display">$$\begin{align}
+\end{align}
+</code></pre>
+
+
+## Mutual Exclusion Coefficients
+
+For swarm member $`i`$ with separation index $`s_i`$:
+
+
+<pre><code class="language-math">\begin{align}
 a_{B,i} &amp;= a_A \cdot (1 + 0.1s_i) \\
 b_{B,i} &amp;= b_A \cdot (1 - 0.05s_i) \\
 c_{B,i} &amp;= c_A + 0.5s_i \\
 d_{B,i} &amp;= d_A + \delta_{\text{buffer}}\cdot s_i
-\end{align}$$</span></p>
-<h1 id="coordinate-transformation-matrices">Coordinate Transformation Matrices</h1>
-<h2 id="cartesian-to-polar">Cartesian to Polar</h2>
-<p><span class="math display">$$\begin{equation}
+\end{align}
+</code></pre>
+
+
+# Coordinate Transformation Matrices
+
+## Cartesian to Polar
+
+
+<pre><code class="language-math">\begin{equation}
 \begin{bmatrix}
 r \\ \theta \\ \phi
 \end{bmatrix} = 
@@ -409,9 +519,14 @@ r \\ \theta \\ \phi
 \arctan(y/x) \\
 \arccos(z/r)
 \end{bmatrix}
-\end{equation}$$</span></p>
-<h2 id="polar-to-hybrid-triaxial">Polar to Hybrid Triaxial</h2>
-<p><span class="math display">$$\begin{equation}
+\end{equation}
+</code></pre>
+
+
+## Polar to Hybrid Triaxial
+
+
+<pre><code class="language-math">\begin{equation}
 \begin{bmatrix}
 \rho \\ \psi \\ z
 \end{bmatrix} = 
@@ -420,66 +535,70 @@ r\sin\phi \\
 \theta \\
 r\cos\phi
 \end{bmatrix}
-\end{equation}$$</span></p>
-<h1 id="rift-build-manifest-example">Rift Build Manifest Example</h1>
-<p>Complete example of ‘gov.riftrc7.in.xml‘ for spline module compilation:</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;rift-build-manifest stage=&quot;7&quot;&gt;
-    &lt;metadata&gt;
-        &lt;module-id&gt;obinexus_spline_dual_path&lt;/module-id&gt;
-        &lt;rift-stage&gt;riftrc7&lt;/rift-stage&gt;
-        &lt;input-designation&gt;.in&lt;/input-designation&gt;
-        &lt;build-type&gt;PRODUCTION&lt;/build-type&gt;
-    &lt;/metadata&gt;
-    
-    &lt;source-modules&gt;
-        &lt;module src=&quot;spline_core.c&quot; target=&quot;obj/spline_core.o&quot;/&gt;
-        &lt;module src=&quot;derivative_engine.cpp&quot; target=&quot;obj/derivative_engine.o&quot;/&gt;
-        &lt;module src=&quot;buffer_manager.c&quot; target=&quot;obj/buffer_manager.o&quot;/&gt;
-        &lt;module src=&quot;coordinate_transform.c&quot; target=&quot;obj/coord_transform.o&quot;/&gt;
-    &lt;/source-modules&gt;
-    
-    &lt;library-targets&gt;
-        &lt;shared-lib name=&quot;libspline_dual.so&quot; version=&quot;3.2.1&quot;&gt;
-            &lt;objects&gt;
-                &lt;obj&gt;spline_core.o&lt;/obj&gt;
-                &lt;obj&gt;derivative_engine.o&lt;/obj&gt;
-                &lt;obj&gt;buffer_manager.o&lt;/obj&gt;
-            &lt;/objects&gt;
-            &lt;dependencies&gt;
-                &lt;lib&gt;libmath_extended.so&lt;/lib&gt;
-                &lt;lib&gt;librift_core.so&lt;/lib&gt;
-            &lt;/dependencies&gt;
-        &lt;/shared-lib&gt;
-    &lt;/library-targets&gt;
-    
-    &lt;binary-targets&gt;
-        &lt;executable name=&quot;spline_validator&quot;&gt;
-            &lt;entry&gt;main_validator.c&lt;/entry&gt;
-            &lt;links&gt;
-                &lt;lib&gt;libspline_dual.so&lt;/lib&gt;
-                &lt;lib&gt;libvalidation_core.so&lt;/lib&gt;
-            &lt;/links&gt;
-        &lt;/executable&gt;
-    &lt;/binary-targets&gt;
-    
-    &lt;package-target&gt;
-        &lt;pkg-name&gt;obinexus_spline_v3.2.1.pkg&lt;/pkg-name&gt;
-        &lt;includes&gt;
-            &lt;file&gt;lib/libspline_dual.so&lt;/file&gt;
-            &lt;file&gt;bin/spline_validator&lt;/file&gt;
-            &lt;file&gt;doc/spline_api.pdf&lt;/file&gt;
-            &lt;manifest&gt;gov.riftrc7.in.xml&lt;/manifest&gt;
-        &lt;/includes&gt;
-    &lt;/package-target&gt;
-    
-    &lt;validation-hooks&gt;
-        &lt;pre-build&gt;validate_sources.sh&lt;/pre-build&gt;
-        &lt;post-build&gt;run_unit_tests.sh&lt;/post-build&gt;
-        &lt;deploy-check&gt;verify_pkg_integrity.sh&lt;/deploy-check&gt;
-    &lt;/validation-hooks&gt;
-&lt;/rift-build-manifest&gt;</code></pre>
+\end{equation}
+</code></pre>
 
+
+# Rift Build Manifest Example
+
+Complete example of ‘gov.riftrc7.in.xml‘ for spline module compilation:
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <rift-build-manifest stage="7">
+        <metadata>
+            <module-id>obinexus_spline_dual_path</module-id>
+            <rift-stage>riftrc7</rift-stage>
+            <input-designation>.in</input-designation>
+            <build-type>PRODUCTION</build-type>
+        </metadata>
+
+        <source-modules>
+            <module src="spline_core.c" target="obj/spline_core.o"/>
+            <module src="derivative_engine.cpp" target="obj/derivative_engine.o"/>
+            <module src="buffer_manager.c" target="obj/buffer_manager.o"/>
+            <module src="coordinate_transform.c" target="obj/coord_transform.o"/>
+        </source-modules>
+
+        <library-targets>
+            <shared-lib name="libspline_dual.so" version="3.2.1">
+                <objects>
+                    <obj>spline_core.o</obj>
+                    <obj>derivative_engine.o</obj>
+                    <obj>buffer_manager.o</obj>
+                </objects>
+                <dependencies>
+                    <lib>libmath_extended.so</lib>
+                    <lib>librift_core.so</lib>
+                </dependencies>
+            </shared-lib>
+        </library-targets>
+
+        <binary-targets>
+            <executable name="spline_validator">
+                <entry>main_validator.c</entry>
+                <links>
+                    <lib>libspline_dual.so</lib>
+                    <lib>libvalidation_core.so</lib>
+                </links>
+            </executable>
+        </binary-targets>
+
+        <package-target>
+            <pkg-name>obinexus_spline_v3.2.1.pkg</pkg-name>
+            <includes>
+                <file>lib/libspline_dual.so</file>
+                <file>bin/spline_validator</file>
+                <file>doc/spline_api.pdf</file>
+                <manifest>gov.riftrc7.in.xml</manifest>
+            </includes>
+        </package-target>
+
+        <validation-hooks>
+            <pre-build>validate_sources.sh</pre-build>
+            <post-build>run_unit_tests.sh</post-build>
+            <deploy-check>verify_pkg_integrity.sh</deploy-check>
+        </validation-hooks>
+    </rift-build-manifest>
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-mod</code></p>

@@ -69,13 +69,50 @@
 </ul>
 <h2 id="dimensional-game-theory-m1-formal-definitionspsc">dimensional game theory M1 formal definitions.psc</h2>
 <h2 id="dimensional-game-theory-m1-formal-definitions">dimensional game theory M1 formal definitions</h2>
-<p>// ============================================================ // FILE: dimensional_game_theory_M1_formal_definitions.psc.txt // MODULE 1 OF 5 — Formal Game Theory Definitions // SOURCE: "Formal Analysis of Game Theory for Algorithm Development" // AUTHOR: Nnamdi Michael Okpala — OBINexus Computing // DATE: July 4, 2025 // MOTTO: "Computing from the Heart" // ============================================================</p>
-<p>// ── CORPUS POSITION ────────────────────────────────────────── // // This paper introduces DIMENSIONAL GAME THEORY — the strategic // layer that underpins the OBIAI decision-making architecture. // // Cross-references within OBINexus corpus: // DAG Ephemeris Spec (PDF 6): // S_game = [DAG_cost(v,n), vexameneria(v,n), p_conf(state)] // → The strategic vector is the dimensional game theory realization // within the OBIAI Filter-Flash framework. // // Actor Class (PDF 2): // Dimensional Innovation Property: τ ∉ span(C) // → Actors operate across strategic dimensions, extending beyond // conventional agent action spaces. // // OBIAI Thesis (PDF 7): // Three-tiered persona cascade (Obinexus/Uche/Eze) // → Personas map to strategic dimensions in competitive environments.</p>
-<p>DEFINE DimensionalGameTheoryContext AS: paper_title := "Formal Analysis of Game Theory for Algorithm Development" framework := "Dimensional Game Theory" organization := "OBINexus Computing" corpus_role := "Strategic optimization layer for OBIAI decisions" s_game_ref := "DAG Ephemeris Spec §5.1 — S_game 3-vector" END DEFINE</p>
+<p>// ============================================================
+// FILE: dimensional_game_theory_M1_formal_definitions.psc.txt
+// MODULE 1 OF 5 — Formal Game Theory Definitions
+// SOURCE: "Formal Analysis of Game Theory for Algorithm Development"
+// AUTHOR: Nnamdi Michael Okpala — OBINexus Computing
+// DATE:   July 4, 2025
+// MOTTO:  "Computing from the Heart"
+// ============================================================</p>
+<p>// ── CORPUS POSITION ──────────────────────────────────────────
+//
+// This paper introduces DIMENSIONAL GAME THEORY — the strategic
+// layer that underpins the OBIAI decision-making architecture.
+//
+// Cross-references within OBINexus corpus:
+//   DAG Ephemeris Spec (PDF 6):
+//     S_game = [DAG_cost(v,n), vexameneria(v,n), p_conf(state)]
+//     → The strategic vector is the dimensional game theory realization
+//       within the OBIAI Filter-Flash framework.
+//
+//   Actor Class (PDF 2):
+//     Dimensional Innovation Property: τ ∉ span(C)
+//     → Actors operate across strategic dimensions, extending beyond
+//       conventional agent action spaces.
+//
+//   OBIAI Thesis (PDF 7):
+//     Three-tiered persona cascade (Obinexus/Uche/Eze)
+//     → Personas map to strategic dimensions in competitive environments.</p>
+<p>DEFINE DimensionalGameTheoryContext AS:
+    paper_title := "Formal Analysis of Game Theory for Algorithm Development"
+    framework   := "Dimensional Game Theory"
+    organization := "OBINexus Computing"
+    corpus_role := "Strategic optimization layer for OBIAI decisions"
+    s_game_ref  := "DAG Ephemeris Spec §5.1 — S_game 3-vector"
+END DEFINE</p>
 <p>// ── SECTION 2: FORMAL GAME THEORY DEFINITIONS ────────────────</p>
 <p>// ── DEFINITION 1: GAME ───────────────────────────────────────</p>
-<p>// A game is a tuple G = (N, A, u) where: // N = {1, 2, ..., n} — finite set of players // A = A₁ × A₂ × ... × Aₙ — joint action space // u = (u₁, u₂, ..., uₙ) — utility functions</p>
-<p>DEFINE Game AS STRUCTURE: N : Set[PlayerID] // N = {1, ..., n} A : CartesianProduct[Set[Action]] // A = A₁ × ... × Aₙ u : List[UtilityFunction] // uᵢ : A → ℝ</p>
+<p>// A game is a tuple G = (N, A, u) where:
+//   N = {1, 2, ..., n}        — finite set of players
+//   A = A₁ × A₂ × ... × Aₙ  — joint action space
+//   u = (u₁, u₂, ..., uₙ)    — utility functions</p>
+<p>DEFINE Game AS STRUCTURE:
+    N : Set[PlayerID]                          // N = {1, ..., n}
+    A : CartesianProduct[Set[Action]]          // A = A₁ × ... × Aₙ
+    u : List[UtilityFunction]                  // uᵢ : A → ℝ</p>
 <pre><code>// Invariants:
 INVARIANT: LENGTH(u) == LENGTH(N)          // one utility fn per player
 INVARIANT: LENGTH(A.factor_sets) == LENGTH(N)  // one action set per player
@@ -97,20 +134,41 @@ PROCEDURE Utility(player_i: PlayerID, action_profile: ActionProfile) -&gt; REAL:
     ASSERT player_i IN N
     ASSERT action_profile.length == LENGTH(N)
     RETURN u[player_i].evaluate(action_profile)
-END PROCEDURE</code></pre>
+END PROCEDURE
+</code></pre>
 <p>END DEFINE</p>
-<p>PROCEDURE BuildGame(player_ids: List[PlayerID], action_sets: List[Set[Action]], utility_fns: List[UtilityFunction]) -&gt; Game: // Constructor with validation IF LENGTH(player_ids) != LENGTH(action_sets): EMIT ERROR "Player count ≠ action set count" RETURN NULL END IF IF LENGTH(player_ids) != LENGTH(utility_fns): EMIT ERROR "Player count ≠ utility function count" RETURN NULL END IF</p>
+<p>PROCEDURE BuildGame(player_ids: List[PlayerID],
+                     action_sets: List[Set[Action]],
+                     utility_fns: List[UtilityFunction]) -&gt; Game:
+    // Constructor with validation
+    IF LENGTH(player_ids) != LENGTH(action_sets):
+        EMIT ERROR "Player count ≠ action set count"
+        RETURN NULL
+    END IF
+    IF LENGTH(player_ids) != LENGTH(utility_fns):
+        EMIT ERROR "Player count ≠ utility function count"
+        RETURN NULL
+    END IF</p>
 <pre><code>G := Game(
     N = SET(player_ids),
     A = CartesianProduct(action_sets),
     u = utility_fns
 )
-RETURN G</code></pre>
+RETURN G
+</code></pre>
 <p>END PROCEDURE</p>
 <p>// ── DEFINITION 2: STRATEGY ────────────────────────────────────</p>
-<p>// Pure strategy: sᵢ ∈ Aᵢ // Mixed strategy: σᵢ = probability distribution over Aᵢ // σᵢ(aᵢ) = P(player i selects action aᵢ)</p>
-<p>DEFINE PureStrategy AS: player_id : PlayerID action : Action // sᵢ ∈ Aᵢ INVARIANT: action IN ActionSetFor(player_id) END DEFINE</p>
-<p>DEFINE MixedStrategy AS: player_id : PlayerID distribution : Map[Action → REAL] // σᵢ(aᵢ) = P(select aᵢ)</p>
+<p>// Pure strategy:  sᵢ ∈ Aᵢ
+// Mixed strategy: σᵢ = probability distribution over Aᵢ
+//                 σᵢ(aᵢ) = P(player i selects action aᵢ)</p>
+<p>DEFINE PureStrategy AS:
+    player_id : PlayerID
+    action    : Action          // sᵢ ∈ Aᵢ
+    INVARIANT: action IN ActionSetFor(player_id)
+END DEFINE</p>
+<p>DEFINE MixedStrategy AS:
+    player_id   : PlayerID
+    distribution : Map[Action → REAL]   // σᵢ(aᵢ) = P(select aᵢ)</p>
 <pre><code>// Distribution invariants:
 INVARIANT: ALL(p &gt;= 0.0 FOR p IN distribution.values)
 INVARIANT: ABS(SUM(distribution.values) - 1.0) &lt; 1e-10
@@ -130,18 +188,37 @@ END PROCEDURE
 PROCEDURE SampleAction() -&gt; Action:
     // Draw one action according to probability distribution
     RETURN SAMPLE_CATEGORICAL(distribution)
-END PROCEDURE</code></pre>
+END PROCEDURE
+</code></pre>
 <p>END DEFINE</p>
-<p>PROCEDURE ValidateMixedStrategy(sigma: MixedStrategy, A_i: Set[Action]) -&gt; BOOL: // All support actions must be in Aᵢ FOR EACH a IN sigma.Support(): IF a NOT IN A_i: EMIT ERROR "Mixed strategy support action " + a + " not in action set" RETURN FALSE END IF END FOR // Probabilities must sum to 1 IF ABS(SUM(sigma.distribution.values) - 1.0) &gt; 1e-10: EMIT ERROR "Mixed strategy probabilities do not sum to 1" RETURN FALSE END IF RETURN TRUE END PROCEDURE</p>
+<p>PROCEDURE ValidateMixedStrategy(sigma: MixedStrategy,
+                                  A_i: Set[Action]) -&gt; BOOL:
+    // All support actions must be in Aᵢ
+    FOR EACH a IN sigma.Support():
+        IF a NOT IN A_i:
+            EMIT ERROR "Mixed strategy support action " + a +
+                       " not in action set"
+            RETURN FALSE
+        END IF
+    END FOR
+    // Probabilities must sum to 1
+    IF ABS(SUM(sigma.distribution.values) - 1.0) &gt; 1e-10:
+        EMIT ERROR "Mixed strategy probabilities do not sum to 1"
+        RETURN FALSE
+    END IF
+    RETURN TRUE
+END PROCEDURE</p>
 <p>// ── DEFINITION 3: STRATEGY PROFILE ───────────────────────────</p>
-<p>// s = (s₁, s₂, ..., sₙ) — one strategy per player // s₋ᵢ = (s₁, ..., sᵢ₋₁, sᵢ₊₁, ..., sₙ) — all except player i</p>
-<p>DEFINE StrategyProfile AS: strategies : Map[PlayerID → Strategy] // sᵢ for each i ∈ N</p>
+<p>// s = (s₁, s₂, ..., sₙ) — one strategy per player
+// s₋ᵢ = (s₁, ..., sᵢ₋₁, sᵢ₊₁, ..., sₙ) — all except player i</p>
+<p>DEFINE StrategyProfile AS:
+    strategies : Map[PlayerID → Strategy]   // sᵢ for each i ∈ N</p>
 <pre><code>PROCEDURE Get(player_i: PlayerID) -&gt; Strategy:
     RETURN strategies[player_i]
 END PROCEDURE
 
 PROCEDURE ExcludePlayer(player_i: PlayerID) -&gt; StrategyProfile:
-    // s₋ᵢ: all strategies except player i&#39;s
+    // s₋ᵢ: all strategies except player i's
     excluded := COPY(strategies)
     excluded.REMOVE(player_i)
     RETURN StrategyProfile(strategies=excluded)
@@ -149,15 +226,21 @@ END PROCEDURE
 
 PROCEDURE Substitute(player_i: PlayerID,
                       new_s_i: Strategy) -&gt; StrategyProfile:
-    // Return (sᵢ&#39;, s₋ᵢ): replace player i&#39;s strategy with new_s_i
+    // Return (sᵢ', s₋ᵢ): replace player i's strategy with new_s_i
     modified := COPY(strategies)
     modified[player_i] := new_s_i
     RETURN StrategyProfile(strategies=modified)
-END PROCEDURE</code></pre>
+END PROCEDURE
+</code></pre>
 <p>END DEFINE</p>
 <p>// ── DEFINITION 4: NASH EQUILIBRIUM ───────────────────────────</p>
-<p>// s* = (s₁*, s₂*, ..., sₙ*) is a Nash Equilibrium if: // For each player i and for all alternative strategies sᵢ ∈ Aᵢ: // uᵢ(sᵢ*, s₋ᵢ*) ≥ uᵢ(sᵢ, s₋ᵢ*) // // No player can improve their payoff by unilaterally deviating.</p>
-<p>PROCEDURE IsNashEquilibrium(G: Game, s_star: StrategyProfile) -&gt; BOOL: // Verify Nash Equilibrium condition for all players.</p>
+<p>// s<em> = (s₁</em>, s₂<em>, ..., sₙ</em>) is a Nash Equilibrium if:
+//   For each player i and for all alternative strategies sᵢ ∈ Aᵢ:
+//     uᵢ(sᵢ<em>, s₋ᵢ</em>) ≥ uᵢ(sᵢ, s₋ᵢ*)
+//
+// No player can improve their payoff by unilaterally deviating.</p>
+<p>PROCEDURE IsNashEquilibrium(G: Game, s_star: StrategyProfile) -&gt; BOOL:
+    // Verify Nash Equilibrium condition for all players.</p>
 <pre><code>FOR EACH player_i IN G.N:
     current_payoff := G.Utility(player_i,
                                  s_star.AsActionProfile())
@@ -168,17 +251,20 @@ END PROCEDURE</code></pre>
         alt_payoff     := G.Utility(player_i, s_alt_profile.AsActionProfile())
 
         IF alt_payoff &gt; current_payoff + 1e-10:
-            EMIT INFO &quot;NE violated: player &quot; + player_i +
-                      &quot; can improve by switching to &quot; + s_i_alt
+            EMIT INFO "NE violated: player " + player_i +
+                      " can improve by switching to " + s_i_alt
             RETURN FALSE
         END IF
     END FOR
 END FOR
 
-EMIT INFO &quot;Nash Equilibrium verified ✓&quot;
-RETURN TRUE</code></pre>
+EMIT INFO "Nash Equilibrium verified ✓"
+RETURN TRUE
+</code></pre>
 <p>END PROCEDURE</p>
-<p>PROCEDURE FindBestResponse(G: Game, player_i: PlayerID, s_minus_i: StrategyProfile) -&gt; Strategy: // Best response: argmax_{sᵢ ∈ Aᵢ} uᵢ(sᵢ, s₋ᵢ*)</p>
+<p>PROCEDURE FindBestResponse(G: Game, player_i: PlayerID,
+                             s_minus_i: StrategyProfile) -&gt; Strategy:
+    // Best response: argmax_{sᵢ ∈ Aᵢ} uᵢ(sᵢ, s₋ᵢ*)</p>
 <pre><code>best_strategy := NULL
 best_payoff   := NEGATIVE_INFINITY
 
@@ -191,23 +277,56 @@ FOR EACH s_i IN ActionSetFor(player_i):
     END IF
 END FOR
 
-RETURN best_strategy</code></pre>
+RETURN best_strategy
+</code></pre>
 <p>END PROCEDURE</p>
-<p>// ============================================================ // END MODULE 1 // NEXT: dimensional_game_theory_M2_dimensional_extension.psc.txt // ============================================================</p>
+<p>// ============================================================
+// END MODULE 1
+// NEXT: dimensional_game_theory_M2_dimensional_extension.psc.txt
+// ============================================================</p>
 <h2 id="dimensional-game-theory-m2-dimensional-extensionpsc">dimensional game theory M2 dimensional extension.psc</h2>
 <h2 id="dimensional-game-theory-m2-dimensional-extension">dimensional game theory M2 dimensional extension</h2>
-<p>// ============================================================ // FILE: dimensional_game_theory_M2_dimensional_extension.psc.txt // MODULE 2 OF 5 — Dimensional Game Theory: Dimensions, Theorem 1 // SOURCE: "Formal Analysis of Game Theory for Algorithm Development" // AUTHOR: Nnamdi Michael Okpala — OBINexus Computing // DATE: July 4, 2025 // ============================================================</p>
-<p>// ------------------------------------------------------------ // SECTION 3: DIMENSIONAL GAME THEORY // ------------------------------------------------------------</p>
-<p>// Extension of classical game theory to account for the // DIMENSIONAL QUALITY of strategies. // // Core insight: strategies are not scalar choices but structured // objects that operate across multiple semantic dimensions. // This directly maps to the OBIAI framework where: // - Verb-noun capsules carry dimensional structure (PDF 6) // - The S_game vector [DAG_cost, vexameneria, p_conf] is the // three-dimensional strategic state (PDF 6 §5.1) // - Actor dimensional innovation (PDF 2) extends strategy spaces</p>
+<p>// ============================================================
+// FILE: dimensional_game_theory_M2_dimensional_extension.psc.txt
+// MODULE 2 OF 5 — Dimensional Game Theory: Dimensions, Theorem 1
+// SOURCE: "Formal Analysis of Game Theory for Algorithm Development"
+// AUTHOR: Nnamdi Michael Okpala — OBINexus Computing
+// DATE:   July 4, 2025
+// ============================================================</p>
+<p>// ------------------------------------------------------------
+// SECTION 3: DIMENSIONAL GAME THEORY
+// ------------------------------------------------------------</p>
+<p>// Extension of classical game theory to account for the
+// DIMENSIONAL QUALITY of strategies.
+//
+// Core insight: strategies are not scalar choices but structured
+// objects that operate across multiple semantic dimensions.
+// This directly maps to the OBIAI framework where:
+//   - Verb-noun capsules carry dimensional structure (PDF 6)
+//   - The S_game vector [DAG_cost, vexameneria, p_conf] is the
+//     three-dimensional strategic state (PDF 6 §5.1)
+//   - Actor dimensional innovation (PDF 2) extends strategy spaces</p>
 <p>// ── DEFINITION 5: STRATEGIC DIMENSION ────────────────────────</p>
-<p>// A strategic dimension D is a parameter space that categorizes // strategies according to specific attributes. // // Examples: // Combat game: D_offensive, D_defensive, D_tactical // Financial: D_momentum, D_mean_reversion, D_liquidity // Security: D_brute_force, D_social_engineering, D_lateral_move // Autonomous: D_aggressiveness, D_risk_aversion, D_efficiency</p>
-<p>DEFINE StrategicDimension AS: name : DimensionID // e.g., "offensive", "momentum" parameter_space : ParameterSpace basis_vector : Vector // unit direction in strategy space</p>
+<p>// A strategic dimension D is a parameter space that categorizes
+// strategies according to specific attributes.
+//
+// Examples:
+//   Combat game:   D_offensive, D_defensive, D_tactical
+//   Financial:     D_momentum, D_mean_reversion, D_liquidity
+//   Security:      D_brute_force, D_social_engineering, D_lateral_move
+//   Autonomous:    D_aggressiveness, D_risk_aversion, D_efficiency</p>
+<p>DEFINE StrategicDimension AS:
+    name        : DimensionID    // e.g., "offensive", "momentum"
+    parameter_space : ParameterSpace
+    basis_vector    : Vector     // unit direction in strategy space</p>
 <pre><code>PROCEDURE Evaluate(strategy: Strategy) -&gt; REAL:
-    // Project strategy onto this dimension&#39;s parameter space
+    // Project strategy onto this dimension's parameter space
     RETURN DOT(strategy.feature_vector, self.basis_vector)
-END PROCEDURE</code></pre>
+END PROCEDURE
+</code></pre>
 <p>END DEFINE</p>
-<p>DEFINE DimensionSet D AS: dimensions : List[StrategicDimension]</p>
+<p>DEFINE DimensionSet D AS:
+    dimensions : List[StrategicDimension]</p>
 <pre><code>PROCEDURE Add(dim: StrategicDimension) -&gt; VOID:
     IF dim NOT IN dimensions:
         dimensions.APPEND(dim)
@@ -216,18 +335,44 @@ END PROCEDURE
 
 PROCEDURE Size() -&gt; INT:
     RETURN LENGTH(dimensions)
-END PROCEDURE</code></pre>
+END PROCEDURE
+</code></pre>
 <p>END DEFINE</p>
-<p>// Example dimension instantiation: PROCEDURE BuildCombatDimensions() -&gt; DimensionSet: D := NEW DimensionSet() D.Add(StrategicDimension(name="offensive", basis_vector=BasisOffensive())) D.Add(StrategicDimension(name="defensive", basis_vector=BasisDefensive())) D.Add(StrategicDimension(name="tactical", basis_vector=BasisTactical())) RETURN D END PROCEDURE</p>
+<p>// Example dimension instantiation:
+PROCEDURE BuildCombatDimensions() -&gt; DimensionSet:
+    D := NEW DimensionSet()
+    D.Add(StrategicDimension(name="offensive", basis_vector=BasisOffensive()))
+    D.Add(StrategicDimension(name="defensive", basis_vector=BasisDefensive()))
+    D.Add(StrategicDimension(name="tactical",  basis_vector=BasisTactical()))
+    RETURN D
+END PROCEDURE</p>
 <p>// ── DEFINITION 6: DIMENSIONAL STRATEGY ───────────────────────</p>
-<p>// A dimensional strategy sᵢᴰ is a strategy optimized along // a specific dimension D. // // Effectiveness function: // E : Aᵢ × D → ℝ // E(sᵢ, D) measures how well strategy sᵢ performs in dimension D.</p>
-<p>DEFINE DimensionalStrategy AS: base_strategy : Strategy dimension : StrategicDimension effectiveness : REAL // E(sᵢᴰ, D)</p>
+<p>// A dimensional strategy sᵢᴰ is a strategy optimized along
+// a specific dimension D.
+//
+// Effectiveness function:
+//   E : Aᵢ × D → ℝ
+//   E(sᵢ, D) measures how well strategy sᵢ performs in dimension D.</p>
+<p>DEFINE DimensionalStrategy AS:
+    base_strategy : Strategy
+    dimension     : StrategicDimension
+    effectiveness : REAL    // E(sᵢᴰ, D)</p>
 <pre><code>PROCEDURE Evaluate(E_fn: EffectivenessFunction) -&gt; REAL:
     RETURN E_fn(self.base_strategy, self.dimension)
-END PROCEDURE</code></pre>
+END PROCEDURE
+</code></pre>
 <p>END DEFINE</p>
-<p>PROCEDURE EffectivenessScore(strategy: Strategy, dim: StrategicDimension) -&gt; REAL: // E(sᵢ, D) — effectiveness of strategy in dimension D // Higher score → strategy is more optimized for this dimension projection := dim.Evaluate(strategy) RETURN projection // normalized to [-1, 1] range END PROCEDURE</p>
-<p>PROCEDURE OptimizeForDimension(action_set: Set[Action], dim: StrategicDimension) -&gt; DimensionalStrategy: // Find strategy that maximizes effectiveness in dimension D // sᵢᴰ = argmax_{sᵢ ∈ Aᵢ} E(sᵢ, D)</p>
+<p>PROCEDURE EffectivenessScore(strategy: Strategy,
+                               dim: StrategicDimension) -&gt; REAL:
+    // E(sᵢ, D) — effectiveness of strategy in dimension D
+    // Higher score → strategy is more optimized for this dimension
+    projection := dim.Evaluate(strategy)
+    RETURN projection   // normalized to [-1, 1] range
+END PROCEDURE</p>
+<p>PROCEDURE OptimizeForDimension(action_set: Set[Action],
+                                dim: StrategicDimension) -&gt; DimensionalStrategy:
+    // Find strategy that maximizes effectiveness in dimension D
+    //   sᵢᴰ = argmax_{sᵢ ∈ Aᵢ} E(sᵢ, D)</p>
 <pre><code>best_strategy    := NULL
 best_effectiveness := NEGATIVE_INFINITY
 
@@ -243,14 +388,45 @@ RETURN DimensionalStrategy(
     base_strategy  = Strategy.fromAction(best_strategy),
     dimension      = dim,
     effectiveness  = best_effectiveness
-)</code></pre>
+)
+</code></pre>
 <p>END PROCEDURE</p>
 <p>// ── THEOREM 1: PERFECT GAME OUTCOME ──────────────────────────</p>
-<p>// THEOREM 1 (Perfect Game Outcome): // In a two-player zero-sum game with complete information, // if both players employ optimal strategies in ALL relevant dimensions, // the game will result in a DETERMINISTIC TIE. // // PROOF: // Let G = ({1,2}, A₁×A₂, (u₁, u₂)) be a two-player zero-sum game // with u₁(a₁,a₂) = −u₂(a₁,a₂). // // Optimal strategies: // s₁* = argmax_{s₁∈A₁} min_{s₂∈A₂} u₁(s₁, s₂) // s₂* = argmax_{s₂∈A₂} min_{s₁∈A₁} u₂(s₁, s₂) // // By the Minimax Theorem: // max_{s₁} min_{s₂} u₁(s₁,s₂) = min_{s₂} max_{s₁} u₁(s₁,s₂) = v // // For a non-tie outcome, one player must receive payoff &gt; v, // contradicting the minimax theorem. Therefore both players receive // exactly (v, −v) — a deterministic tie.</p>
-<p>PROCEDURE IsZeroSum(G: Game) -&gt; BOOL: // Verify u₁(a) = −u₂(a) for all action profiles FOR EACH action_profile IN G.A.Enumerate(): u1 := G.Utility(1, action_profile) u2 := G.Utility(2, action_profile) IF ABS(u1 + u2) &gt; 1e-10: RETURN FALSE END IF END FOR RETURN TRUE END PROCEDURE</p>
-<p>PROCEDURE ComputeMinimaxValue(G: Game, player: INT) -&gt; REAL: // v = max_{s₁} min_{s₂} u₁(s₁, s₂) // For player 1 (maximizer); player 2 is minimizer.</p>
+<p>// THEOREM 1 (Perfect Game Outcome):
+//   In a two-player zero-sum game with complete information,
+//   if both players employ optimal strategies in ALL relevant dimensions,
+//   the game will result in a DETERMINISTIC TIE.
+//
+// PROOF:
+//   Let G = ({1,2}, A₁×A₂, (u₁, u₂)) be a two-player zero-sum game
+//   with u₁(a₁,a₂) = −u₂(a₁,a₂).
+//
+//   Optimal strategies:
+//     s₁<em> = argmax_{s₁∈A₁} min_{s₂∈A₂} u₁(s₁, s₂)
+//     s₂</em> = argmax_{s₂∈A₂} min_{s₁∈A₁} u₂(s₁, s₂)
+//
+//   By the Minimax Theorem:
+//     max_{s₁} min_{s₂} u₁(s₁,s₂) = min_{s₂} max_{s₁} u₁(s₁,s₂) = v
+//
+//   For a non-tie outcome, one player must receive payoff &gt; v,
+//   contradicting the minimax theorem. Therefore both players receive
+//   exactly (v, −v) — a deterministic tie.</p>
+<p>PROCEDURE IsZeroSum(G: Game) -&gt; BOOL:
+    // Verify u₁(a) = −u₂(a) for all action profiles
+    FOR EACH action_profile IN G.A.Enumerate():
+        u1 := G.Utility(1, action_profile)
+        u2 := G.Utility(2, action_profile)
+        IF ABS(u1 + u2) &gt; 1e-10:
+            RETURN FALSE
+        END IF
+    END FOR
+    RETURN TRUE
+END PROCEDURE</p>
+<p>PROCEDURE ComputeMinimaxValue(G: Game, player: INT) -&gt; REAL:
+    // v = max_{s₁} min_{s₂} u₁(s₁, s₂)
+    // For player 1 (maximizer); player 2 is minimizer.</p>
 <pre><code>IF G.NumPlayers() != 2:
-    EMIT ERROR &quot;Minimax defined for 2-player games&quot;
+    EMIT ERROR "Minimax defined for 2-player games"
     RETURN NULL
 END IF
 
@@ -272,9 +448,11 @@ FOR EACH s1 IN A1:
     END IF
 END FOR
 
-RETURN max_val</code></pre>
+RETURN max_val
+</code></pre>
 <p>END PROCEDURE</p>
-<p>PROCEDURE ComputeOptimalStrategies(G: Game) -&gt; (Strategy, Strategy): // Compute s₁* and s₂* — minimax optimal strategies</p>
+<p>PROCEDURE ComputeOptimalStrategies(G: Game) -&gt; (Strategy, Strategy):
+    // Compute s₁<em> and s₂</em> — minimax optimal strategies</p>
 <pre><code>ASSERT G.NumPlayers() == 2
 ASSERT IsZeroSum(G)
 
@@ -303,12 +481,14 @@ FOR EACH s2 IN A2:
     IF min_u2 &gt; best_min_2: best_min_2 := min_u2; s2_star := s2 END IF
 END FOR
 
-RETURN (Strategy.fromAction(s1_star), Strategy.fromAction(s2_star))</code></pre>
+RETURN (Strategy.fromAction(s1_star), Strategy.fromAction(s2_star))
+</code></pre>
 <p>END PROCEDURE</p>
-<p>PROCEDURE VerifyTheorem1(G: Game) -&gt; Theorem1Result: // Verify that optimal strategies produce a deterministic tie outcome.</p>
+<p>PROCEDURE VerifyTheorem1(G: Game) -&gt; Theorem1Result:
+    // Verify that optimal strategies produce a deterministic tie outcome.</p>
 <pre><code>ASSERT G.NumPlayers() == 2
 IF NOT IsZeroSum(G):
-    EMIT WARNING &quot;Game is not zero-sum — Theorem 1 does not apply&quot;
+    EMIT WARNING "Game is not zero-sum — Theorem 1 does not apply"
     RETURN Theorem1Result(applicable=FALSE)
 END IF
 
@@ -323,8 +503,8 @@ u2_at_star   := G.Utility(2, profile_star)
 is_tie := (ABS(u1_at_star - v) &lt; 1e-10) AND
           (ABS(u2_at_star + v) &lt; 1e-10)
 
-EMIT INFO &quot;Theorem 1 | v=&quot; + v + &quot; | u₁(s*)=&quot; + u1_at_star +
-          &quot; | u₂(s*)=&quot; + u2_at_star + &quot; | tie=&quot; + is_tie
+EMIT INFO "Theorem 1 | v=" + v + " | u₁(s*)=" + u1_at_star +
+          " | u₂(s*)=" + u2_at_star + " | tie=" + is_tie
 
 RETURN Theorem1Result(
     applicable = TRUE,
@@ -332,14 +512,23 @@ RETURN Theorem1Result(
     s1_optimal = s1_star,
     s2_optimal = s2_star,
     is_tie     = is_tie
-)</code></pre>
+)
+</code></pre>
 <p>END PROCEDURE</p>
 <p>// ── COROLLARY 1: STRATEGIC IMBALANCE ─────────────────────────</p>
-<p>// COROLLARY 1 (Strategic Imbalance): // The existence of a NON-TIE OUTCOME in a supposedly perfect game // implies a strategic imbalance in at least one dimension. // // Corollary 1 is the diagnostic tool: // Observed non-tie → identify which dimension contains the imbalance // → Dimension detection algorithms (Module 3) exploit this.</p>
-<p>PROCEDURE DetectStrategicImbalance(G: Game, observed_outcome: Outcome, D: DimensionSet) -&gt; List[StrategicDimension]: // If observed_outcome ≠ tie, find dimensions with imbalance.</p>
+<p>// COROLLARY 1 (Strategic Imbalance):
+//   The existence of a NON-TIE OUTCOME in a supposedly perfect game
+//   implies a strategic imbalance in at least one dimension.
+//
+// Corollary 1 is the diagnostic tool:
+//   Observed non-tie → identify which dimension contains the imbalance
+//   → Dimension detection algorithms (Module 3) exploit this.</p>
+<p>PROCEDURE DetectStrategicImbalance(G: Game, observed_outcome: Outcome,
+                                    D: DimensionSet) -&gt; List[StrategicDimension]:
+    // If observed_outcome ≠ tie, find dimensions with imbalance.</p>
 <pre><code>theorem1_result := VerifyTheorem1(G)
 IF NOT theorem1_result.applicable:
-    EMIT INFO &quot;Imbalance detection: game not zero-sum — skipping&quot;
+    EMIT INFO "Imbalance detection: game not zero-sum — skipping"
     RETURN []
 END IF
 
@@ -349,7 +538,7 @@ expected_u1 := v
 actual_u1   := observed_outcome.payoff_player1
 
 IF ABS(actual_u1 - expected_u1) &lt; 1e-10:
-    EMIT INFO &quot;No strategic imbalance detected — game resulted in tie&quot;
+    EMIT INFO "No strategic imbalance detected — game resulted in tie"
     RETURN []
 END IF
 
@@ -362,17 +551,21 @@ FOR EACH dim IN D.dimensions:
     imbalance := ABS(eff_p1 - eff_p2)
 
     IF imbalance &gt; IMBALANCE_THRESHOLD:
-        EMIT INFO &quot;Imbalance in dimension &quot; + dim.name +
-                  &quot; | Δeff=&quot; + imbalance
+        EMIT INFO "Imbalance in dimension " + dim.name +
+                  " | Δeff=" + imbalance
         imbalanced_dims.APPEND(dim)
     END IF
 END FOR
 
-RETURN imbalanced_dims</code></pre>
+RETURN imbalanced_dims
+</code></pre>
 <p>END PROCEDURE</p>
-<p>CONSTANT IMBALANCE_THRESHOLD := 0.3 // 30% effectiveness gap triggers detection</p>
+<p>CONSTANT IMBALANCE_THRESHOLD := 0.3   // 30% effectiveness gap triggers detection</p>
 <p>// ── DIMENSIONAL STRATEGY PROFILE ─────────────────────────────</p>
-<p>DEFINE DimensionalStrategyProfile AS: // Extends StrategyProfile with per-dimension effectiveness scores base_profile : StrategyProfile dimension_scores : Map[DimensionID → REAL] // E(sᵢ, D) per dimension</p>
+<p>DEFINE DimensionalStrategyProfile AS:
+    // Extends StrategyProfile with per-dimension effectiveness scores
+    base_profile    : StrategyProfile
+    dimension_scores : Map[DimensionID → REAL]   // E(sᵢ, D) per dimension</p>
 <pre><code>PROCEDURE DominantDimensions(theta: REAL) -&gt; List[StrategicDimension]:
     // Return dimensions where effectiveness &gt; θ
     dominant := []
@@ -382,17 +575,39 @@ RETURN imbalanced_dims</code></pre>
         END IF
     END FOR
     RETURN dominant
-END PROCEDURE</code></pre>
+END PROCEDURE
+</code></pre>
 <p>END DEFINE</p>
-<p>// ============================================================ // END MODULE 2 // NEXT: dimensional_game_theory_M3_algorithms.psc.txt // ============================================================</p>
+<p>// ============================================================
+// END MODULE 2
+// NEXT: dimensional_game_theory_M3_algorithms.psc.txt
+// ============================================================</p>
 <h2 id="dimensional-game-theory-m3-algorithmspsc">dimensional game theory M3 algorithms.psc</h2>
 <h2 id="dimensional-game-theory-m3-algorithms">dimensional game theory M3 algorithms</h2>
-<p>// ============================================================ // FILE: dimensional_game_theory_M3_algorithms.psc.txt // MODULE 3 OF 5 — Algorithmic Implementation: // Dimension Detection &amp; Adaptive Response // SOURCE: "Formal Analysis of Game Theory for Algorithm Development" // AUTHOR: Nnamdi Michael Okpala — OBINexus Computing // DATE: July 4, 2025 // ============================================================</p>
-<p>// ------------------------------------------------------------ // SECTION 4: ALGORITHMIC IMPLEMENTATION // ------------------------------------------------------------</p>
-<p>// Two core algorithm classes derived from dimensional game theory: // Algorithm 1: Dimension Identification (detect strategic structure) // Algorithm 2: Adaptive Response (exploit detected imbalances)</p>
+<p>// ============================================================
+// FILE: dimensional_game_theory_M3_algorithms.psc.txt
+// MODULE 3 OF 5 — Algorithmic Implementation:
+//                 Dimension Detection &amp; Adaptive Response
+// SOURCE: "Formal Analysis of Game Theory for Algorithm Development"
+// AUTHOR: Nnamdi Michael Okpala — OBINexus Computing
+// DATE:   July 4, 2025
+// ============================================================</p>
+<p>// ------------------------------------------------------------
+// SECTION 4: ALGORITHMIC IMPLEMENTATION
+// ------------------------------------------------------------</p>
+<p>// Two core algorithm classes derived from dimensional game theory:
+//   Algorithm 1: Dimension Identification (detect strategic structure)
+//   Algorithm 2: Adaptive Response (exploit detected imbalances)</p>
 <p>// ── SECTION 4.1: ALGORITHM 1 — DIMENSION IDENTIFICATION ──────</p>
-<p>// ALGORITHM 1: Dimension Identification // // INPUT: Historical game data H = {(s₁ⁱ, s₂ⁱ, oⁱ)}ᵢ₌₁ᵐ // where oⁱ = game outcome for match i // OUTPUT: Strategic dimension set D</p>
-<p>PROCEDURE DimensionIdentification(H: HistoricalGameData) -&gt; DimensionSet: // Initialize empty dimension set D := NEW DimensionSet() D.dimensions := []</p>
+<p>// ALGORITHM 1: Dimension Identification
+//
+//   INPUT:  Historical game data H = {(s₁ⁱ, s₂ⁱ, oⁱ)}ᵢ₌₁ᵐ
+//             where oⁱ = game outcome for match i
+//   OUTPUT: Strategic dimension set D</p>
+<p>PROCEDURE DimensionIdentification(H: HistoricalGameData) -&gt; DimensionSet:
+    // Initialize empty dimension set
+    D := NEW DimensionSet()
+    D.dimensions := []</p>
 <pre><code>// Iterate over all pairs of strategies from different matches
 FOR EACH match_i IN H.matches:
     FOR EACH match_j IN H.matches WHERE match_j.id != match_i.id:
@@ -410,34 +625,41 @@ FOR EACH match_i IN H.matches:
         FOR EACH component IN components:
             IF component.explained_variance &gt; PCA_SIGNIFICANCE_THRESHOLD:
                 dim := StrategicDimension(
-                    name         = &quot;dim_&quot; + D.Size(),
+                    name         = "dim_" + D.Size(),
                     basis_vector = component.eigenvector,
                     parameter_space = ParameterSpace.fromComponent(component)
                 )
                 IF NOT D.Contains(dim):
                     D.Add(dim)
-                    EMIT INFO &quot;New dimension identified: &quot; + dim.name +
-                              &quot; (variance=&quot; + component.explained_variance + &quot;)&quot;
+                    EMIT INFO "New dimension identified: " + dim.name +
+                              " (variance=" + component.explained_variance + ")"
                 END IF
             END IF
         END FOR
     END FOR
 END FOR
 
-EMIT INFO &quot;Dimension identification complete | |D|=&quot; + D.Size()
-RETURN D</code></pre>
+EMIT INFO "Dimension identification complete | |D|=" + D.Size()
+RETURN D
+</code></pre>
 <p>END PROCEDURE</p>
-<p>CONSTANT PCA_SIGNIFICANCE_THRESHOLD := 0.05 // minimum explained variance</p>
-<p>PROCEDURE StrategyDifference(s1: Strategy, s2: Strategy) -&gt; StrategyDelta: // Computes the feature-space difference between two strategies. // s₁ⁱ − s₂ʲ: element-wise difference of strategy feature vectors.</p>
+<p>CONSTANT PCA_SIGNIFICANCE_THRESHOLD := 0.05   // minimum explained variance</p>
+<p>PROCEDURE StrategyDifference(s1: Strategy, s2: Strategy) -&gt; StrategyDelta:
+    // Computes the feature-space difference between two strategies.
+    // s₁ⁱ − s₂ʲ: element-wise difference of strategy feature vectors.</p>
 <pre><code>IF LENGTH(s1.feature_vector) != LENGTH(s2.feature_vector):
-    EMIT ERROR &quot;Strategy dimensions mismatch&quot;
+    EMIT ERROR "Strategy dimensions mismatch"
     RETURN NULL
 END IF
 
 diff_vector := s1.feature_vector - s2.feature_vector
-RETURN StrategyDelta(vector=diff_vector, from_s=s1, to_s=s2)</code></pre>
+RETURN StrategyDelta(vector=diff_vector, from_s=s1, to_s=s2)
+</code></pre>
 <p>END PROCEDURE</p>
-<p>PROCEDURE FeatureVector(delta: StrategyDelta) -&gt; Vector: // F(delta): maps strategy difference to feature representation. // Applies domain-specific feature extraction (e.g., norm, angle, // frequency components) to the raw difference vector.</p>
+<p>PROCEDURE FeatureVector(delta: StrategyDelta) -&gt; Vector:
+    // F(delta): maps strategy difference to feature representation.
+    // Applies domain-specific feature extraction (e.g., norm, angle,
+    // frequency components) to the raw difference vector.</p>
 <pre><code>features := []
 features.APPEND(NORM(delta.vector))                    // magnitude
 features.APPEND(NORM_L1(delta.vector))                 // L1 sparsity
@@ -445,9 +667,12 @@ features.APPEND(MAX(ABS(delta.vector)))                // max deviation
 FOR EACH v IN delta.vector:
     features.APPEND(v)                                  // raw components
 END FOR
-RETURN Vector(features)</code></pre>
+RETURN Vector(features)
+</code></pre>
 <p>END PROCEDURE</p>
-<p>PROCEDURE PrincipalComponentAnalysis(f: Vector) -&gt; List[PCAComponent]: // Apply PCA to identify significant directions in feature space. // Returns components sorted by descending explained variance.</p>
+<p>PROCEDURE PrincipalComponentAnalysis(f: Vector) -&gt; List[PCAComponent]:
+    // Apply PCA to identify significant directions in feature space.
+    // Returns components sorted by descending explained variance.</p>
 <pre><code>// 1. Center the feature vector (subtract mean — single sample context)
 // 2. Compute covariance structure via outer product
 // 3. Eigendecompose to get principal directions
@@ -458,13 +683,25 @@ component := PCAComponent(
     eigenvector          = NORMALIZE(f),
     explained_variance   = NORM(f) ^ 2 / MAX(NORM(f) ^ 2, 1e-12)
 )
-RETURN [component]</code></pre>
+RETURN [component]
+</code></pre>
 <p>END PROCEDURE</p>
-<p>// NOTE: Production implementation accumulates multiple f vectors in a // sample matrix before running full eigendecomposition. The single-sample // version above is the per-iteration step as specified in Algorithm 1.</p>
+<p>// NOTE: Production implementation accumulates multiple f vectors in a
+// sample matrix before running full eigendecomposition. The single-sample
+// version above is the per-iteration step as specified in Algorithm 1.</p>
 <p>// ── SECTION 4.2: ALGORITHM 2 — ADAPTIVE RESPONSE ─────────────</p>
-<p>// ALGORITHM 2: Adaptive Response // // INPUT: Current game state g // Opponent strategy estimate ŝₒ // OUTPUT: Weighted combination of counter-strategies</p>
-<p>PROCEDURE AdaptiveResponse(g: GameState, s_hat_opponent: Strategy, D: DimensionSet, theta_dominance: REAL) -&gt; Strategy: // Step 1: Identify dominant dimensions of opponent's strategy D_dom := IdentifyDominantDimensions(s_hat_opponent, D, theta_dominance)</p>
-<pre><code>EMIT INFO &quot;Dominant dimensions: &quot; + D_dom.length + &quot; found&quot;
+<p>// ALGORITHM 2: Adaptive Response
+//
+//   INPUT:  Current game state g
+//           Opponent strategy estimate ŝₒ
+//   OUTPUT: Weighted combination of counter-strategies</p>
+<p>PROCEDURE AdaptiveResponse(g: GameState,
+                             s_hat_opponent: Strategy,
+                             D: DimensionSet,
+                             theta_dominance: REAL) -&gt; Strategy:
+    // Step 1: Identify dominant dimensions of opponent's strategy
+    D_dom := IdentifyDominantDimensions(s_hat_opponent, D, theta_dominance)</p>
+<pre><code>EMIT INFO "Dominant dimensions: " + D_dom.length + " found"
 
 // Step 2: For each dominant dimension, generate counter-strategy
 counter_strategies := []
@@ -477,21 +714,33 @@ END FOR
 
 // Step 3: Combine counter-strategies with weights ∝ dimension dominance
 combined := CombineCounterStrategies(counter_strategies, s_hat_opponent, D)
-RETURN combined</code></pre>
+RETURN combined
+</code></pre>
 <p>END PROCEDURE</p>
-<p>PROCEDURE IdentifyDominantDimensions(s_opponent: Strategy, D: DimensionSet, theta: REAL) -&gt; List[StrategicDimension]: // D_dom = {D | E(ŝₒ, D) &gt; θ} // Dimensions where opponent's strategy is highly effective.</p>
+<p>PROCEDURE IdentifyDominantDimensions(s_opponent: Strategy,
+                                      D: DimensionSet,
+                                      theta: REAL) -&gt; List[StrategicDimension]:
+    // D_dom = {D | E(ŝₒ, D) &gt; θ}
+    // Dimensions where opponent's strategy is highly effective.</p>
 <pre><code>D_dom := []
 FOR EACH dim IN D.dimensions:
     effectiveness := EffectivenessScore(s_opponent, dim)
     IF effectiveness &gt; theta:
         D_dom.APPEND(dim)
-        EMIT LOG &quot;Dimension &quot; + dim.name +
-                 &quot; dominates at E=&quot; + effectiveness + &quot; &gt; θ=&quot; + theta
+        EMIT LOG "Dimension " + dim.name +
+                 " dominates at E=" + effectiveness + " &gt; θ=" + theta
     END IF
 END FOR
-RETURN D_dom</code></pre>
+RETURN D_dom
+</code></pre>
 <p>END PROCEDURE</p>
-<p>PROCEDURE GenerateCounterStrategy(g: GameState, opponent_dim: StrategicDimension, counter_dim: StrategicDimension) -&gt; DimensionalStrategy: // Generate sᶜᴰ that maximizes E(sᶜᴰ, counter(D)) // // Counter-strategy maximizes effectiveness in the dimension that // NEUTRALIZES the opponent's dominant dimension.</p>
+<p>PROCEDURE GenerateCounterStrategy(g: GameState,
+                                   opponent_dim: StrategicDimension,
+                                   counter_dim: StrategicDimension) -&gt; DimensionalStrategy:
+    // Generate sᶜᴰ that maximizes E(sᶜᴰ, counter(D))
+    //
+    // Counter-strategy maximizes effectiveness in the dimension that
+    // NEUTRALIZES the opponent's dominant dimension.</p>
 <pre><code>available_actions := g.available_actions_for_player
 
 best_counter  := NULL
@@ -510,18 +759,21 @@ RETURN DimensionalStrategy(
     base_strategy  = best_counter,
     dimension      = counter_dim,
     effectiveness  = best_eff
-)</code></pre>
+)
+</code></pre>
 <p>END PROCEDURE</p>
-<p>PROCEDURE CounterDimension(dim: StrategicDimension) -&gt; StrategicDimension: // Returns the dimension that counters (neutralizes) the given dimension. // Counter relationship: offensive ↔︎ defensive, momentum ↔︎ mean_reversion, etc.</p>
+<p>PROCEDURE CounterDimension(dim: StrategicDimension) -&gt; StrategicDimension:
+    // Returns the dimension that counters (neutralizes) the given dimension.
+    // Counter relationship: offensive ↔ defensive, momentum ↔ mean_reversion, etc.</p>
 <pre><code>COUNTER_MAP := {
-    &quot;offensive&quot;       : &quot;defensive&quot;,
-    &quot;defensive&quot;       : &quot;offensive&quot;,
-    &quot;momentum&quot;        : &quot;mean_reversion&quot;,
-    &quot;mean_reversion&quot;  : &quot;momentum&quot;,
-    &quot;brute_force&quot;     : &quot;input_validation&quot;,
-    &quot;social_engineering&quot; : &quot;awareness_training&quot;,
-    &quot;aggressiveness&quot;  : &quot;yielding&quot;,
-    &quot;risk_aversion&quot;   : &quot;calculated_risk&quot;
+    "offensive"       : "defensive",
+    "defensive"       : "offensive",
+    "momentum"        : "mean_reversion",
+    "mean_reversion"  : "momentum",
+    "brute_force"     : "input_validation",
+    "social_engineering" : "awareness_training",
+    "aggressiveness"  : "yielding",
+    "risk_aversion"   : "calculated_risk"
 }
 
 IF dim.name IN COUNTER_MAP:
@@ -530,13 +782,20 @@ IF dim.name IN COUNTER_MAP:
                                basis_vector=NegateProjection(dim.basis_vector))
 END IF
 
-// Default: negate the dimension&#39;s basis vector
-RETURN StrategicDimension(name=&quot;counter_&quot; + dim.name,
-                           basis_vector=NegateProjection(dim.basis_vector))</code></pre>
+// Default: negate the dimension's basis vector
+RETURN StrategicDimension(name="counter_" + dim.name,
+                           basis_vector=NegateProjection(dim.basis_vector))
+</code></pre>
 <p>END PROCEDURE</p>
-<p>PROCEDURE CombineCounterStrategies( counter_list: List[(DimensionalStrategy, StrategicDimension)], s_opponent: Strategy, D: DimensionSet) -&gt; Strategy: // Combine counter-strategies with weights proportional to dimension dominance. // // weight(D) ∝ E(ŝₒ, D) — more dominant dimension → higher weight</p>
+<p>PROCEDURE CombineCounterStrategies(
+    counter_list: List[(DimensionalStrategy, StrategicDimension)],
+    s_opponent: Strategy,
+    D: DimensionSet) -&gt; Strategy:
+    // Combine counter-strategies with weights proportional to dimension dominance.
+    //
+    // weight(D) ∝ E(ŝₒ, D) — more dominant dimension → higher weight</p>
 <pre><code>IF LENGTH(counter_list) == 0:
-    EMIT WARNING &quot;No counter-strategies to combine — returning null strategy&quot;
+    EMIT WARNING "No counter-strategies to combine — returning null strategy"
     RETURN NullStrategy()
 END IF
 
@@ -565,11 +824,17 @@ FOR idx := 0 TO LENGTH(strategies) - 1:
                          weights[idx] * strategies[idx].base_strategy.feature_vector
 END FOR
 
-EMIT INFO &quot;Combined strategy | weights=&quot; + weights
-RETURN Strategy(feature_vector=combined_features)</code></pre>
+EMIT INFO "Combined strategy | weights=" + weights
+RETURN Strategy(feature_vector=combined_features)
+</code></pre>
 <p>END PROCEDURE</p>
 <p>// ── ALGORITHM INTEGRATION: DETECT → ADAPT PIPELINE ───────────</p>
-<p>PROCEDURE DimensionalGameLoop(G: Game, H: HistoricalGameData, theta_dominance: REAL) -&gt; List[Strategy]: // Full dimensional game theory pipeline: // 1. Identify dimensions from history // 2. Observe opponent strategy // 3. Adaptively respond each round</p>
+<p>PROCEDURE DimensionalGameLoop(G: Game, H: HistoricalGameData,
+                                theta_dominance: REAL) -&gt; List[Strategy]:
+    // Full dimensional game theory pipeline:
+    //   1. Identify dimensions from history
+    //   2. Observe opponent strategy
+    //   3. Adaptively respond each round</p>
 <pre><code>D := DimensionIdentification(H)
 round_strategies := []
 
@@ -582,41 +847,72 @@ FOR EACH round IN G.rounds:
                                      theta_dominance)
     round_strategies.APPEND(my_strategy)
 
-    // Update historical data with this round&#39;s outcome
+    // Update historical data with this round's outcome
     H.AddMatch(my_strategy, round.opponent_strategy, round.outcome)
 
     // Re-identify dimensions with updated history (adaptive learning)
     IF round.index % DIMENSION_UPDATE_INTERVAL == 0:
         D := DimensionIdentification(H)
-        EMIT INFO &quot;Dimensions refreshed at round &quot; + round.index
+        EMIT INFO "Dimensions refreshed at round " + round.index
     END IF
 END FOR
 
-RETURN round_strategies</code></pre>
+RETURN round_strategies
+</code></pre>
 <p>END PROCEDURE</p>
-<p>CONSTANT DIMENSION_UPDATE_INTERVAL := 10 // re-run PCA every 10 rounds</p>
-<p>// ============================================================ // END MODULE 3 // NEXT: dimensional_game_theory_M4_applications.psc.txt // ============================================================</p>
+<p>CONSTANT DIMENSION_UPDATE_INTERVAL := 10   // re-run PCA every 10 rounds</p>
+<p>// ============================================================
+// END MODULE 3
+// NEXT: dimensional_game_theory_M4_applications.psc.txt
+// ============================================================</p>
 <h2 id="dimensional-game-theory-m4-applicationspsc">dimensional game theory M4 applications.psc</h2>
 <h2 id="dimensional-game-theory-m4-applications">dimensional game theory M4 applications</h2>
-<p>// ============================================================ // FILE: dimensional_game_theory_M4_applications.psc.txt // MODULE 4 OF 5 — Practical Applications Across Domains // SOURCE: "Formal Analysis of Game Theory for Algorithm Development" // AUTHOR: Nnamdi Michael Okpala — OBINexus Computing // DATE: July 4, 2025 // ============================================================</p>
-<p>// ------------------------------------------------------------ // SECTION 5: PRACTICAL APPLICATIONS // ------------------------------------------------------------</p>
-<p>// Four real-world application domains for dimensional game theory. // Each domain maps to a specific set of strategic dimensions and // demonstrates how Algorithm 1 (detection) + Algorithm 2 (adaptation) // operate in practice. // // Cross-reference to OBIAI corpus: // §5.3 Autonomous Vehicles → also covered in dag_ephemeris PDF §4 // (driving scenarios: "see-sign ⊕ busy-street" etc.)</p>
+<p>// ============================================================
+// FILE: dimensional_game_theory_M4_applications.psc.txt
+// MODULE 4 OF 5 — Practical Applications Across Domains
+// SOURCE: "Formal Analysis of Game Theory for Algorithm Development"
+// AUTHOR: Nnamdi Michael Okpala — OBINexus Computing
+// DATE:   July 4, 2025
+// ============================================================</p>
+<p>// ------------------------------------------------------------
+// SECTION 5: PRACTICAL APPLICATIONS
+// ------------------------------------------------------------</p>
+<p>// Four real-world application domains for dimensional game theory.
+// Each domain maps to a specific set of strategic dimensions and
+// demonstrates how Algorithm 1 (detection) + Algorithm 2 (adaptation)
+// operate in practice.
+//
+// Cross-reference to OBIAI corpus:
+//   §5.3 Autonomous Vehicles → also covered in dag_ephemeris PDF §4
+//         (driving scenarios: "see-sign ⊕ busy-street" etc.)</p>
 <p>// ── §5.1: FINANCIAL MARKETS ───────────────────────────────────</p>
-<p>// Dimensions: momentum, mean-reversion, liquidity-seeking // Game structure: market participants compete for edge // Adaptive problem: detect when market is momentum-dominated; respond</p>
-<p>DEFINE FinancialMarketDimensions AS: D_MOMENTUM := StrategicDimension(name="momentum", basis_vector=MomentumBasis()) D_MEAN_REVERSION := StrategicDimension(name="mean_reversion", basis_vector=MeanReversionBasis()) D_LIQUIDITY := StrategicDimension(name="liquidity", basis_vector=LiquidityBasis()) END DEFINE</p>
-<p>PROCEDURE FinancialAdaptiveStrategy(market_state: MarketState, trade_history: HistoricalGameData, theta: REAL) -&gt; TradingStrategy: // Detect current market regime and adapt trading strategy.</p>
+<p>// Dimensions: momentum, mean-reversion, liquidity-seeking
+// Game structure: market participants compete for edge
+// Adaptive problem: detect when market is momentum-dominated; respond</p>
+<p>DEFINE FinancialMarketDimensions AS:
+    D_MOMENTUM      := StrategicDimension(name="momentum",
+                                           basis_vector=MomentumBasis())
+    D_MEAN_REVERSION := StrategicDimension(name="mean_reversion",
+                                            basis_vector=MeanReversionBasis())
+    D_LIQUIDITY     := StrategicDimension(name="liquidity",
+                                           basis_vector=LiquidityBasis())
+END DEFINE</p>
+<p>PROCEDURE FinancialAdaptiveStrategy(market_state: MarketState,
+                                     trade_history: HistoricalGameData,
+                                     theta: REAL) -&gt; TradingStrategy:
+    // Detect current market regime and adapt trading strategy.</p>
 <pre><code>// Step 1: Identify dominant dimensions from recent trades
 D := DimensionIdentification(trade_history)
 
-// Step 2: Model aggregate market as &quot;opponent&quot;
+// Step 2: Model aggregate market as "opponent"
 market_strategy := EstimateMarketStrategy(market_state)
 
 // Step 3: Find dominant market dimensions
 D_dom := IdentifyDominantDimensions(market_strategy, D, theta)
 
 // Step 4: Log detected regime for audit
-EMIT LOG &quot;Market regime: &quot; + D_dom.map(d.name) +
-         &quot; | state=&quot; + market_state.regime_label
+EMIT LOG "Market regime: " + D_dom.map(d.name) +
+         " | state=" + market_state.regime_label
 
 // Step 5: Generate adaptive trading response
 counter_strategy := AdaptiveResponse(
@@ -626,16 +922,47 @@ counter_strategy := AdaptiveResponse(
     theta_dominance = theta
 )
 
-RETURN TradingStrategy.fromDimensional(counter_strategy, market_state)</code></pre>
+RETURN TradingStrategy.fromDimensional(counter_strategy, market_state)
+</code></pre>
 <p>END PROCEDURE</p>
-<p>PROCEDURE EstimateMarketStrategy(state: MarketState) -&gt; Strategy: // Infer aggregate market participant strategy from observable signals: // price momentum, volume patterns, order book depth features := [ state.price_momentum_5d, state.price_momentum_20d, state.volume_trend, state.order_book_imbalance, state.volatility_ratio ] RETURN Strategy(feature_vector=Vector(features)) END PROCEDURE</p>
+<p>PROCEDURE EstimateMarketStrategy(state: MarketState) -&gt; Strategy:
+    // Infer aggregate market participant strategy from observable signals:
+    // price momentum, volume patterns, order book depth
+    features := [
+        state.price_momentum_5d,
+        state.price_momentum_20d,
+        state.volume_trend,
+        state.order_book_imbalance,
+        state.volatility_ratio
+    ]
+    RETURN Strategy(feature_vector=Vector(features))
+END PROCEDURE</p>
 <p>// ── §5.2: CYBERSECURITY ───────────────────────────────────────</p>
-<p>// Dimensions: brute_force, social_engineering, lateral_movement // Game structure: attacker vs defender (zero-sum) // Adaptive problem: identify attack vector; dynamically allocate defenses</p>
-<p>DEFINE CybersecurityDimensions AS: D_BRUTE_FORCE := StrategicDimension(name="brute_force", basis_vector=BruteForceBasis()) D_SOCIAL_ENGINEER := StrategicDimension(name="social_engineering", basis_vector=SocialEngBasis()) D_LATERAL_MOVE := StrategicDimension(name="lateral_movement", basis_vector=LateralMoveBasis()) D_PERSISTENCE := StrategicDimension(name="persistence", basis_vector=PersistenceBasis()) END DEFINE</p>
-<p>DEFINE CybersecurityGame AS: // Two-player zero-sum: Attacker vs Defender players := [ATTACKER, DEFENDER] action_space_attacker := ATTACK_ACTIONS action_space_defender := DEFENSE_ACTIONS</p>
-<pre><code>PROCEDURE IsZeroSum() -&gt; BOOL: RETURN TRUE END PROCEDURE</code></pre>
+<p>// Dimensions: brute_force, social_engineering, lateral_movement
+// Game structure: attacker vs defender (zero-sum)
+// Adaptive problem: identify attack vector; dynamically allocate defenses</p>
+<p>DEFINE CybersecurityDimensions AS:
+    D_BRUTE_FORCE      := StrategicDimension(name="brute_force",
+                                              basis_vector=BruteForceBasis())
+    D_SOCIAL_ENGINEER  := StrategicDimension(name="social_engineering",
+                                              basis_vector=SocialEngBasis())
+    D_LATERAL_MOVE     := StrategicDimension(name="lateral_movement",
+                                              basis_vector=LateralMoveBasis())
+    D_PERSISTENCE      := StrategicDimension(name="persistence",
+                                              basis_vector=PersistenceBasis())
+END DEFINE</p>
+<p>DEFINE CybersecurityGame AS:
+    // Two-player zero-sum: Attacker vs Defender
+    players := [ATTACKER, DEFENDER]
+    action_space_attacker := ATTACK_ACTIONS
+    action_space_defender := DEFENSE_ACTIONS</p>
+<pre><code>PROCEDURE IsZeroSum() -&gt; BOOL: RETURN TRUE END PROCEDURE
+</code></pre>
 <p>END DEFINE</p>
-<p>PROCEDURE CybersecurityAdaptiveDefense(threat_feed: ThreatStream, defense_history: HistoricalGameData, resource_budget: REAL) -&gt; DefenseAllocation: // Identify threat dimensions and allocate defensive resources.</p>
+<p>PROCEDURE CybersecurityAdaptiveDefense(threat_feed: ThreatStream,
+                                        defense_history: HistoricalGameData,
+                                        resource_budget: REAL) -&gt; DefenseAllocation:
+    // Identify threat dimensions and allocate defensive resources.</p>
 <pre><code>D := BuildSecurityDimensions()
 
 // Estimate attacker strategy from threat intelligence
@@ -645,7 +972,7 @@ attacker_strategy := EstimateAttackerStrategy(threat_feed)
 D_dom := IdentifyDominantDimensions(attacker_strategy, D,
                                      theta=0.4)
 
-EMIT ALERT &quot;Attack dimensions detected: &quot; +
+EMIT ALERT "Attack dimensions detected: " +
            D_dom.map(d.name)
 
 // Allocate defense budget proportional to dimension dominance
@@ -657,24 +984,51 @@ FOR EACH dim IN D_dom:
     dominance := EffectivenessScore(attacker_strategy, dim)
     weight    := dominance / MAX(total_dominance, 1e-12)
     allocations[dim.name] := resource_budget * weight
-    EMIT INFO &quot;Defense allocation: &quot; + dim.name + &quot; → &quot; +
-              allocations[dim.name] + &quot; units&quot;
+    EMIT INFO "Defense allocation: " + dim.name + " → " +
+              allocations[dim.name] + " units"
 END FOR
 
 RETURN DefenseAllocation(allocations=allocations,
-                          primary_dimension=D_dom[0])</code></pre>
+                          primary_dimension=D_dom[0])
+</code></pre>
 <p>END PROCEDURE</p>
-<p>PROCEDURE BuildSecurityDimensions() -&gt; DimensionSet: D := NEW DimensionSet() D.Add(CybersecurityDimensions.D_BRUTE_FORCE) D.Add(CybersecurityDimensions.D_SOCIAL_ENGINEER) D.Add(CybersecurityDimensions.D_LATERAL_MOVE) D.Add(CybersecurityDimensions.D_PERSISTENCE) RETURN D END PROCEDURE</p>
+<p>PROCEDURE BuildSecurityDimensions() -&gt; DimensionSet:
+    D := NEW DimensionSet()
+    D.Add(CybersecurityDimensions.D_BRUTE_FORCE)
+    D.Add(CybersecurityDimensions.D_SOCIAL_ENGINEER)
+    D.Add(CybersecurityDimensions.D_LATERAL_MOVE)
+    D.Add(CybersecurityDimensions.D_PERSISTENCE)
+    RETURN D
+END PROCEDURE</p>
 <p>// ── §5.3: AUTONOMOUS VEHICLES ─────────────────────────────────</p>
-<p>// Dimensions: aggressiveness, risk_aversion, efficiency // Game structure: multi-agent traffic interaction // Adaptive problem: model other drivers; navigate safely // // Cross-reference: DAG Ephemeris §4 (driving scenarios): // "see-sign ⊕ busy-street" → p_conf=0.972 → FILTER → speed adjustment // "braking-car ⊕ immediate-hazard" → p_conf=0.847 → REFLASH → rapid response // // The dimensional game theory framework HERE provides the strategic layer // that FEEDS INTO the ephemeris step decision (p_conf computation).</p>
-<p>DEFINE AutonomousVehicleDimensions AS: D_AGGRESSION := StrategicDimension(name="aggressiveness", basis_vector=AggressionBasis()) D_RISK_AVERSION := StrategicDimension(name="risk_aversion", basis_vector=RiskAversionBasis()) D_EFFICIENCY := StrategicDimension(name="efficiency", basis_vector=EfficiencyBasis()) END DEFINE</p>
-<p>PROCEDURE AutonomousVehicleNavigation(observations: List[VehicleObservation], own_state: VehicleState, driver_history: HistoricalGameData) -&gt; NavigationDecision: // Model surrounding drivers as strategic agents; compute safe response.</p>
+<p>// Dimensions: aggressiveness, risk_aversion, efficiency
+// Game structure: multi-agent traffic interaction
+// Adaptive problem: model other drivers; navigate safely
+//
+// Cross-reference: DAG Ephemeris §4 (driving scenarios):
+//   "see-sign ⊕ busy-street" → p_conf=0.972 → FILTER → speed adjustment
+//   "braking-car ⊕ immediate-hazard" → p_conf=0.847 → REFLASH → rapid response
+//
+// The dimensional game theory framework HERE provides the strategic layer
+// that FEEDS INTO the ephemeris step decision (p_conf computation).</p>
+<p>DEFINE AutonomousVehicleDimensions AS:
+    D_AGGRESSION   := StrategicDimension(name="aggressiveness",
+                                          basis_vector=AggressionBasis())
+    D_RISK_AVERSION := StrategicDimension(name="risk_aversion",
+                                           basis_vector=RiskAversionBasis())
+    D_EFFICIENCY   := StrategicDimension(name="efficiency",
+                                          basis_vector=EfficiencyBasis())
+END DEFINE</p>
+<p>PROCEDURE AutonomousVehicleNavigation(observations: List[VehicleObservation],
+                                       own_state: VehicleState,
+                                       driver_history: HistoricalGameData) -&gt; NavigationDecision:
+    // Model surrounding drivers as strategic agents; compute safe response.</p>
 <pre><code>D := BuildVehicleDimensions()
 
 navigation_decisions := []
 
 FOR EACH obs IN observations:
-    // Estimate this driver&#39;s strategy along behavioral dimensions
+    // Estimate this driver's strategy along behavioral dimensions
     driver_strategy := EstimateDriverStrategy(obs)
 
     // Identify driver behavioral profile
@@ -692,19 +1046,48 @@ FOR EACH obs IN observations:
     maneuver := DimensionalStrategyToManeuver(nav_response, own_state, D_dom)
     navigation_decisions.APPEND((obs.vehicle_id, maneuver))
 
-    EMIT LOG &quot;Vehicle &quot; + obs.vehicle_id + &quot; | dims=&quot; +
-             D_dom.map(d.name) + &quot; | maneuver=&quot; + maneuver.type
+    EMIT LOG "Vehicle " + obs.vehicle_id + " | dims=" +
+             D_dom.map(d.name) + " | maneuver=" + maneuver.type
 END FOR
 
 // Aggregate all vehicle models into a unified navigation decision
-RETURN SynthesizeNavigationDecision(navigation_decisions, own_state)</code></pre>
+RETURN SynthesizeNavigationDecision(navigation_decisions, own_state)
+</code></pre>
 <p>END PROCEDURE</p>
-<p>PROCEDURE EstimateDriverStrategy(obs: VehicleObservation) -&gt; Strategy: // Infer driver behavior profile from observable kinematics features := [ obs.following_distance_ratio, // aggressiveness proxy obs.lane_change_frequency, // aggressiveness obs.speed_variance, // risk indicator obs.braking_sharpness // response style ] RETURN Strategy(feature_vector=Vector(features)) END PROCEDURE</p>
-<p>PROCEDURE BuildVehicleDimensions() -&gt; DimensionSet: D := NEW DimensionSet() D.Add(AutonomousVehicleDimensions.D_AGGRESSION) D.Add(AutonomousVehicleDimensions.D_RISK_AVERSION) D.Add(AutonomousVehicleDimensions.D_EFFICIENCY) RETURN D END PROCEDURE</p>
+<p>PROCEDURE EstimateDriverStrategy(obs: VehicleObservation) -&gt; Strategy:
+    // Infer driver behavior profile from observable kinematics
+    features := [
+        obs.following_distance_ratio,   // aggressiveness proxy
+        obs.lane_change_frequency,       // aggressiveness
+        obs.speed_variance,              // risk indicator
+        obs.braking_sharpness            // response style
+    ]
+    RETURN Strategy(feature_vector=Vector(features))
+END PROCEDURE</p>
+<p>PROCEDURE BuildVehicleDimensions() -&gt; DimensionSet:
+    D := NEW DimensionSet()
+    D.Add(AutonomousVehicleDimensions.D_AGGRESSION)
+    D.Add(AutonomousVehicleDimensions.D_RISK_AVERSION)
+    D.Add(AutonomousVehicleDimensions.D_EFFICIENCY)
+    RETURN D
+END PROCEDURE</p>
 <p>// ── §5.4: BUSINESS COMPETITION ────────────────────────────────</p>
-<p>// Dimensions: price_sensitivity, quality_focus, innovation_rate // Game structure: multi-player competitive market // Adaptive problem: model competitors; develop adaptive competitive responses</p>
-<p>DEFINE BusinessDimensions AS: D_PRICE_SENSITIVITY := StrategicDimension(name="price_sensitivity", basis_vector=PriceBasis()) D_QUALITY_FOCUS := StrategicDimension(name="quality_focus", basis_vector=QualityBasis()) D_INNOVATION_RATE := StrategicDimension(name="innovation_rate", basis_vector=InnovationBasis()) END DEFINE</p>
-<p>PROCEDURE BusinessCompetitiveStrategy(market_data: MarketIntelligence, own_capabilities: CompanyProfile, competitor_history: HistoricalGameData, theta: REAL) -&gt; CompetitiveStrategy: // Analyze competitor strategies; develop dimensional competitive response.</p>
+<p>// Dimensions: price_sensitivity, quality_focus, innovation_rate
+// Game structure: multi-player competitive market
+// Adaptive problem: model competitors; develop adaptive competitive responses</p>
+<p>DEFINE BusinessDimensions AS:
+    D_PRICE_SENSITIVITY := StrategicDimension(name="price_sensitivity",
+                                               basis_vector=PriceBasis())
+    D_QUALITY_FOCUS     := StrategicDimension(name="quality_focus",
+                                               basis_vector=QualityBasis())
+    D_INNOVATION_RATE   := StrategicDimension(name="innovation_rate",
+                                               basis_vector=InnovationBasis())
+END DEFINE</p>
+<p>PROCEDURE BusinessCompetitiveStrategy(market_data: MarketIntelligence,
+                                       own_capabilities: CompanyProfile,
+                                       competitor_history: HistoricalGameData,
+                                       theta: REAL) -&gt; CompetitiveStrategy:
+    // Analyze competitor strategies; develop dimensional competitive response.</p>
 <pre><code>D := BuildBusinessDimensions()
 
 // Model each competitor as a strategic agent
@@ -713,7 +1096,7 @@ FOR EACH competitor IN market_data.competitors:
     comp_strategy := EstimateCompetitorStrategy(competitor)
     D_dom         := IdentifyDominantDimensions(comp_strategy, D, theta)
 
-    EMIT INFO &quot;Competitor &quot; + competitor.name + &quot; | dominant_dims=&quot; +
+    EMIT INFO "Competitor " + competitor.name + " | dominant_dims=" +
               D_dom.map(d.name)
 
     response := AdaptiveResponse(
@@ -727,44 +1110,85 @@ END FOR
 
 // Aggregate responses into a unified competitive strategy
 unified := SynthesizeCompetitiveStrategy(competitor_responses, own_capabilities)
-RETURN unified</code></pre>
+RETURN unified
+</code></pre>
 <p>END PROCEDURE</p>
-<p>PROCEDURE BuildBusinessDimensions() -&gt; DimensionSet: D := NEW DimensionSet() D.Add(BusinessDimensions.D_PRICE_SENSITIVITY) D.Add(BusinessDimensions.D_QUALITY_FOCUS) D.Add(BusinessDimensions.D_INNOVATION_RATE) RETURN D END PROCEDURE</p>
-<p>// ============================================================ // END MODULE 4 // NEXT: dimensional_game_theory_M5_obinexus_integration.psc.txt // ============================================================</p>
+<p>PROCEDURE BuildBusinessDimensions() -&gt; DimensionSet:
+    D := NEW DimensionSet()
+    D.Add(BusinessDimensions.D_PRICE_SENSITIVITY)
+    D.Add(BusinessDimensions.D_QUALITY_FOCUS)
+    D.Add(BusinessDimensions.D_INNOVATION_RATE)
+    RETURN D
+END PROCEDURE</p>
+<p>// ============================================================
+// END MODULE 4
+// NEXT: dimensional_game_theory_M5_obinexus_integration.psc.txt
+// ============================================================</p>
 <h2 id="dimensional-game-theory-m5-obinexus-integrationpsc">dimensional game theory M5 obinexus integration.psc</h2>
 <h2 id="dimensional-game-theory-m5-obinexus-integration">dimensional game theory M5 obinexus integration</h2>
-<p>// ============================================================ // FILE: dimensional_game_theory_M5_obinexus_integration.psc.txt // MODULE 5 OF 5 — OBINexus Integration, S_game Vector, // Conclusion &amp; Future Work // SOURCE: "Formal Analysis of Game Theory for Algorithm Development" // AUTHOR: Nnamdi Michael Okpala — OBINexus Computing // DATE: July 4, 2025 // ============================================================</p>
-<p>// ------------------------------------------------------------ // INTEGRATION WITH THE OBINEXUS CORPUS // ------------------------------------------------------------</p>
-<p>// Dimensional game theory is the strategic substrate that unifies // several components across the OBINexus corpus. This module // formalizes those connections.</p>
+<p>// ============================================================
+// FILE: dimensional_game_theory_M5_obinexus_integration.psc.txt
+// MODULE 5 OF 5 — OBINexus Integration, S_game Vector,
+//                 Conclusion &amp; Future Work
+// SOURCE: "Formal Analysis of Game Theory for Algorithm Development"
+// AUTHOR: Nnamdi Michael Okpala — OBINexus Computing
+// DATE:   July 4, 2025
+// ============================================================</p>
+<p>// ------------------------------------------------------------
+// INTEGRATION WITH THE OBINEXUS CORPUS
+// ------------------------------------------------------------</p>
+<p>// Dimensional game theory is the strategic substrate that unifies
+// several components across the OBINexus corpus. This module
+// formalizes those connections.</p>
 <p>// ── S_GAME VECTOR: DIMENSIONAL GAME THEORY IN OBIAI ──────────</p>
-<p>// The S_game vector defined in DAG Ephemeris Spec (PDF 6 §5.1): // // ⎡ DAG_cost(v, n) ⎤ // S_game = ⎢ vexameneria(v, n) ⎥ // ⎣ p_conf(state) ⎦ // // is precisely a THREE-DIMENSIONAL STRATEGY REPRESENTATION in the // dimensional game theory sense: // // Dimension 1: DAG_cost → cost dimension (probabilistic distance) // Dimension 2: vexameneria → interaction dimension (verb-noun coherence) // Dimension 3: p_conf → epistemic dimension (confidence level) // // The ephemeris step decision (FILTER vs REFLASH) is then the // system's ADAPTIVE RESPONSE to the strategic state S_game — // exactly Algorithm 2 operating in 3-dimensional strategy space.</p>
-<p>PROCEDURE BuildSGameDimensions() -&gt; DimensionSet: // The three OBIAI strategic dimensions mapped from DAG Ephemeris Spec.</p>
+<p>// The S_game vector defined in DAG Ephemeris Spec (PDF 6 §5.1):
+//
+//           ⎡ DAG_cost(v, n)     ⎤
+//   S_game = ⎢ vexameneria(v, n) ⎥
+//           ⎣ p_conf(state)      ⎦
+//
+// is precisely a THREE-DIMENSIONAL STRATEGY REPRESENTATION in the
+// dimensional game theory sense:
+//
+//   Dimension 1: DAG_cost     → cost dimension (probabilistic distance)
+//   Dimension 2: vexameneria  → interaction dimension (verb-noun coherence)
+//   Dimension 3: p_conf       → epistemic dimension (confidence level)
+//
+// The ephemeris step decision (FILTER vs REFLASH) is then the
+// system's ADAPTIVE RESPONSE to the strategic state S_game —
+// exactly Algorithm 2 operating in 3-dimensional strategy space.</p>
+<p>PROCEDURE BuildSGameDimensions() -&gt; DimensionSet:
+    // The three OBIAI strategic dimensions mapped from DAG Ephemeris Spec.</p>
 <pre><code>D := NEW DimensionSet()
 
 D.Add(StrategicDimension(
-    name         = &quot;dag_cost&quot;,
+    name         = "dag_cost",
     basis_vector = BasisVector([1.0, 0.0, 0.0]),
     // Higher value → more distributional distance between belief states
     // Drives system toward recalibration (Flash mode)
 ))
 
 D.Add(StrategicDimension(
-    name         = &quot;vexameneria&quot;,
+    name         = "vexameneria",
     basis_vector = BasisVector([0.0, 1.0, 0.0]),
     // Higher value → stronger verb-noun interaction coherence
     // Drives system toward persistent reasoning (Filter mode)
 ))
 
 D.Add(StrategicDimension(
-    name         = &quot;epistemic_confidence&quot;,
+    name         = "epistemic_confidence",
     basis_vector = BasisVector([0.0, 0.0, 1.0]),
     // Higher value → more confident epistemic state
     // Primary gate for FILTER (≥0.954) vs REFLASH (&lt;0.954) selection
 ))
 
-RETURN D</code></pre>
+RETURN D
+</code></pre>
 <p>END PROCEDURE</p>
-<p>PROCEDURE ComputeSGameVector(v: SymbolicCapsule, n: SymbolicCapsule, state: SystemState) -&gt; StrategicVector: // Realize S_game as a concrete DimensionalStrategyProfile. // Cross-reference: dag_ephemeris_M4_application_diram.psc.txt §5.1</p>
+<p>PROCEDURE ComputeSGameVector(v: SymbolicCapsule, n: SymbolicCapsule,
+                               state: SystemState) -&gt; StrategicVector:
+    // Realize S_game as a concrete DimensionalStrategyProfile.
+    // Cross-reference: dag_ephemeris_M4_application_diram.psc.txt §5.1</p>
 <pre><code>dag_c    := DAGCost(v, n, LAMBDA_DEFAULT, MU_DEFAULT,
                     BETA1_DEFAULT, BETA2_DEFAULT,
                     GAMMA1_DEFAULT, GAMMA2_DEFAULT)
@@ -775,9 +1199,15 @@ S_game := StrategicVector(
     components = [dag_c, vex, p_conf],
     dimensions = BuildSGameDimensions()
 )
-RETURN S_game</code></pre>
+RETURN S_game
+</code></pre>
 <p>END PROCEDURE</p>
-<p>PROCEDURE EphemerisStepViaDimensionalGame(S_game: StrategicVector, theta_dominance: REAL) -&gt; EphemerisMode: // Map dimensional game theory adaptive response to Filter/Flash decision. // // The "opponent" is the environment's information state. // The system's response is its optimal mode selection given S_game.</p>
+<p>PROCEDURE EphemerisStepViaDimensionalGame(S_game: StrategicVector,
+                                           theta_dominance: REAL) -&gt; EphemerisMode:
+    // Map dimensional game theory adaptive response to Filter/Flash decision.
+    //
+    // The "opponent" is the environment's information state.
+    // The system's response is its optimal mode selection given S_game.</p>
 <pre><code>// Identify dominant OBIAI dimensions
 D := BuildSGameDimensions()
 env_strategy := Strategy.fromVector(S_game.components)
@@ -785,34 +1215,54 @@ D_dom        := IdentifyDominantDimensions(env_strategy, D, theta_dominance)
 
 // If epistemic_confidence dominates at p_conf ≥ 0.954: FILTER
 // Otherwise: REFLASH (high cost or low confidence drives ephemeral mode)
-confidence_dim := D.GetByName(&quot;epistemic_confidence&quot;)
+confidence_dim := D.GetByName("epistemic_confidence")
 confidence_dom := EffectivenessScore(env_strategy, confidence_dim)
 
 IF confidence_dom &gt;= 0.954:
     RETURN FILTER
 ELSE:
     RETURN REFLASH
-END IF</code></pre>
+END IF
+</code></pre>
 <p>END PROCEDURE</p>
 <p>// ── ACTOR CLASS INTEGRATION ───────────────────────────────────</p>
-<p>// The Actor Class (PDF 2) introduces Dimensional Innovation: // τ ∉ span(C) — transforms beyond existing navigation basis // // In dimensional game theory terms: // span(C) = the existing strategic dimension set D // τ = an innovative strategy in a new dimension beyond D // // Corollary 1 (Strategic Imbalance) provides the DIAGNOSTIC: // A non-tie outcome reveals which dimension τ exploits.</p>
-<p>PROCEDURE ActorDimensionalInnovation(current_D: DimensionSet, game_history: HistoricalGameData) -&gt; StrategicDimension: // Find a new strategic dimension not in span of current D. // Maps to Actor Class τ ∉ span(C).</p>
+<p>// The Actor Class (PDF 2) introduces Dimensional Innovation:
+//   τ ∉ span(C) — transforms beyond existing navigation basis
+//
+// In dimensional game theory terms:
+//   span(C) = the existing strategic dimension set D
+//   τ       = an innovative strategy in a new dimension beyond D
+//
+// Corollary 1 (Strategic Imbalance) provides the DIAGNOSTIC:
+//   A non-tie outcome reveals which dimension τ exploits.</p>
+<p>PROCEDURE ActorDimensionalInnovation(current_D: DimensionSet,
+                                      game_history: HistoricalGameData) -&gt; StrategicDimension:
+    // Find a new strategic dimension not in span of current D.
+    // Maps to Actor Class τ ∉ span(C).</p>
 <pre><code>extended_D := DimensionIdentification(game_history)
 
 FOR EACH dim IN extended_D.dimensions:
     IF NOT current_D.Contains(dim):
         // This dimension is genuinely novel (∉ span of current D)
-        EMIT INFO &quot;Actor innovation: new dimension discovered = &quot; + dim.name
+        EMIT INFO "Actor innovation: new dimension discovered = " + dim.name
         RETURN dim
     END IF
 END FOR
 
-EMIT INFO &quot;No new dimensions found — no innovation possible in this context&quot;
-RETURN NULL</code></pre>
+EMIT INFO "No new dimensions found — no innovation possible in this context"
+RETURN NULL
+</code></pre>
 <p>END PROCEDURE</p>
 <p>// ── DIRAM CASCADE AS DIMENSIONAL STRATEGY ────────────────────</p>
-<p>// The three-tier DIRAM cascade (Obinexus±3/Uche±6/Eze±9) maps to // dimensional game theory activation thresholds: // // |drift| ≤ 3 → Green Zone → Obinexus baseline (single-dimension play) // |drift| &gt; 3 → Uche activated → two-dimensional play (adds knowledge dim) // |drift| &gt; 6 → Eze activated → three-dimensional override (full authority)</p>
-<p>PROCEDURE DIRAMCascadeViaDimensionalGame(drift: REAL, D_active: DimensionSet) -&gt; DIRAMCascade: // Determine cascade tier using dimensional dominance at current drift.</p>
+<p>// The three-tier DIRAM cascade (Obinexus±3/Uche±6/Eze±9) maps to
+// dimensional game theory activation thresholds:
+//
+//   |drift| ≤ 3  → Green Zone → Obinexus baseline (single-dimension play)
+//   |drift| &gt; 3  → Uche activated → two-dimensional play (adds knowledge dim)
+//   |drift| &gt; 6  → Eze activated  → three-dimensional override (full authority)</p>
+<p>PROCEDURE DIRAMCascadeViaDimensionalGame(drift: REAL,
+                                          D_active: DimensionSet) -&gt; DIRAMCascade:
+    // Determine cascade tier using dimensional dominance at current drift.</p>
 <pre><code>cascade := NEW DIRAMCascade()
 cascade.Initialize()
 
@@ -820,24 +1270,35 @@ cascade.Initialize()
 // Uche: activate when drift creates a second dominant dimension
 IF ABS(drift) &gt; 3.0:
     cascade.ActivateTier(UCHE)
-    D_active.Add(StrategicDimension(name=&quot;knowledge_adaptation&quot;,
+    D_active.Add(StrategicDimension(name="knowledge_adaptation",
                                      basis_vector=KnowledgeBasis()))
 END IF
 
 // Eze: activate when drift creates a third dominant dimension (override)
 IF ABS(drift) &gt; 6.0:
     cascade.ActivateTier(EZE)
-    D_active.Add(StrategicDimension(name=&quot;executive_override&quot;,
+    D_active.Add(StrategicDimension(name="executive_override",
                                      basis_vector=ExecutiveBasis()))
 END IF
 
-EMIT INFO &quot;Cascade tiers: &quot; + cascade.GetActiveTiers() +
-          &quot; | active_dims=&quot; + D_active.Size()
-RETURN cascade</code></pre>
+EMIT INFO "Cascade tiers: " + cascade.GetActiveTiers() +
+          " | active_dims=" + D_active.Size()
+RETURN cascade
+</code></pre>
 <p>END PROCEDURE</p>
 <p>// ── NASH EQUILIBRIUM IN OBIAI CONTEXT ────────────────────────</p>
-<p>// The OBIAI system seeks a Nash Equilibrium between: // Player 1: The AI system (choosing Filter vs Reflash) // Player 2: The environment (generating data distribution) // // At Nash Equilibrium: the system's mode selection is optimal // given the environment's distribution, and the environment's // distribution cannot be manipulated to gain advantage. // // Convergence to this equilibrium is guaranteed by AEGIS-PROOF-3.2.</p>
-<p>PROCEDURE OBIAINashEquilibrium(engine: FilterFlashEngine, environment: DataDistribution) -&gt; NashReport: // Verify that current OBIAI configuration is at Nash Equilibrium.</p>
+<p>// The OBIAI system seeks a Nash Equilibrium between:
+//   Player 1: The AI system (choosing Filter vs Reflash)
+//   Player 2: The environment (generating data distribution)
+//
+// At Nash Equilibrium: the system's mode selection is optimal
+// given the environment's distribution, and the environment's
+// distribution cannot be manipulated to gain advantage.
+//
+// Convergence to this equilibrium is guaranteed by AEGIS-PROOF-3.2.</p>
+<p>PROCEDURE OBIAINashEquilibrium(engine: FilterFlashEngine,
+                                 environment: DataDistribution) -&gt; NashReport:
+    // Verify that current OBIAI configuration is at Nash Equilibrium.</p>
 <pre><code>// Build 2-player game: system vs environment
 G := BuildOBIAIGame(engine, environment)
 
@@ -856,16 +1317,74 @@ RETURN NashReport(
     game_value     = theorem1.game_value,
     system_strategy = s_star_system,
     env_strategy    = s_star_env,
-    note           = IF is_ne THEN &quot;OBIAI at Nash Equilibrium — stable operation&quot;
-                     ELSE &quot;OBIAI not at equilibrium — drift mitigation needed&quot;
-)</code></pre>
+    note           = IF is_ne THEN "OBIAI at Nash Equilibrium — stable operation"
+                     ELSE "OBIAI not at equilibrium — drift mitigation needed"
+)
+</code></pre>
 <p>END PROCEDURE</p>
-<p>// ------------------------------------------------------------ // SECTION 6: CONCLUSION AND FUTURE WORK // ------------------------------------------------------------</p>
-<p>DEFINE Conclusion AS: RESULT_1 := "Formal extension of game theory to dimensional game theory established" RESULT_2 := "Perfect games with optimal play result in deterministic ties (Theorem 1)" RESULT_3 := "Deviations from tie reveal strategic imbalances (Corollary 1)" RESULT_4 := "Algorithms derived: Dimension Identification (PCA) + Adaptive Response" RESULT_5 := "Applications: financial, cybersecurity, autonomous vehicles, business" END DEFINE</p>
-<p>DEFINE FutureWork AS: FW_1 := "Develop more sophisticated dimension detection methods" FW_2 := "Improve efficiency of strategic adaptation algorithms" FW_3 := "Expand to multi-agent reinforcement learning" FW_4 := "Complex systems modeling with dimensional game theory" END DEFINE</p>
-<p>PROCEDURE PrintConclusion() -&gt; VOID: EMIT INFO "=== DIMENSIONAL GAME THEORY — CORPUS INTEGRATION ===" EMIT INFO "" EMIT INFO "FORMAL RESULTS:" FOR EACH result IN [RESULT_1, RESULT_2, RESULT_3, RESULT_4, RESULT_5]: EMIT INFO " ✓ " + result END FOR EMIT INFO "" EMIT INFO "OBINEXUS CORPUS CONNECTIONS:" EMIT INFO " S_game vector (PDF 6) → 3D dimensional strategy profile" EMIT INFO " Actor τ ∉ span(C) (PDF 2) → dimensional innovation via Corollary 1" EMIT INFO " DIRAM cascade tiers (PDF 7) → dimensional activation thresholds" EMIT INFO " AEGIS-PROOF-3.2 convergence (PDF 4) → Nash equilibrium path" EMIT INFO " Ephemeris step (PDF 6) → Algorithm 2 adaptive response" EMIT INFO "" EMIT INFO "FUTURE WORK:" FOR EACH fw IN [FW_1, FW_2, FW_3, FW_4]: EMIT INFO " → " + fw END FOR EMIT INFO "===================================================" END PROCEDURE</p>
-<p>// ============================================================ // END MODULE 5 — FINAL MODULE // // FULL MODULE INDEX (Dimensional Game Theory): // M1: dimensional_game_theory_M1_formal_definitions.psc.txt // M2: dimensional_game_theory_M2_dimensional_extension.psc.txt // M3: dimensional_game_theory_M3_algorithms.psc.txt // M4: dimensional_game_theory_M4_applications.psc.txt // M5: dimensional_game_theory_M5_obinexus_integration.psc.txt ← THIS // // COMPLETE OBINEXUS PSEUDOCODE CORPUS — 8 PDFs, 40 MODULES: // PDF 1 Bayesian Debiasing : bayesian_debiasing_M1–M5 // PDF 2 Actor Class : actor_class_M1–M5 // PDF 3 AEGIS-PROOF-1.2 : aegis_proof_1_2_M1–M5 // PDF 4 AEGIS-PROOF-3.1 &amp; 3.2 : aegis_proof_3_1_3_2_M1–M5 // PDF 5 AEGIS-PROOF-4.1 Hospital : aegis_proof_4_1_M1–M5 // PDF 6 DAG Ephemeris Spec : dag_ephemeris_M1–M5 // PDF 7 OBIAI Thesis : obiai_thesis_M1–M5 // PDF 8 Dimensional Game Theory : dimensional_game_theory_M1–M5 ← THIS // // FOUR SHARED INVARIANTS ACROSS ALL 8 DOCUMENTS: // EPISTEMIC_THRESHOLD := 0.954 // DIRAM_EPSILON_BOUND := 0.6 // SINPHASE_BOUND := 0.6 // TRIPOLAR := {UCHE, EZE, OBI} // ============================================================</p>
-
+<p>// ------------------------------------------------------------
+// SECTION 6: CONCLUSION AND FUTURE WORK
+// ------------------------------------------------------------</p>
+<p>DEFINE Conclusion AS:
+    RESULT_1 := "Formal extension of game theory to dimensional game theory established"
+    RESULT_2 := "Perfect games with optimal play result in deterministic ties (Theorem 1)"
+    RESULT_3 := "Deviations from tie reveal strategic imbalances (Corollary 1)"
+    RESULT_4 := "Algorithms derived: Dimension Identification (PCA) + Adaptive Response"
+    RESULT_5 := "Applications: financial, cybersecurity, autonomous vehicles, business"
+END DEFINE</p>
+<p>DEFINE FutureWork AS:
+    FW_1 := "Develop more sophisticated dimension detection methods"
+    FW_2 := "Improve efficiency of strategic adaptation algorithms"
+    FW_3 := "Expand to multi-agent reinforcement learning"
+    FW_4 := "Complex systems modeling with dimensional game theory"
+END DEFINE</p>
+<p>PROCEDURE PrintConclusion() -&gt; VOID:
+    EMIT INFO "=== DIMENSIONAL GAME THEORY — CORPUS INTEGRATION ==="
+    EMIT INFO ""
+    EMIT INFO "FORMAL RESULTS:"
+    FOR EACH result IN [RESULT_1, RESULT_2, RESULT_3, RESULT_4, RESULT_5]:
+        EMIT INFO "  ✓ " + result
+    END FOR
+    EMIT INFO ""
+    EMIT INFO "OBINEXUS CORPUS CONNECTIONS:"
+    EMIT INFO "  S_game vector (PDF 6) → 3D dimensional strategy profile"
+    EMIT INFO "  Actor τ ∉ span(C) (PDF 2) → dimensional innovation via Corollary 1"
+    EMIT INFO "  DIRAM cascade tiers (PDF 7) → dimensional activation thresholds"
+    EMIT INFO "  AEGIS-PROOF-3.2 convergence (PDF 4) → Nash equilibrium path"
+    EMIT INFO "  Ephemeris step (PDF 6) → Algorithm 2 adaptive response"
+    EMIT INFO ""
+    EMIT INFO "FUTURE WORK:"
+    FOR EACH fw IN [FW_1, FW_2, FW_3, FW_4]:
+        EMIT INFO "  → " + fw
+    END FOR
+    EMIT INFO "==================================================="
+END PROCEDURE</p>
+<p>// ============================================================
+// END MODULE 5 — FINAL MODULE
+//
+// FULL MODULE INDEX (Dimensional Game Theory):
+//   M1: dimensional_game_theory_M1_formal_definitions.psc.txt
+//   M2: dimensional_game_theory_M2_dimensional_extension.psc.txt
+//   M3: dimensional_game_theory_M3_algorithms.psc.txt
+//   M4: dimensional_game_theory_M4_applications.psc.txt
+//   M5: dimensional_game_theory_M5_obinexus_integration.psc.txt  ← THIS
+//
+// COMPLETE OBINEXUS PSEUDOCODE CORPUS — 8 PDFs, 40 MODULES:
+//   PDF 1 Bayesian Debiasing         : bayesian_debiasing_M1–M5
+//   PDF 2 Actor Class                : actor_class_M1–M5
+//   PDF 3 AEGIS-PROOF-1.2            : aegis_proof_1_2_M1–M5
+//   PDF 4 AEGIS-PROOF-3.1 &amp; 3.2     : aegis_proof_3_1_3_2_M1–M5
+//   PDF 5 AEGIS-PROOF-4.1 Hospital   : aegis_proof_4_1_M1–M5
+//   PDF 6 DAG Ephemeris Spec         : dag_ephemeris_M1–M5
+//   PDF 7 OBIAI Thesis               : obiai_thesis_M1–M5
+//   PDF 8 Dimensional Game Theory    : dimensional_game_theory_M1–M5  ← THIS
+//
+// FOUR SHARED INVARIANTS ACROSS ALL 8 DOCUMENTS:
+//   EPISTEMIC_THRESHOLD := 0.954
+//   DIRAM_EPSILON_BOUND := 0.6
+//   SINPHASE_BOUND      := 0.6
+//   TRIPOLAR            := {UCHE, EZE, OBI}
+// ============================================================</p>
   </main>
   <footer>
     <p>Generated artifact: <code>archive/dimensional-game-theory</code></p>

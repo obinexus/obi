@@ -69,23 +69,30 @@
 <p>Building upon the established Filter-Flash metacognitive architecture, we introduce the Epistemic Flash Indexing (EFI) component to enable transparent knowledge provenance tracking and reasoning audit capabilities.</p>
 <div class="definition">
 
-<p><strong>Definition 1</strong> (Epistemic Flash Index Structure). <em>An Epistemic Flash Index is a tuple <span class="math inline">ℰ = (𝒫, 𝒯, <em>Λ</em>, <em>Ψ</em>)</span> where:</em></p>
-<ul>
-<li><p><em><span class="math inline">𝒫</span> is the provenance space: <span class="math inline">𝒫 = {<em>p</em><sub><em>i</em></sub> : <em>p</em><sub><em>i</em></sub> represents a knowledge derivation path}</span></em></p></li>
-<li><p><em><span class="math inline">𝒯</span> is the temporal ordering: <span class="math inline">𝒯 = {<em>t</em><sub><em>i</em></sub> ∈ ℕ : <em>t</em><sub><em>i</em></sub> denotes flash occurrence time}</span></em></p></li>
-<li><p><em><span class="math inline"><em>Λ</em> : 𝒦 → 𝒫 × 𝒯</span> maps knowledge elements to their epistemic origins</em></p></li>
-<li><p><em><span class="math inline"><em>Ψ</em> : 𝒫 → 2<sup><em>V</em><sub><em>N</em></sub></sup></span> traces provenance paths back to originating VNP nodes</em></p></li>
-</ul>
+**Definition 1** (Epistemic Flash Index Structure). *An Epistemic Flash Index is a tuple $`\mathcal{E} = (\mathcal{P}, \mathcal{T}, \Lambda, \Psi)`$ where:*
+
+- *$`\mathcal{P}`$ is the provenance space: $`\mathcal{P} = \{p_i : p_i \text{ represents a knowledge derivation path}\}`$*
+
+- *$`\mathcal{T}`$ is the temporal ordering: $`\mathcal{T} = \{t_i \in \mathbb{N} : t_i \text{ denotes flash occurrence time}\}`$*
+
+- *$`\Lambda: \mathcal{K} \rightarrow \mathcal{P} \times \mathcal{T}`$ maps knowledge elements to their epistemic origins*
+
+- *$`\Psi: \mathcal{P} \rightarrow 2^{V_N}`$ traces provenance paths back to originating VNP nodes*
+
 </div>
 
 <div class="definition">
 
-<p><strong>Definition 2</strong> (Epistemic Flash Operation). *The enhanced Flash operation <span class="math inline"><em>Φ</em><sub><em>E</em></sub> : 𝒦 × ℰ → ℛ × ℰ<sup>′</sup></span> incorporates epistemic indexing:</p>
-<p><span class="math display">$$\begin{align}
+**Definition 2** (Epistemic Flash Operation). *The enhanced Flash operation $`\Phi_E: \mathcal{K} \times \mathcal{E} \rightarrow \mathcal{R} \times \mathcal{E}'`$ incorporates epistemic indexing:
+
+<pre><code class="language-math">\begin{align}
 \Phi_E(k_i, \mathcal{E}) &amp;= \left(\arg\max_{r_j \in \mathcal{R}} \text{sim}(k_i, r_j) \cdot \text{relevance}(r_j, \text{context}), \mathcal{E}'\right)
-\end{align}$$</span></p>
-<p>where <span class="math inline">ℰ<sup>′</sup></span> includes updated provenance mappings:</p>
-<p><span class="math display">$$\begin{align}
+\end{align}
+</code></pre>
+
+where $`\mathcal{E}'`$ includes updated provenance mappings:
+
+<pre><code class="language-math">\begin{align}
 \Lambda'(r_j) &amp;= \Lambda(k_i) \cup \{(\text{flash\_derivation}(k_i \rightarrow r_j), t_{\text{current}})\}
 \end{align}
 ```*
@@ -94,7 +101,7 @@
 
 ## Epistemic Invariant Properties
 
-&lt;div class="theorem"&gt;
+&lt;div class=&quot;theorem&quot;&gt;
 
 **Theorem 1** (Epistemic Trace Completeness). *For any knowledge element $`k \in \mathcal{K}`$ produced by the Epistemic Flash Indexing system, there exists a complete derivation trace back to the originating VNP nodes.*
 
@@ -102,7 +109,7 @@
 
 &lt;/div&gt;
 
-&lt;div class="proof"&gt;
+&lt;div class=&quot;proof&quot;&gt;
 
 *Proof.* We proceed by structural induction on the flash operation depth.
 
@@ -114,37 +121,56 @@ By the inductive hypothesis, $`\exists \text{trace}(k_n) = \langle v_1, \ldots, 
 ``` math
 \begin{align}
 \Lambda(k_{n+1}) &amp;= \Lambda(k_n) \cup \{(\text{flash\_derivation}(k_n \rightarrow k_{n+1}), t_n)\}
-\end{align}$$</span></p>
-<p>Since <span class="math inline"><em>Ψ</em></span> preserves transitive closure over derivation paths:</p>
-<p><span class="math display">$$\begin{align}
+\end{align}
+</code></pre>
+
+
+Since $`\Psi`$ preserves transitive closure over derivation paths:
+
+<pre><code class="language-math">\begin{align}
 \Psi(\Lambda(k_{n+1})) &amp;= \Psi(\Lambda(k_n)) \cup \text{new\_sources}(k_n \rightarrow k_{n+1})
-\end{align}$$</span></p>
-<p>This maintains trace completeness, completing the induction. <span class="math inline">▫</span> ◻</p>
+\end{align}
+</code></pre>
+
+
+This maintains trace completeness, completing the induction. $`\square`$ ◻
+
 </div>
 
 <div class="invariant">
 
-<p><strong>Invariant 1</strong> (Epistemic Consistency Invariant (ECI)). *The epistemic flash indexing system maintains temporal consistency of knowledge derivation:</p>
-<p><span class="math display">$$\begin{align}
+**Invariant 1** (Epistemic Consistency Invariant (ECI)). *The epistemic flash indexing system maintains temporal consistency of knowledge derivation:
+
+<pre><code class="language-math">\begin{align}
 \text{ECI}: \forall k_i, k_j \in \mathcal{K}, \text{derives}(k_i, k_j) \Rightarrow \text{timestamp}(\Lambda(k_i)) &lt; \text{timestamp}(\Lambda(k_j))
-\end{align}$$</span></p>
-<p>where <span class="math inline">derives(<em>k</em><sub><em>i</em></sub>, <em>k</em><sub><em>j</em></sub>)</span> indicates that <span class="math inline"><em>k</em><sub><em>j</em></sub></span> was derived from <span class="math inline"><em>k</em><sub><em>i</em></sub></span> through flash operations.*</p>
+\end{align}
+</code></pre>
+
+where $`\text{derives}(k_i, k_j)`$ indicates that $`k_j`$ was derived from $`k_i`$ through flash operations.*
+
 </div>
 
 <h2 id="integration-with-existing-obiai-framework">Integration with Existing OBIAI Framework</h2>
 <p>The Epistemic Flash Indexing component integrates seamlessly with the established Filter-Flash loop:</p>
-<p><span class="math display">$$\begin{align}
+<pre><code class="language-math">\begin{align}
 \mathcal{L}_{EFF}: \mathcal{I} \xrightarrow{F} \mathcal{K} \xrightarrow{\Phi_E} (\mathcal{R} \times \mathcal{E}') \xrightarrow{U_E} (\mathcal{I}' \times \mathcal{E}'')
-\end{align}$$</span></p>
-<p>where <span class="math inline"><em>U</em><sub><em>E</em></sub> : (ℛ × ℰ<sup>′</sup>) → (ℐ<sup>′</sup> × ℰ<sup>″</sup>)</span> preserves epistemic information during update operations.</p>
+\end{align}
+</code></pre>
+<p>where $<code>U_E: (\mathcal{R} \times \mathcal{E}') \rightarrow (\mathcal{I}' \times \mathcal{E}'')</code>$ preserves epistemic information during update operations.</p>
 <h2 id="computational-complexity-analysis">Computational Complexity Analysis</h2>
 <p>The epistemic indexing component introduces the following computational overhead:</p>
 <ul>
-<li><p><strong>Provenance Storage:</strong> <span class="math inline"><em>O</em>(|𝒫|⋅log |𝒯|)</span> for indexed provenance mappings</p></li>
-<li><p><strong>Trace Computation:</strong> <span class="math inline"><em>O</em>(<em>d</em> ⋅ |𝒦|)</span> where <span class="math inline"><em>d</em></span> is maximum derivation depth</p></li>
-<li><p><strong>Flash Operation Enhancement:</strong> <span class="math inline"><em>O</em>(log |ℰ|)</span> additional cost per flash</p></li>
+<li>
+<p><strong>Provenance Storage:</strong> $<code>O(|\mathcal{P}| \cdot \log |\mathcal{T}|)</code>$ for indexed provenance mappings</p>
+</li>
+<li>
+<p><strong>Trace Computation:</strong> $<code>O(d \cdot |\mathcal{K}|)</code>$ where $<code>d</code>$ is maximum derivation depth</p>
+</li>
+<li>
+<p><strong>Flash Operation Enhancement:</strong> $<code>O(\log |\mathcal{E}|)</code>$ additional cost per flash</p>
+</li>
 </ul>
-<p>Total system complexity remains <span class="math inline"><em>O</em>(|<em>V</em><sub><em>N</em></sub>|log |<em>V</em><sub><em>N</em></sub>|+|𝒫|⋅log |𝒯|)</span>, maintaining computational tractability.</p>
+<p>Total system complexity remains $<code>O(|V_N| \log |V_N| + |\mathcal{P}| \cdot \log |\mathcal{T}|)</code>$, maintaining computational tractability.</p>
 <h2 id="example-vnp-graph-structure-with-epistemic-indexing">Example VNP Graph Structure with Epistemic Indexing</h2>
 <p>Consider the following cognitive scenario demonstrating epistemic flash indexing in action:</p>
 <div class="center">
@@ -152,24 +178,34 @@ By the inductive hypothesis, $`\exists \text{trace}(k_n) = \langle v_1, \ldots, 
 </div>
 
 <p><strong>Epistemic Trace Analysis:</strong></p>
-<ol type="1">
-<li><p>Initial VNPs: <span class="math inline">⟨observe, cloud⟩</span>, <span class="math inline">⟨darkening, sky⟩</span>, <span class="math inline">⟨drops, water⟩</span></p></li>
-<li><p>Filtered knowledge: <span class="math inline"><em>k</em><sub>1</sub></span> (weather), <span class="math inline"><em>k</em><sub>2</sub></span> (storm), <span class="math inline"><em>k</em><sub>3</sub></span> (rain)</p></li>
-<li><p>Epistemic flash <span class="math inline"><em>Φ</em><sub><em>E</em></sub></span> combines knowledge elements with full provenance tracking</p></li>
-<li><p>Result <span class="math inline"><em>k</em><sub>4</sub></span> (precipitation) maintains complete derivation history</p></li>
-<li><p>Audit trail: <span class="math inline"><em>k</em><sub>4</sub> ← {<em>k</em><sub>1</sub>, <em>k</em><sub>2</sub>, <em>k</em><sub>3</sub>} ← {vnp1, vnp2, vnp3}</span></p></li>
+<ol>
+<li>
+<p>Initial VNPs: $<code>\langle\text{observe},\text{cloud}\rangle</code>$, $<code>\langle\text{darkening},\text{sky}\rangle</code>$, $<code>\langle\text{drops},\text{water}\rangle</code>$</p>
+</li>
+<li>
+<p>Filtered knowledge: $<code>k_1</code>$ (weather), $<code>k_2</code>$ (storm), $<code>k_3</code>$ (rain)</p>
+</li>
+<li>
+<p>Epistemic flash $<code>\Phi_E</code>$ combines knowledge elements with full provenance tracking</p>
+</li>
+<li>
+<p>Result $<code>k_4</code>$ (precipitation) maintains complete derivation history</p>
+</li>
+<li>
+<p>Audit trail: $<code>k_4 \leftarrow \{k_1, k_2, k_3\} \leftarrow \{\text{vnp1}, \text{vnp2}, \text{vnp3}\}</code>$</p>
+</li>
 </ol>
 <p>This structure enables transparent reasoning where any derived knowledge can be traced back to its originating perceptual inputs, satisfying the Epistemic Trace Completeness theorem.</p>
 <h2 id="aegis-proof-integration-protocol">AEGIS-PROOF Integration Protocol</h2>
 <p>The Epistemic Flash Indexing component integrates with the existing AEGIS-PROOF suite through enhanced cost function validation:</p>
-<p><span class="math display">$$\begin{align}
+<pre><code class="language-math">\begin{align}
 C_{\text{epistemic}}(\Phi_E(k_i)) &amp;= C_{\text{total}}(k_i) + \lambda \cdot H_{\text{provenance}}(\Lambda(k_i))
-\end{align}$$</span></p>
-<p>where <span class="math inline"><em>H</em><sub>provenance</sub></span> measures the information entropy of the derivation path, ensuring that complex reasoning chains maintain appropriate confidence levels.</p>
+\end{align}
+</code></pre>
+<p>where $<code>H_{\text{provenance}}</code>$ measures the information entropy of the derivation path, ensuring that complex reasoning chains maintain appropriate confidence levels.</p>
 <h1 id="conclusion">Conclusion</h1>
 <p>The Epistemic Flash Indexing extension preserves all existing OBIAI v2.1 properties while adding transparent reasoning capabilities essential for safety-critical AI deployment. The formal proofs establish mathematical soundness, and the computational analysis demonstrates practical feasibility within the Aegis waterfall methodology framework.</p>
 <p>This component positions OBIAI v2.2 for advanced applications requiring full reasoning transparency and audit capabilities, maintaining our commitment to technique-bound AI systems with verifiable cognitive processes.</p>
-
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-obiai-filter-flash-dag-cognition-engine-v2-2</code></p>

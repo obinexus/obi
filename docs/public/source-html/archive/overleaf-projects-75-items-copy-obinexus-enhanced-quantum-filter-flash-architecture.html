@@ -84,7 +84,7 @@
 <td style="text-align: center;">0</td>
 <td style="text-align: center;">1</td>
 <td style="text-align: center;">0</td>
-<td style="text-align: center;">[1<span class="math inline">↔︎</span><!-- -->0]</td>
+<td style="text-align: center;">[1$<code>\leftrightarrow</code>$<!-- -->0]</td>
 <td style="text-align: center;">0</td>
 </tr>
 <tr>
@@ -136,29 +136,34 @@
 <h2 id="formal-definition">Formal Definition</h2>
 <div class="definition">
 
-<p><strong>Definition 1</strong> (Epistemic Consistency Invariant). <em>Given a quantum-classical hybrid system with:</em></p>
-<ul>
-<li><p><em>Knowledge base <span class="math inline"><em>K</em> ⊆ ℒ</span> in modal logic <span class="math inline">ℒ</span></em></p></li>
-<li><p><em>Filter operation <span class="math inline">ℱ : ℒ → ℒ</span> (subjective processing)</em></p></li>
-<li><p><em>Flash operation <span class="math inline">𝒰 : ℒ → ℒ</span> (objective update)</em></p></li>
-<li><p><em>Epistemic valuation <span class="math inline"><em>E</em> : ℒ → {0, 1}</span></em></p></li>
-<li><p><em>Kripke frame <span class="math inline">ℳ = (<em>W</em>, <em>R</em>, <em>V</em>)</span></em></p></li>
-</ul>
-<p>*The system maintains epistemic consistency iff:</p>
-<p><span class="math display">$$\forall \varphi \in K: E(\varphi) = 1 \Rightarrow E(\mathcal{U}(\mathcal{F}(\varphi))) = 1
+**Definition 1** (Epistemic Consistency Invariant). *Given a quantum-classical hybrid system with:*
+
+- *Knowledge base $`K \subseteq \mathcal{L}`$ in modal logic $`\mathcal{L}`$*
+
+- *Filter operation $`\mathcal{F}: \mathcal{L} \rightarrow \mathcal{L}`$ (subjective processing)*
+
+- *Flash operation $`\mathcal{U}: \mathcal{L} \rightarrow \mathcal{L}`$ (objective update)*
+
+- *Epistemic valuation $`E: \mathcal{L} \rightarrow \{0,1\}`$*
+
+- *Kripke frame $`\mathcal{M} = (W, R, V)`$*
+
+*The system maintains epistemic consistency iff:
+
+<pre><code class="language-math">\forall \varphi \in K: E(\varphi) = 1 \Rightarrow E(\mathcal{U}(\mathcal{F}(\varphi))) = 1
 ```*
 
 &lt;/div&gt;
 
 ## Proof of Epistemic Preservation
 
-&lt;div class="theorem"&gt;
+&lt;div class=&quot;theorem&quot;&gt;
 
 **Theorem 1** (Filter-Flash Epistemic Preservation). *The filter-flash quantum memory architecture preserves epistemic truth under all valid transformations.*
 
 &lt;/div&gt;
 
-&lt;div class="proof"&gt;
+&lt;div class=&quot;proof&quot;&gt;
 
 *Proof.* Let $`\varphi \in K`$ with $`E(\varphi) = 1`$. We must show $`E(\mathcal{U}(\mathcal{F}(\varphi))) = 1`$.
 
@@ -166,43 +171,63 @@
 
 **Step 2:** The filter $`\mathcal{F}`$ is truth-preserving by construction:
 ``` math
-\mathcal{F}(\varphi) \equiv \varphi \lor \psi_{\text{noise}}$$</span></p>
-<p>where <span class="math inline"><em>ψ</em><sub>noise</sub></span> represents filtered subjective elements.</p>
-<p><strong>Step 3:</strong> Since <span class="math inline">ℳ, <em>w</em> ⊨ <em>φ</em></span> for all <span class="math inline"><em>w</em></span>, and disjunction preserves truth:</p>
-<p><span class="math display">ℳ, <em>w</em> ⊨ ℱ(<em>φ</em>)</span></p>
-<p><strong>Step 4:</strong> The flash operation <span class="math inline">𝒰</span> promotes to epistemic necessity:</p>
-<p><span class="math display">𝒰(ℱ(<em>φ</em>)) = □ℱ(<em>φ</em>)</span></p>
-<p><strong>Step 5:</strong> By modal semantics:</p>
-<p><span class="math display">ℳ, <em>w</em> ⊨ □ℱ(<em>φ</em>) ⇔ ∀<em>w</em><sup>′</sup> ∈ <em>R</em>(<em>w</em>) : ℳ, <em>w</em><sup>′</sup> ⊨ ℱ(<em>φ</em>)</span></p>
-<p>Since <span class="math inline">ℱ(<em>φ</em>)</span> is true in all worlds, the necessity holds, thus:</p>
-<p><span class="math display"><em>E</em>(𝒰(ℱ(<em>φ</em>))) = 1</span></p>
-<p> ◻</p>
+\mathcal{F}(\varphi) \equiv \varphi \lor \psi_{\text{noise}}
+</code></pre>
+
+where $`\psi_{\text{noise}}`$ represents filtered subjective elements.
+
+**Step 3:** Since $`\mathcal{M}, w \vDash \varphi`$ for all $`w`$, and disjunction preserves truth:
+
+<pre><code class="language-math">\mathcal{M}, w \vDash \mathcal{F}(\varphi)
+</code></pre>
+
+
+**Step 4:** The flash operation $`\mathcal{U}`$ promotes to epistemic necessity:
+
+<pre><code class="language-math">\mathcal{U}(\mathcal{F}(\varphi)) = \Box \mathcal{F}(\varphi)
+</code></pre>
+
+
+**Step 5:** By modal semantics:
+
+<pre><code class="language-math">\mathcal{M}, w \vDash \Box \mathcal{F}(\varphi) \iff \forall w' \in R(w): \mathcal{M}, w' \vDash \mathcal{F}(\varphi)
+</code></pre>
+
+
+Since $`\mathcal{F}(\varphi)`$ is true in all worlds, the necessity holds, thus:
+
+<pre><code class="language-math">E(\mathcal{U}(\mathcal{F}(\varphi))) = 1
+</code></pre>
+
+ ◻
+
 </div>
 
 <h1 id="riftgov-runtime-integration"><code>riftgov</code> Runtime Integration</h1>
 <h2 id="governance-runtime-structure">Governance Runtime Structure</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> RiftGovernanceRuntime <span class="op">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    FlashState<span class="op">*</span> input<span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    EpistemicFilter<span class="op">*</span> compliance<span class="op">;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    ProtocolValidator<span class="op">*</span> validator<span class="op">;</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    QuantumHookLayer<span class="op">*</span> qhook<span class="op">;</span>  <span class="co">// For decoherence integrity</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Epistemic consistency check</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> <span class="op">(*</span>verify_invariant<span class="op">)(</span><span class="kw">struct</span> RiftGovernanceRuntime<span class="op">*</span> <span class="kw">self</span><span class="op">,</span> </span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                           ProtocolState<span class="op">*</span> state<span class="op">);</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Filter-flash governance</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> <span class="op">(*</span>validate_transition<span class="op">)(</span>FlashState<span class="op">*</span> pre<span class="op">,</span> FlashState<span class="op">*</span> post<span class="op">);</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Quantum state preservation</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="op">(*</span>preserve_coherence<span class="op">)(</span>QuantumState<span class="op">*</span> qstate<span class="op">);</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Governance modes</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="op">(*</span>inspect<span class="op">)(</span><span class="kw">struct</span> RiftGovernanceRuntime<span class="op">*</span> <span class="kw">self</span><span class="op">);</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="op">(*</span>anchor<span class="op">)(</span><span class="kw">struct</span> RiftGovernanceRuntime<span class="op">*</span> <span class="kw">self</span><span class="op">);</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="op">(*</span>detach<span class="op">)(</span><span class="kw">struct</span> RiftGovernanceRuntime<span class="op">*</span> <span class="kw">self</span><span class="op">);</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="op">(*</span>eject<span class="op">)(</span><span class="kw">struct</span> RiftGovernanceRuntime<span class="op">*</span> <span class="kw">self</span><span class="op">);</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> RiftGovernanceRuntime<span class="op">;</span></span></code></pre></div>
+<pre><code class="language-objectivec">typedef struct RiftGovernanceRuntime {
+    FlashState* input;
+    EpistemicFilter* compliance;
+    ProtocolValidator* validator;
+    QuantumHookLayer* qhook;  // For decoherence integrity
+
+    // Epistemic consistency check
+    int (*verify_invariant)(struct RiftGovernanceRuntime* self, 
+                           ProtocolState* state);
+
+    // Filter-flash governance
+    int (*validate_transition)(FlashState* pre, FlashState* post);
+
+    // Quantum state preservation
+    void (*preserve_coherence)(QuantumState* qstate);
+
+    // Governance modes
+    void (*inspect)(struct RiftGovernanceRuntime* self);
+    void (*anchor)(struct RiftGovernanceRuntime* self);
+    void (*detach)(struct RiftGovernanceRuntime* self);
+    void (*eject)(struct RiftGovernanceRuntime* self);
+} RiftGovernanceRuntime;
+</code></pre>
 <h2 id="integration-with-filter-flash-loop">Integration with Filter-Flash Loop</h2>
 <figure data-latex-placement="h">
 
@@ -266,24 +291,39 @@
 <h1 id="quantum-decoherence-protection">Quantum Decoherence Protection</h1>
 <h2 id="bell-state-preservation-under-filter-flash">Bell State Preservation Under Filter-Flash</h2>
 <p>The system maintains quantum entanglement through filter-flash cycles:</p>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 |\Phi^+\rangle = \frac{1}{\sqrt{2}}(|00\rangle + |11\rangle)
-\end{equation}$$</span></p>
+\end{equation}
+</code></pre>
 <p>Under filter-flash transformation:</p>
-<p><span class="math display">𝒰(ℱ(|<em>Φ</em><sup>+</sup>⟩)) = |<em>Φ</em><sup>+</sup>⟩ ⊗ |<em>E</em>⟩</span></p>
-<p>Where <span class="math inline">|<em>E</em>⟩</span> represents the epistemic validation state managed by <code>riftgov</code>.</p>
+<pre><code class="language-math">\begin{equation}
+\mathcal{U}(\mathcal{F}(|\Phi^+\rangle)) = |\Phi^+\rangle \otimes |E\rangle
+\end{equation}
+</code></pre>
+<p>Where $<code>|E\rangle</code>$ represents the epistemic validation state managed by <code>riftgov</code>.</p>
 <h1 id="conclusion">Conclusion</h1>
 <p>This enhanced specification integrates:</p>
 <ul>
-<li><p>Quantum NOR/XOR logic gates with superposition handling</p></li>
-<li><p>Bidirectional filter-flash working memory loops</p></li>
-<li><p><code>riftgov</code> governance runtime for epistemic validation</p></li>
-<li><p>Mathematical proofs of consistency invariants</p></li>
-<li><p>Complete tool stack integration</p></li>
-<li><p>Quantum decoherence protection mechanisms</p></li>
+<li>
+<p>Quantum NOR/XOR logic gates with superposition handling</p>
+</li>
+<li>
+<p>Bidirectional filter-flash working memory loops</p>
+</li>
+<li>
+<p><code>riftgov</code> governance runtime for epistemic validation</p>
+</li>
+<li>
+<p>Mathematical proofs of consistency invariants</p>
+</li>
+<li>
+<p>Complete tool stack integration</p>
+</li>
+<li>
+<p>Quantum decoherence protection mechanisms</p>
+</li>
 </ul>
 <p>The system achieves 99.7% epistemic consistency preservation while maintaining quantum coherence through the filter-flash-govern cycle.</p>
-
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-obinexus-enhanced-quantum-filter-flash-architecture</code></p>

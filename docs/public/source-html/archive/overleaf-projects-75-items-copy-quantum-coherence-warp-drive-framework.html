@@ -66,42 +66,56 @@
 <h2 id="main">main</h2>
 <h1 id="coherence-operator-mechanics">Coherence Operator Mechanics</h1>
 <h2 id="mathematical-formulation">Mathematical Formulation</h2>
-<p>The coherence operator <span class="math inline"><em>Ψ</em><sub><em>c</em></sub></span> models emergent gravity through wavefunction interactions in Hilbert space:</p>
-<p><span class="math display">$$\begin{equation}
+<p>The coherence operator $<code>\Psi_c</code>$ models emergent gravity through wavefunction interactions in Hilbert space:</p>
+<pre><code class="language-math">\begin{equation}
 \mathcal{H} = -\frac{\hbar^2}{2m}\nabla^2\Psi_c + V(\mathbf{r})\Psi_c + \beta |\Psi_c|^2\Psi_c
-\end{equation}$$</span></p>
+\end{equation}
+</code></pre>
 <h2 id="parameter-relationships">Parameter Relationships</h2>
 <ul>
-<li><p><strong>Coherence length (<span class="math inline"><em>ξ</em></span>)</strong>: Spatial decay of correlations</p>
-<p><span class="math display">$$\xi = \frac{\hbar}{\sqrt{2m|\mu|}}$$</span></p>
-<p>where <span class="math inline"><em>μ</em></span> is chemical potential from <span class="math inline"><em>V</em>(<strong>r</strong>)</span></p></li>
-<li><p><strong>Strength parameter (<span class="math inline"><em>β</em></span>)</strong>: Amplitude scaling deformation magnitude</p>
-<p><span class="math display"><em>β</em> ∝ <em>Δ</em><em>g</em><sub>eff</sub></span></p></li>
+<li>
+<p><strong>Coherence length ($<code>\xi</code>$)</strong>: Spatial decay of correlations
+  <code>math
+  \xi = \frac{\hbar}{\sqrt{2m|\mu|}}</code>
+  where $<code>\mu</code>$ is chemical potential from $<code>V(\mathbf{r})</code>$</p>
+</li>
+<li>
+<p><strong>Strength parameter ($<code>\beta</code>$)</strong>: Amplitude scaling deformation magnitude
+  <code>math
+  \beta \propto \Delta g_{\text{eff}}</code></p>
+</li>
 </ul>
 <h2 id="lattice-connection">Lattice Connection</h2>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 \langle x,y,z \rangle_{\text{Cartesian}} \xrightarrow{\text{deformation}} \langle \cos\theta, \sin\phi, \tan\gamma \rangle_{\text{Polar}}
-\end{equation}$$</span></p>
+\end{equation}
+</code></pre>
 <h1 id="negative-energy-containment">Negative Energy Containment</h1>
 <h2 id="storage-mechanism">Storage Mechanism</h2>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 \mathcal{V}_{\text{total}} = \underbrace{\mathcal{V}_+}_{\text{matter}} \oplus \underbrace{\mathcal{V}_-}_{\text{antimatter}} \oplus \underbrace{\mathcal{V}_0}_{\text{vacuum buffer}}
-\end{equation}$$</span></p>
+\end{equation}
+</code></pre>
 <h2 id="conservation-enforcement">Conservation Enforcement</h2>
-<p><span class="math display">$$\begin{align*}
+<pre><code class="language-math">\begin{align*}
 \frac{d}{dt}(E_+ + E_-) &amp;= 0 \\
 \gamma\text{-matrix gates}: \quad &amp; \begin{cases} 
 \text{Open during thrust} \\
 \text{Closed during storage}
 \end{cases}
-\end{align*}$$</span></p>
+\end{align*}
+</code></pre>
 <h2 id="apparent-weight-control">Apparent Weight Control</h2>
-<p><span class="math display"><em>W</em> = <em>m</em> ⋅ (<em>g</em><sub>ext</sub> − <em>g</em><sub>anti</sub>) ≈ 0</span></p>
-<h1 id="practical-g_texteff-control">Practical <span class="math inline"><em>g</em><sub>eff</sub></span> Control</h1>
+<pre><code class="language-math">\begin{equation}
+W = m \cdot (g_{\text{ext}} - g_{\text{anti}}) \approx 0
+\end{equation}
+</code></pre>
+<h1 id="practical-g_texteff-control">Practical $<code>g_{\text{eff}}</code>$ Control</h1>
 <h2 id="vector-normalization">Vector Normalization</h2>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 \hat{\mathbf{g}} = \left( \frac{\nabla \Psi_x}{|\nabla \Psi_x|}, \frac{\nabla \Psi_y}{|\nabla \Psi_y|}, \frac{\nabla \Psi_z}{|\nabla \Psi_z|} \right)
-\end{equation}$$</span></p>
+\end{equation}
+</code></pre>
 <h2 id="bidirectional-modulation">Bidirectional Modulation</h2>
 <figure data-latex-placement="h">
 
@@ -109,7 +123,7 @@
 </figure>
 
 <h2 id="control-matrix">Control Matrix</h2>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 \begin{bmatrix}
 \Delta g_x \\ \Delta g_y \\ \Delta g_z
 \end{bmatrix} = k \begin{bmatrix}
@@ -119,7 +133,8 @@
 \end{bmatrix} \begin{bmatrix}
 E_x \\ E_y \\ E_z
 \end{bmatrix}
-\end{equation}$$</span></p>
+\end{equation}
+</code></pre>
 <h1 id="experimental-validation">Experimental Validation</h1>
 <table>
 <thead>
@@ -131,14 +146,14 @@ E_x \\ E_y \\ E_z
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><span class="math inline"><em>g</em><sub>eff</sub></span> shift</td>
+<td style="text-align: left;">$<code>g_{\text{eff}}</code>$ shift</td>
 <td style="text-align: left;">Atom interferometry</td>
-<td style="text-align: left;"><span class="math inline"><em>Δ</em><em>g</em> ≥ 10<sup>−8</sup></span> m/s<span class="math inline"><sup>2</sup></span></td>
+<td style="text-align: left;">$<code>\Delta g \geq 10^{-8}</code>$ m/s$<code>^2</code>$</td>
 </tr>
 <tr>
 <td style="text-align: left;">Lattice insulation</td>
 <td style="text-align: left;">Antiproton injection</td>
-<td style="text-align: left;">Annihilation rate <span class="math inline"> &lt; 10<sup>−9</sup></span>/s</td>
+<td style="text-align: left;">Annihilation rate $<code>&lt; 10^{-9}</code>$/s</td>
 </tr>
 <tr>
 <td style="text-align: left;">Laser control</td>
@@ -149,14 +164,19 @@ E_x \\ E_y \\ E_z
 </table>
 <p>Verification protocol</p>
 <h1 id="conclusion">Conclusion</h1>
-<p>This framework establishes gravity as an emergent property of quantum coherence fields, enabling practical warp propulsion through:</p>
+<p>This framework establishes gravity as an emergent property of quantum coherence fields, enabling practical warp propulsion through:  </p>
 <ul>
-<li><p>Lattice-based spacetime deformation</p></li>
-<li><p>Vacuum-buffered negative energy containment</p></li>
-<li><p>Vector-normalized gravitational control</p></li>
+<li>
+<p>Lattice-based spacetime deformation</p>
+</li>
+<li>
+<p>Vacuum-buffered negative energy containment</p>
+</li>
+<li>
+<p>Vector-normalized gravitational control  </p>
+</li>
 </ul>
-<p><strong>Next steps:</strong> Quantify <span class="math inline"><em>ξ</em></span>-<span class="math inline"><em>β</em></span> coupling in quark-gluon plasma and optimize superconductor coil geometry.</p>
-
+<p><strong>Next steps:</strong> Quantify $<code>\xi</code>$-$<code>\beta</code>$ coupling in quark-gluon plasma and optimize superconductor coil geometry.</p>
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-quantum-coherence-warp-drive-framework</code></p>

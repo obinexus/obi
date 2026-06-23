@@ -71,9 +71,15 @@
 <p>I conceived this solution not from market pressures or funding cycles, but from witnessing AI’s systematic failures to account for human complexity. Where traditional systems optimize for performance metrics, this architecture optimizes for interpretable fairness. Where others chase computational efficiency, we pursue epistemic integrity.</p>
 <p>The system respects three foundational principles:</p>
 <ul>
-<li><p><strong>Safety through transparency</strong>: Every decision path must be traceable and auditable</p></li>
-<li><p><strong>Accessibility through modularity</strong>: Complex reasoning must decompose into understandable components</p></li>
-<li><p><strong>Soundness through formalism</strong>: Mathematical guarantees must underpin ethical operations</p></li>
+<li>
+<p><strong>Safety through transparency</strong>: Every decision path must be traceable and auditable</p>
+</li>
+<li>
+<p><strong>Accessibility through modularity</strong>: Complex reasoning must decompose into understandable components</p>
+</li>
+<li>
+<p><strong>Soundness through formalism</strong>: Mathematical guarantees must underpin ethical operations</p>
+</li>
 </ul>
 <p>When normalized deviation occurs—when the unusual becomes necessary—our framework doesn’t trigger epistemic crisis. Instead, it forms new clusters in its k-NN understanding, recognizing that edge cases in human experience aren’t errors to eliminate but realities to comprehend. A patient with rare symptoms, a community with unique support structures, a situation defying statistical norms—these aren’t outliers to suppress but knowledge to integrate.</p>
 <p>This document presents an AI architecture that carries the weight of its decisions. Not because regulation demands it, but because responsibility requires it. The cure isn’t in the algorithm—it’s in building systems that understand their own limitations and explain their own reasoning.</p>
@@ -83,119 +89,152 @@
 <h1 id="theoretical-framework">Theoretical Framework</h1>
 <div class="definition">
 
-<p><strong>Definition 1</strong> (Ontological Bayesian Infrastructure). <em>An OBI is a tuple <span class="math inline">(<em>G</em>, 𝒞, ℬ, 𝒪)</span> where:</em></p>
-<ul>
-<li><p><em><span class="math inline"><em>G</em> = (<em>V</em>, <em>E</em>)</span> is a directed acyclic graph representing causal dependencies</em></p></li>
-<li><p><em><span class="math inline">𝒞 : <em>V</em> → ℝ<sup>+</sup></span> is a cost function mapping nodes to computational complexity</em></p></li>
-<li><p><em><span class="math inline">ℬ : <em>E</em> → [0, 1]</span> assigns Bayesian weights to edges</em></p></li>
-<li><p><em><span class="math inline">𝒪 : <em>V</em> → 𝒯</span> maps nodes to ontological types in taxonomy <span class="math inline">𝒯</span></em></p></li>
-</ul>
+**Definition 1** (Ontological Bayesian Infrastructure). *An OBI is a tuple $`(G, \mathcal{C}, \mathcal{B}, \mathcal{O})`$ where:*
+
+- *$`G = (V, E)`$ is a directed acyclic graph representing causal dependencies*
+
+- *$`\mathcal{C}: V \rightarrow \mathbb{R}^+`$ is a cost function mapping nodes to computational complexity*
+
+- *$`\mathcal{B}: E \rightarrow [0,1]`$ assigns Bayesian weights to edges*
+
+- *$`\mathcal{O}: V \rightarrow \mathcal{T}`$ maps nodes to ontological types in taxonomy $`\mathcal{T}`$*
+
 </div>
 
-<h1 id="sinphasé-integration">Sinphasé Integration</h1>
+<h1 id="sinphase-integration">Sinphasé Integration</h1>
 <h2 id="phase-state-enforcement">Phase-State Enforcement</h2>
 <div class="definition">
 
-<p><strong>Definition 2</strong> (Sinphasé Phase Space). *Let <span class="math inline"><em>Φ</em> = {RESEARCH, IMPLEMENTATION, VALIDATION, ISOLATION}</span> be the phase space. A valid phase transition function <span class="math inline"><em>τ</em> : <em>Φ</em> × ℝ<sup>+</sup> → <em>Φ</em></span> satisfies:</p>
-<p><span class="math display">$$\begin{align}
+**Definition 2** (Sinphasé Phase Space). *Let $`\Phi = \{\text{RESEARCH}, \text{IMPLEMENTATION}, \text{VALIDATION}, \text{ISOLATION}\}`$ be the phase space. A valid phase transition function $`\tau: \Phi \times \mathbb{R}^+ \rightarrow \Phi`$ satisfies:
+
+<pre><code class="language-math">\begin{align}
 \tau(\phi_i, c) = \begin{cases}
 \phi_{i+1} &amp; \text{if } c &lt; \theta_i \\
 \text{ISOLATION} &amp; \text{if } c \geq \theta_{\text{critical}}
 \end{cases}
-\end{align}$$</span></p>
-<p>where <span class="math inline"><em>θ</em><sub><em>i</em></sub></span> are phase-specific thresholds.*</p>
+\end{align}
+</code></pre>
+
+where $`\theta_i`$ are phase-specific thresholds.*
+
 </div>
 
 <h2 id="cost-function-formalization">Cost Function Formalization</h2>
 <div class="theorem">
 
-<p><strong>Theorem 3</strong> (Cost Monotonicity). *The Sinphasé cost function <span class="math inline"><em>C</em> : 𝒜 → ℝ<sup>+</sup></span> is monotonically increasing in architectural complexity:</p>
-<p><span class="math display">$$\begin{align}
+**Theorem 3** (Cost Monotonicity). *The Sinphasé cost function $`C: \mathcal{A} \rightarrow \mathbb{R}^+`$ is monotonically increasing in architectural complexity:
+
+<pre><code class="language-math">\begin{align}
 C(A) = \sum_{i=1}^n m_i \cdot w_i + \lambda \cdot \text{cycles}(A) + \mu \cdot \frac{d\text{changes}}{dt}
-\end{align}$$</span></p>
-<p>where <span class="math inline">cycles(<em>A</em>) = |<em>E</em>|−|<em>V</em>|+1</span> counts fundamental cycles in architecture <span class="math inline"><em>A</em></span>.*</p>
+\end{align}
+</code></pre>
+
+where $`\text{cycles}(A) = |E| - |V| + 1`$ counts fundamental cycles in architecture $`A`$.*
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> By induction on graph size. Base case: tree structures have <span class="math inline">cycles(<em>A</em>) = 0</span>. Inductive step: adding edge <span class="math inline">(<em>u</em>, <em>v</em>)</span> either maintains acyclicity or increases cycle count by at least 1, thus increasing <span class="math inline"><em>C</em>(<em>A</em>)</span>. ◻</p>
+*Proof.* By induction on graph size. Base case: tree structures have $`\text{cycles}(A) = 0`$. Inductive step: adding edge $`(u,v)`$ either maintains acyclicity or increases cycle count by at least 1, thus increasing $`C(A)`$. ◻
+
 </div>
 
 <h1 id="three-hypotheses-of-ai-structural-bias">Three Hypotheses of AI Structural Bias</h1>
 <h2 id="hypothesis-i-pattern-learning-and-bias-amplification">Hypothesis I: Pattern Learning and Bias Amplification</h2>
 <div class="theorem">
 
-<p><strong>Theorem 4</strong> (Bias Amplification). *Let <span class="math inline"><em>D</em> = {(<em>x</em><sub><em>i</em></sub>, <em>y</em><sub><em>i</em></sub>)}<sub><em>i</em> = 1</sub><sup><em>n</em></sup></span> be a dataset with embedded bias <span class="math inline"><em>φ</em> : 𝒳 → ℝ</span>. A model <span class="math inline"><em>f</em><sub><em>θ</em></sub></span> trained via empirical risk minimization satisfies:</p>
-<p><span class="math display">$$\begin{align}
+**Theorem 4** (Bias Amplification). *Let $`D = \{(x_i, y_i)\}_{i=1}^n`$ be a dataset with embedded bias $`\varphi: \mathcal{X} \rightarrow \mathbb{R}`$. A model $`f_\theta`$ trained via empirical risk minimization satisfies:
+
+<pre><code class="language-math">\begin{align}
 \lim_{t \rightarrow \infty} \mathbb{E}_{x \sim P_X}[\varphi(f_\theta^{(t)}(x))] \geq \mathbb{E}_{x \sim P_X}[\varphi(x)]
-\end{align}$$</span></p>
-<p>where <span class="math inline"><em>f</em><sub><em>θ</em></sub><sup>(<em>t</em>)</sup></span> denotes the model after <span class="math inline"><em>t</em></span> training iterations.*</p>
+\end{align}
+</code></pre>
+
+where $`f_\theta^{(t)}`$ denotes the model after $`t`$ training iterations.*
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> Consider the gradient flow:</p>
-<p><span class="math display">$$\begin{align}
+*Proof.* Consider the gradient flow:
+
+<pre><code class="language-math">\begin{align}
 \frac{d\theta}{dt} = -\nabla_\theta \mathcal{L}(\theta) = -\mathbb{E}_{(x,y) \sim D}[\nabla_\theta \ell(f_\theta(x), y)]
-\end{align}$$</span></p>
-<p>Since <span class="math inline"><em>D</em></span> contains bias <span class="math inline"><em>φ</em></span>, the loss landscape has attractors aligned with <span class="math inline"><em>φ</em></span>. By Lyapunov stability analysis, trajectories converge to these biased equilibria. ◻</p>
+\end{align}
+</code></pre>
+
+Since $`D`$ contains bias $`\varphi`$, the loss landscape has attractors aligned with $`\varphi`$. By Lyapunov stability analysis, trajectories converge to these biased equilibria. ◻
+
 </div>
 
 <h2 id="hypothesis-ii-data-structure-unboxing-via-k-nn-dag">Hypothesis II: Data Structure Unboxing via k-NN DAG</h2>
 <div class="definition">
 
-<p><strong>Definition 5</strong> (k-NN DAG Construction). <em>Given data tensor <span class="math inline"><em>T</em> ∈ ℝ<sup><em>n</em><sub>1</sub> × <em>n</em><sub>2</sub> × <em>n</em><sub>3</sub> × <em>n</em><sub>4</sub></sup></span>, construct DAG <span class="math inline"><em>G</em> = (<em>V</em>, <em>E</em>)</span> where:</em></p>
-<ol type="1">
-<li><p><em><span class="math inline"><em>V</em> = {<em>v</em><sub><em>i</em></sub>}</span> are cluster centroids from k-means on flattened <span class="math inline"><em>T</em></span></em></p></li>
-<li><p><em><span class="math inline"><em>E</em> = {(<em>v</em><sub><em>i</em></sub>, <em>v</em><sub><em>j</em></sub>) : <em>v</em><sub><em>j</em></sub> ∈ k-NN(<em>v</em><sub><em>i</em></sub>) ∧ level(<em>v</em><sub><em>i</em></sub>) &lt; level(<em>v</em><sub><em>j</em></sub>)}</span></em></p></li>
-<li><p><em>Level assignment ensures acyclicity: <span class="math inline">level(<em>v</em>) = max<sub><em>u</em> : (<em>u</em>, <em>v</em>) ∈ <em>E</em></sub>level(<em>u</em>) + 1</span></em></p></li>
-</ol>
+**Definition 5** (k-NN DAG Construction). *Given data tensor $`T \in \mathbb{R}^{n_1 \times n_2 \times n_3 \times n_4}`$, construct DAG $`G = (V, E)`$ where:*
+
+1.  *$`V = \{v_i\}`$ are cluster centroids from k-means on flattened $`T`$*
+
+2.  *$`E = \{(v_i, v_j) : v_j \in \text{k-NN}(v_i) \land \text{level}(v_i) < \text{level}(v_j)\}`$*
+
+3.  *Level assignment ensures acyclicity: $`\text{level}(v) = \max_{u:(u,v) \in E} \text{level}(u) + 1`$*
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 6</strong> (Unboxing Completeness). *The k-NN DAG construction preserves <span class="math inline"><em>ϵ</em></span>-neighborhood relationships with probability at least <span class="math inline">1 − <em>δ</em></span> where:</p>
-<p><span class="math display">$$\begin{align}
+**Theorem 6** (Unboxing Completeness). *The k-NN DAG construction preserves $`\epsilon`$-neighborhood relationships with probability at least $`1 - \delta`$ where:
+
+<pre><code class="language-math">\begin{align}
 \delta \leq n \exp\left(-\frac{k\epsilon^2}{8d}\right)
-\end{align}$$</span></p>
-<p>for <span class="math inline"><em>d</em></span>-dimensional embedded data.*</p>
+\end{align}
+</code></pre>
+
+for $`d`$-dimensional embedded data.*
+
 </div>
 
 <h2 id="hypothesis-iii-modular-architecture-with-formal-interfaces">Hypothesis III: Modular Architecture with Formal Interfaces</h2>
 <div class="definition">
 
-<p><strong>Definition 7</strong> (Module Interface Contract). <em>A module <span class="math inline"><em>M</em> = (<em>I</em>, <em>O</em>, <em>ϕ</em>, <em>ψ</em>)</span> consists of:</em></p>
-<ul>
-<li><p><em>Input type <span class="math inline"><em>I</em> ∈ 𝒯</span></em></p></li>
-<li><p><em>Output type <span class="math inline"><em>O</em> ∈ 𝒯</span></em></p></li>
-<li><p><em>Precondition <span class="math inline"><em>ϕ</em> : <em>I</em> → {⊤, ⊥}</span></em></p></li>
-<li><p><em>Postcondition <span class="math inline"><em>ψ</em> : <em>I</em> × <em>O</em> → {⊤, ⊥}</span></em></p></li>
-</ul>
+**Definition 7** (Module Interface Contract). *A module $`M = (I, O, \phi, \psi)`$ consists of:*
+
+- *Input type $`I \in \mathcal{T}`$*
+
+- *Output type $`O \in \mathcal{T}`$*
+
+- *Precondition $`\phi: I \rightarrow \{\top, \bot\}`$*
+
+- *Postcondition $`\psi: I \times O \rightarrow \{\top, \bot\}`$*
+
 </div>
 
 <h1 id="confounder-modeling-and-social-ontologies">Confounder Modeling and Social Ontologies</h1>
 <h2 id="formal-causal-framework">Formal Causal Framework</h2>
 <div class="definition">
 
-<p><strong>Definition 8</strong> (Structural Causal Model). <em>An SCM is a triple <span class="math inline">ℳ = (𝒰, 𝒱, ℱ)</span> where:</em></p>
-<ul>
-<li><p><em><span class="math inline">𝒰</span> = exogenous variables (unobserved)</em></p></li>
-<li><p><em><span class="math inline">𝒱</span> = endogenous variables (observed)</em></p></li>
-<li><p><em><span class="math inline">ℱ = {<em>f</em><sub><em>V</em></sub> : <em>V</em> ∈ 𝒱}</span> are structural equations</em></p></li>
-</ul>
+**Definition 8** (Structural Causal Model). *An SCM is a triple $`\mathcal{M} = (\mathcal{U}, \mathcal{V}, \mathcal{F})`$ where:*
+
+- *$`\mathcal{U}`$ = exogenous variables (unobserved)*
+
+- *$`\mathcal{V}`$ = endogenous variables (observed)*
+
+- *$`\mathcal{F} = \{f_V : V \in \mathcal{V}\}`$ are structural equations*
+
 </div>
 
 <p>For the happiness paradox:</p>
-<p><span class="math display">$$\begin{align}
+<pre><code class="language-math">\begin{align}
 \mathcal{V} &amp;= \{X, Y, C, E\} \\
 f_E &amp;: E = \alpha_E X + U_E \\
 f_C &amp;: C = \beta_C X + \gamma_C E + U_C \\
 f_Y &amp;: Y = \delta_Y C + \epsilon_Y E + \zeta_Y (C \times E)^{-1} + U_Y
-\end{align}$$</span></p>
+\end{align}
+</code></pre>
 <div class="theorem">
 
-<p><strong>Theorem 9</strong> (Backdoor Criterion Satisfaction). *The set <span class="math inline">{<em>C</em>, <em>E</em>}</span> satisfies the backdoor criterion for causal effect of <span class="math inline"><em>X</em></span> on <span class="math inline"><em>Y</em></span>:</p>
-<p><span class="math display">$$\begin{align}
+**Theorem 9** (Backdoor Criterion Satisfaction). *The set $`\{C, E\}`$ satisfies the backdoor criterion for causal effect of $`X`$ on $`Y`$:
+
+<pre><code class="language-math">\begin{align}
 P(Y | \text{do}(X = x)) = \sum_{c,e} P(Y | X = x, C = c, E = e) P(C = c, E = e)
 \end{align}
 ```*
@@ -206,7 +245,7 @@ P(Y | \text{do}(X = x)) = \sum_{c,e} P(Y | X = x, C = c, E = e) P(C = c, E = e)
 
 ## Hilbert Space Formulation
 
-&lt;div class="definition"&gt;
+&lt;div class=&quot;definition&quot;&gt;
 
 **Definition 10** (Consciousness Hilbert Space). *Let $`\mathcal{H} = \mathcal{H}_{\text{obj}} \oplus \mathcal{H}_{\text{subj}} \oplus \mathcal{H}_{\perp}`$ be the total consciousness space with:*
 
@@ -218,65 +257,89 @@ P(Y | \text{do}(X = x)) = \sum_{c,e} P(Y | X = x, C = c, E = e) P(C = c, E = e)
 
 &lt;/div&gt;
 
-&lt;div class="definition"&gt;
+&lt;div class=&quot;definition&quot;&gt;
 
 **Definition 11** (Filter Operator). *$`F: \mathcal{H} \rightarrow \mathcal{H}_{\text{obj}}`$ is the orthogonal projection:
 ``` math
 \begin{align}
 F = \sum_{i=1}^{\dim(\mathcal{H}_{\text{obj}})} |e_i^{\text{obj}}\rangle\langle e_i^{\text{obj}}|
-\end{align}$$</span></p>
-<p>where <span class="math inline">{|<em>e</em><sub><em>i</em></sub><sup>obj</sup>⟩}</span> is an orthonormal basis for <span class="math inline">ℋ<sub>obj</sub></span>.*</p>
+\end{align}
+</code></pre>
+
+where $`\{|e_i^{\text{obj}}\rangle\}`$ is an orthonormal basis for $`\mathcal{H}_{\text{obj}}`$.*
+
 </div>
 
 <div class="definition">
 
-<p><strong>Definition 12</strong> (Flash Operator). *<span class="math inline"><em>Φ</em> : ℋ<sub>obj</sub> × ℝ<sup>+</sup> → ℋ<sub>subj</sub></span> is defined by:</p>
-<p><span class="math display">$$\begin{align}
+**Definition 12** (Flash Operator). *$`\Phi: \mathcal{H}_{\text{obj}} \times \mathbb{R}^+ \rightarrow \mathcal{H}_{\text{subj}}`$ is defined by:
+
+<pre><code class="language-math">\begin{align}
 \Phi(|\psi\rangle, t) = \sum_{j} g_j(t) |e_j^{\text{subj}}\rangle\langle e_j^{\text{obj}}|\psi\rangle
-\end{align}$$</span></p>
-<p>where <span class="math inline"><em>g</em><sub><em>j</em></sub>(<em>t</em>) = exp (−(<em>t</em> − <em>t</em><sub><em>j</em></sub>)<sup>2</sup>/2<em>σ</em><sub><em>j</em></sub><sup>2</sup>)</span> are temporal gating functions.*</p>
+\end{align}
+</code></pre>
+
+where $`g_j(t) = \exp(-(t - t_j)^2/2\sigma_j^2)`$ are temporal gating functions.*
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 13</strong> (Filter-Flash Complementarity). *For any state <span class="math inline">|<em>ψ</em>⟩ ∈ ℋ</span>, the uncertainty relation holds:</p>
-<p><span class="math display">$$\begin{align}
+**Theorem 13** (Filter-Flash Complementarity). *For any state $`|\psi\rangle \in \mathcal{H}`$, the uncertainty relation holds:
+
+<pre><code class="language-math">\begin{align}
 \Delta F \cdot \Delta \Phi \geq \frac{\hbar}{2}
-\end{align}$$</span></p>
-<p>where <span class="math inline">$\Delta F = \sqrt{\langle F^2 \rangle - \langle F \rangle^2}$</span> and similarly for <span class="math inline"><em>Δ</em><em>Φ</em></span>.*</p>
+\end{align}
+</code></pre>
+
+where $`\Delta F = \sqrt{\langle F^2 \rangle - \langle F \rangle^2}`$ and similarly for $`\Delta \Phi`$.*
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> By Robertson uncertainty relation for non-commuting operators:</p>
-<p><span class="math display">$$\begin{align}
+*Proof.* By Robertson uncertainty relation for non-commuting operators:
+
+<pre><code class="language-math">\begin{align}
 [F, \Phi] &amp;= F\Phi - \Phi F \neq 0 \\
 \Delta F \cdot \Delta \Phi &amp;\geq \frac{1}{2}|\langle [F, \Phi] \rangle|
-\end{align}$$</span></p>
-<p>The non-commutativity arises from the temporal dependence of <span class="math inline"><em>Φ</em></span> and orthogonality of subspaces. ◻</p>
+\end{align}
+</code></pre>
+
+The non-commutativity arises from the temporal dependence of $`\Phi`$ and orthogonality of subspaces. ◻
+
 </div>
 
 <h2 id="computational-bounds">Computational Bounds</h2>
 <div class="theorem">
 
-<p><strong>Theorem 14</strong> (Bounded Computation Time). <em>The Filter-Flash cycle completes in time <span class="math inline"><em>O</em>(<em>n</em>log <em>n</em>)</span> where <span class="math inline"><em>n</em> = dim (ℋ<sub>obj</sub>)</span>.</em></p>
+**Theorem 14** (Bounded Computation Time). *The Filter-Flash cycle completes in time $`O(n \log n)`$ where $`n = \dim(\mathcal{H}_{\text{obj}})`$.*
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> Filter projection: <span class="math inline"><em>O</em>(<em>n</em>)</span> via inner products. Flash transformation: <span class="math inline"><em>O</em>(<em>n</em>log <em>n</em>)</span> using FFT for temporal convolution. Total: <span class="math inline"><em>O</em>(<em>n</em>) + <em>O</em>(<em>n</em>log <em>n</em>) = <em>O</em>(<em>n</em>log <em>n</em>)</span>. ◻</p>
+*Proof.* Filter projection: $`O(n)`$ via inner products. Flash transformation: $`O(n \log n)`$ using FFT for temporal convolution. Total: $`O(n) + O(n \log n) = O(n \log n)`$. ◻
+
 </div>
 
 <h1 id="conclusion">Conclusion</h1>
 <p>This framework provides:</p>
-<ol type="1">
-<li><p>Formal mathematical foundations for bias-aware AI</p></li>
-<li><p>Provable bounds on computational complexity</p></li>
-<li><p>Causal modeling of confounders in socio-technical systems</p></li>
-<li><p>Rigorous consciousness model with quantum-inspired duality</p></li>
+<ol>
+<li>
+<p>Formal mathematical foundations for bias-aware AI</p>
+</li>
+<li>
+<p>Provable bounds on computational complexity</p>
+</li>
+<li>
+<p>Causal modeling of confounders in socio-technical systems</p>
+</li>
+<li>
+<p>Rigorous consciousness model with quantum-inspired duality</p>
+</li>
 </ol>
 <p>The system is not speculative but implementable with formal correctness guarantees.</p>
-
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-ontological-bayesian-infrastructure-toward-a-self-interpreting-ai-framework</code></p>

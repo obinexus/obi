@@ -67,183 +67,247 @@
 <h1 id="the-epistemic-imperative-why-agents-must-evolve">The Epistemic Imperative: Why Agents Must Evolve</h1>
 <div class="axiom">
 
-<p><strong>Axiom 1</strong> (Insufficiency of Agent Architecture). Let <span class="math inline">𝒢</span> denote the class of conventional AI agents operating within fixed dimensional frameworks. For any agent <span class="math inline"><em>g</em> ∈ 𝒢</span> with action space <span class="math inline"><em>A</em><sub><em>g</em></sub> = {<em>a</em><sub>1</sub>, <em>a</em><sub>2</sub>, …, <em>a</em><sub><em>n</em></sub>}</span>, there exists a class of problems <span class="math inline"><em>Π</em></span> such that:</p>
-<p><span class="math display">∀<em>g</em> ∈ 𝒢, ∃<em>π</em> ∈ <em>Π</em> : ∄<em>a</em> ∈ <em>A</em><sub><em>g</em></sub> such that solve(<em>g</em>, <em>π</em>, <em>a</em>) = TRUE</span></p>
+**Axiom 1** (Insufficiency of Agent Architecture). Let $`\mathcal{G}`$ denote the class of conventional AI agents operating within fixed dimensional frameworks. For any agent $`g \in \mathcal{G}`$ with action space $`A_g = \{a_1, a_2, \ldots, a_n\}`$, there exists a class of problems $`\Pi`$ such that:
+
+<pre><code class="language-math">\forall g \in \mathcal{G}, \exists \pi \in \Pi : \nexists a \in A_g \text{ such that } \text{solve}(g, \pi, a) = \text{TRUE}
+</code></pre>
+
+
 </div>
 
 <p>This axiom captures the fundamental limitation: agents cannot solve problems requiring dimensional innovation beyond their predefined action spaces. The Actor class emerges as the necessary evolution.</p>
 <h1 id="formal-introduction-of-the-actor-class">Formal Introduction of the Actor Class</h1>
 <div class="definition">
 
-<p><strong>Definition 1</strong> (Actor). An <strong>Actor</strong> is a tuple <span class="math inline"><em>α</em> = (<em>S</em>, 𝒞, <em>Φ</em>, <em>Ψ</em>, <em>ϵ</em>)</span> where:</p>
-<ul>
-<li><p><span class="math inline"><em>S</em></span> is an infinite-dimensional semantic manifold</p></li>
-<li><p><span class="math inline">𝒞 : <em>S</em> → <em>S</em></span> is a continuous navigation functor</p></li>
-<li><p><span class="math inline"><em>Φ</em> : <em>S</em> × ℝ<sup>+</sup> → {0, 1}</span> is the static cost validation function</p></li>
-<li><p><span class="math inline"><em>Ψ</em> : <em>S</em> × <em>S</em> → ℝ<sup>+</sup></span> is the dynamic cost computation function</p></li>
-<li><p><span class="math inline"><em>ϵ</em> ≥ 0.954</span> is the epistemic confidence threshold</p></li>
-</ul>
-<p>such that <span class="math inline"><em>α</em></span> satisfies the <strong>Dimensional Innovation Property</strong>:</p>
-<p><span class="math display">∃<em>τ</em> : <em>S</em> → <em>S</em> where <em>τ</em> ∉ span(𝒞)</span></p>
+**Definition 1** (Actor). An **Actor** is a tuple $`\alpha = (S, \mathcal{C}, \Phi, \Psi, \epsilon)`$ where:
+
+- $`S`$ is an infinite-dimensional semantic manifold
+
+- $`\mathcal{C}: S \to S`$ is a continuous navigation functor
+
+- $`\Phi: S \times \mathbb{R}^+ \to \{0,1\}`$ is the static cost validation function
+
+- $`\Psi: S \times S \to \mathbb{R}^+`$ is the dynamic cost computation function
+
+- $`\epsilon \geq 0.954`$ is the epistemic confidence threshold
+
+such that $`\alpha`$ satisfies the **Dimensional Innovation Property**:
+
+<pre><code class="language-math">\exists \tau : S \to S \text{ where } \tau \notin \text{span}(\mathcal{C})
+</code></pre>
+
+
 </div>
 
 <p>This definition establishes actors as entities capable of generating transformations beyond their initial configuration—a capability absent in conventional agents.</p>
 <div class="theorem">
 
-<p><strong>Theorem 1</strong> (Actor-Agent Distinction). The Actor class <span class="math inline">𝒜</span> and Agent class <span class="math inline">𝒢</span> form distinct categories with no isomorphism between them.</p>
+**Theorem 1** (Actor-Agent Distinction). The Actor class $`\mathcal{A}`$ and Agent class $`\mathcal{G}`$ form distinct categories with no isomorphism between them.
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> Consider the forgetful functor <span class="math inline"><em>F</em> : 𝒜 → 𝒢</span> that maps actors to agents by restricting to finite action spaces. We show no inverse functor exists.</p>
-<p>Suppose <span class="math inline"><em>G</em> : 𝒢 → 𝒜</span> is a proposed inverse. For any agent <span class="math inline"><em>g</em> ∈ 𝒢</span> with finite action space <span class="math inline"><em>A</em><sub><em>g</em></sub></span>, the image <span class="math inline"><em>G</em>(<em>g</em>)</span> must navigate an infinite-dimensional manifold <span class="math inline"><em>S</em></span>. However, any functor from finite to infinite dimensions cannot preserve the Dimensional Innovation Property.</p>
-<p>Specifically, let <span class="math inline"><em>τ</em></span> be an innovative transformation in <span class="math inline"><em>G</em>(<em>g</em>)</span>. Since <span class="math inline"><em>g</em></span> has finite computational basis, <span class="math inline"><em>τ</em></span> must be expressible as a finite combination of basis elements, contradicting the innovation requirement. Therefore, no such <span class="math inline"><em>G</em></span> exists, proving <span class="math inline">𝒜 ≆ 𝒢</span>. 0◻ ◻</p>
+*Proof.* Consider the forgetful functor $`F: \mathcal{A}\to \mathcal{G}`$ that maps actors to agents by restricting to finite action spaces. We show no inverse functor exists.
+
+Suppose $`G: \mathcal{G}\to \mathcal{A}`$ is a proposed inverse. For any agent $`g \in \mathcal{G}`$ with finite action space $`A_g`$, the image $`G(g)`$ must navigate an infinite-dimensional manifold $`S`$. However, any functor from finite to infinite dimensions cannot preserve the Dimensional Innovation Property.
+
+Specifically, let $`\tau`$ be an innovative transformation in $`G(g)`$. Since $`g`$ has finite computational basis, $`\tau`$ must be expressible as a finite combination of basis elements, contradicting the innovation requirement. Therefore, no such $`G`$ exists, proving $`\mathcal{A}\not\cong \mathcal{G}`$. 0◻ ◻
+
 </div>
 
 <h1 id="categorical-navigation-of-continuous-space">Categorical Navigation of Continuous Space</h1>
 <div class="definition">
 
-<p><strong>Definition 2</strong> (Continuous Space Navigation). An actor <span class="math inline"><em>α</em></span> navigates continuous space through the composition of functors:</p>
-<p><span class="math display">$$\begin{tikzcd}
-S \arrow[r, "\mathcal{C}"] \arrow[d, "\pi"'] &amp; S \arrow[d, "\pi"] \\
-S/\sim \arrow[r, "\overline{\mathcal{C}}"'] &amp; S/\sim
-\end{tikzcd}$$</span></p>
-<p>where <span class="math inline"><em>π</em></span> is the quotient map under epistemic equivalence <span class="math inline">∼</span>.</p>
+**Definition 2** (Continuous Space Navigation). An actor $`\alpha`$ navigates continuous space through the composition of functors:
+
+<pre><code class="language-math">\begin{tikzcd}
+S \arrow[r, &quot;\mathcal{C}&quot;] \arrow[d, &quot;\pi&quot;'] &amp; S \arrow[d, &quot;\pi&quot;] \\
+S/\sim \arrow[r, &quot;\overline{\mathcal{C}}&quot;'] &amp; S/\sim
+\end{tikzcd}
+</code></pre>
+
+where $`\pi`$ is the quotient map under epistemic equivalence $`\sim`$.
+
 </div>
 
 <div class="proposition">
 
-<p><strong>Proposition 1</strong> (Continuity Preservation). For an actor <span class="math inline"><em>α</em> = (<em>S</em>, 𝒞, <em>Φ</em>, <em>Ψ</em>, <em>ϵ</em>)</span>, the navigation functor <span class="math inline">𝒞</span> preserves continuity:</p>
-<p><span class="math display">∀<em>U</em> ⊆ <em>S</em> open, 𝒞<sup>−1</sup>(<em>U</em>) is open</span></p>
+**Proposition 1** (Continuity Preservation). For an actor $`\alpha = (S, \mathcal{C}, \Phi, \Psi, \epsilon)`$, the navigation functor $`\mathcal{C}`$ preserves continuity:
+
+<pre><code class="language-math">\forall U \subseteq S \text{ open}, \mathcal{C}^{-1}(U) \text{ is open}
+</code></pre>
+
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> The proof follows from the functor composition preserving limits and colimits in the category of topological spaces. The epistemic metric on <span class="math inline"><em>S</em></span> induces the standard topology, ensuring <span class="math inline">𝒞</span> maintains continuous navigation paths. 0◻ ◻</p>
+*Proof.* The proof follows from the functor composition preserving limits and colimits in the category of topological spaces. The epistemic metric on $`S`$ induces the standard topology, ensuring $`\mathcal{C}`$ maintains continuous navigation paths. 0◻ ◻
+
 </div>
 
 <h1 id="static-and-dynamic-cost-functions-as-epistemic-boundaries">Static and Dynamic Cost Functions as Epistemic Boundaries</h1>
 <div class="definition">
 
-<p><strong>Definition 3</strong> (Cost Function Duality). An actor employs dual cost functions:</p>
-<ul>
-<li><p><strong>Static Cost</strong>: <span class="math inline">$\Phi(s, c) = \begin{cases} 1 &amp; \text{if } c \leq \theta_s \\ 0 &amp; \text{otherwise} \end{cases}$</span></p></li>
-<li><p><strong>Dynamic Cost</strong>: <span class="math inline"><em>Ψ</em>(<em>s</em><sub>1</sub>, <em>s</em><sub>2</sub>) = <em>α</em> ⋅ KL(<em>P</em><sub><em>s</em><sub>1</sub></sub>∥<em>P</em><sub><em>s</em><sub>2</sub></sub>) + <em>β</em> ⋅ <em>Δ</em><em>H</em>(<em>s</em><sub>1</sub>, <em>s</em><sub>2</sub>)</span></p></li>
-</ul>
-<p>where <span class="math inline"><em>θ</em><sub><em>s</em></sub></span> is the state-dependent threshold, KL denotes Kullback-Leibler divergence, and <span class="math inline"><em>Δ</em><em>H</em></span> measures entropy change.</p>
+**Definition 3** (Cost Function Duality). An actor employs dual cost functions:
+
+- **Static Cost**: $`\Phi(s, c) = \begin{cases} 1 & \text{if } c \leq \theta_s \\ 0 & \text{otherwise} \end{cases}`$
+
+- **Dynamic Cost**: $`\Psi(s_1, s_2) = \alpha \cdot \text{KL}(P_{s_1} \| P_{s_2}) + \beta \cdot \Delta H(s_1, s_2)`$
+
+where $`\theta_s`$ is the state-dependent threshold, KL denotes Kullback-Leibler divergence, and $`\Delta H`$ measures entropy change.
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 2</strong> (Cost-Bounded Innovation). For any actor <span class="math inline"><em>α</em></span>, dimensional innovation <span class="math inline"><em>τ</em></span> is permissible if and only if:</p>
-<p><span class="math display"><em>Φ</em>(<em>τ</em>(<em>s</em>), <em>Ψ</em>(<em>s</em>, <em>τ</em>(<em>s</em>))) = 1 and <em>Ψ</em>(<em>s</em>, <em>τ</em>(<em>s</em>)) ≤ 0.6</span></p>
+**Theorem 2** (Cost-Bounded Innovation). For any actor $`\alpha`$, dimensional innovation $`\tau`$ is permissible if and only if:
+
+<pre><code class="language-math">\Phi(\tau(s), \Psi(s, \tau(s))) = 1 \text{ and } \Psi(s, \tau(s)) \leq 0.6
+</code></pre>
+
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> The static cost function <span class="math inline"><em>Φ</em></span> enforces hard boundaries on acceptable states, while the dynamic cost <span class="math inline"><em>Ψ</em></span> measures transition feasibility. The threshold 0.6 emerges from the Sinphasé governance constraint <span class="math inline"><em>ε</em>(<em>x</em>) ≤ 0.6</span>, ensuring innovations remain within operational bounds while enabling creative exploration. 0◻ ◻</p>
+*Proof.* The static cost function $`\Phi`$ enforces hard boundaries on acceptable states, while the dynamic cost $`\Psi`$ measures transition feasibility. The threshold 0.6 emerges from the Sinphasé governance constraint $`\varepsilon(x) \leq 0.6`$, ensuring innovations remain within operational bounds while enabling creative exploration. 0◻ ◻
+
 </div>
 
 <h1 id="deployment-justification-creative-and-constrained-environments">Deployment Justification: Creative and Constrained Environments</h1>
 <div class="lemma">
 
-<p><strong>Lemma 1</strong> (Environmental Adaptation). An actor <span class="math inline"><em>α</em></span> can operate in both creative (unbounded) and constrained (regulated) environments without system breach.</p>
+**Lemma 1** (Environmental Adaptation). An actor $`\alpha`$ can operate in both creative (unbounded) and constrained (regulated) environments without system breach.
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> In creative environments, the actor explores the full manifold <span class="math inline"><em>S</em></span> subject only to dynamic cost constraints. In constrained environments, additional static boundaries are imposed through <span class="math inline"><em>Φ</em></span>. The dual cost system ensures:</p>
-<ol type="1">
-<li><p>Creative exploration: <span class="math inline"><em>τ</em></span> innovations possible when <span class="math inline"><em>Ψ</em>(<em>s</em>, <em>τ</em>(<em>s</em>))</span> is minimal</p></li>
-<li><p>Constraint respect: <span class="math inline"><em>Φ</em></span> prevents boundary violations regardless of <span class="math inline"><em>Ψ</em></span> values</p></li>
-</ol>
-<p>This duality enables deployment across diverse operational contexts. 0◻ ◻</p>
+*Proof.* In creative environments, the actor explores the full manifold $`S`$ subject only to dynamic cost constraints. In constrained environments, additional static boundaries are imposed through $`\Phi`$. The dual cost system ensures:
+
+1.  Creative exploration: $`\tau`$ innovations possible when $`\Psi(s, \tau(s))`$ is minimal
+
+2.  Constraint respect: $`\Phi`$ prevents boundary violations regardless of $`\Psi`$ values
+
+This duality enables deployment across diverse operational contexts. 0◻ ◻
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 3</strong> (No System Breach Guarantee). An actor <span class="math inline"><em>α</em></span> with properly configured cost functions cannot violate system boundaries.</p>
+**Theorem 3** (No System Breach Guarantee). An actor $`\alpha`$ with properly configured cost functions cannot violate system boundaries.
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> Let <span class="math inline"><em>B</em> ⊆ <em>S</em></span> denote system boundaries. Define <span class="math inline"><em>Φ</em></span> such that <span class="math inline"><em>Φ</em>(<em>s</em>, <em>c</em>) = 0</span> for all <span class="math inline"><em>s</em> ∈ <em>B</em><sup><em>c</em></sup></span>. Then for any navigation path <span class="math inline"><em>γ</em> : [0, 1] → <em>S</em></span> with <span class="math inline"><em>γ</em>(0) ∈ <em>B</em></span>:</p>
-<p><span class="math display">∃<em>t</em><sup>*</sup> ∈ [0, 1] : <em>γ</em>(<em>t</em><sup>*</sup>) ∈ ∂<em>B</em> ⇒ <em>Φ</em>(<em>γ</em>(<em>t</em><sup>*</sup>), ⋅) = 0</span></p>
-<p>This forces the actor to remain within <span class="math inline"><em>B</em></span>, preventing system breach. 0◻ ◻</p>
+*Proof.* Let $`B \subseteq S`$ denote system boundaries. Define $`\Phi`$ such that $`\Phi(s, c) = 0`$ for all $`s \in B^c`$. Then for any navigation path $`\gamma: [0,1] \to S`$ with $`\gamma(0) \in B`$:
+
+<pre><code class="language-math">\exists t^* \in [0,1] : \gamma(t^*) \in \partial B \Rightarrow \Phi(\gamma(t^*), \cdot) = 0
+</code></pre>
+
+This forces the actor to remain within $`B`$, preventing system breach. 0◻ ◻
+
 </div>
 
 <h1 id="turing-complete-epistemic-autonomy">Turing-Complete Epistemic Autonomy</h1>
 <div class="definition">
 
-<p><strong>Definition 4</strong> (Epistemic Completeness). An actor <span class="math inline"><em>α</em></span> exhibits epistemic completeness if:</p>
-<ol type="1">
-<li><p>It can represent any computable function through navigation in <span class="math inline"><em>S</em></span></p></li>
-<li><p>It maintains epistemic confidence <span class="math inline"><em>ϵ</em> ≥ 0.954</span> for all decisions</p></li>
-<li><p>It can generate novel solutions through dimensional innovation</p></li>
-</ol>
+**Definition 4** (Epistemic Completeness). An actor $`\alpha`$ exhibits epistemic completeness if:
+
+1.  It can represent any computable function through navigation in $`S`$
+
+2.  It maintains epistemic confidence $`\epsilon \geq 0.954`$ for all decisions
+
+3.  It can generate novel solutions through dimensional innovation
+
 </div>
 
 <div class="theorem">
 
-<p><strong>Theorem 4</strong> (Actor Turing Completeness). The Actor class achieves Turing-complete epistemic autonomy.</p>
+**Theorem 4** (Actor Turing Completeness). The Actor class achieves Turing-complete epistemic autonomy.
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> We construct a correspondence between actor navigation and Turing machine computation:</p>
-<ol type="1">
-<li><p><strong>States</strong>: Elements of <span class="math inline"><em>S</em></span> encode Turing machine configurations</p></li>
-<li><p><strong>Transitions</strong>: Navigation functor <span class="math inline">𝒞</span> simulates state transitions</p></li>
-<li><p><strong>Innovation</strong>: Dimensional expansion <span class="math inline"><em>τ</em></span> enables unbounded tape simulation</p></li>
-<li><p><strong>Halting</strong>: Static cost <span class="math inline"><em>Φ</em></span> implements acceptance/rejection</p></li>
-</ol>
-<p>For any Turing machine <span class="math inline"><em>T</em></span>, we construct actor <span class="math inline"><em>α</em><sub><em>T</em></sub></span> whose navigation in <span class="math inline"><em>S</em></span> simulates <span class="math inline"><em>T</em></span>’s computation. The epistemic threshold ensures only high-confidence computations proceed, while dimensional innovation enables simulation of arbitrary tape extensions.</p>
-<p>Therefore, actors can compute any Turing-computable function while maintaining epistemic integrity—achieving true autonomous computation. 0◻ ◻</p>
+*Proof.* We construct a correspondence between actor navigation and Turing machine computation:
+
+1.  **States**: Elements of $`S`$ encode Turing machine configurations
+
+2.  **Transitions**: Navigation functor $`\mathcal{C}`$ simulates state transitions
+
+3.  **Innovation**: Dimensional expansion $`\tau`$ enables unbounded tape simulation
+
+4.  **Halting**: Static cost $`\Phi`$ implements acceptance/rejection
+
+For any Turing machine $`T`$, we construct actor $`\alpha_T`$ whose navigation in $`S`$ simulates $`T`$’s computation. The epistemic threshold ensures only high-confidence computations proceed, while dimensional innovation enables simulation of arbitrary tape extensions.
+
+Therefore, actors can compute any Turing-computable function while maintaining epistemic integrity—achieving true autonomous computation. 0◻ ◻
+
 </div>
 
 <h1 id="the-necessity-of-actor-evolution">The Necessity of Actor Evolution</h1>
 <div class="proposition">
 
-<p><strong>Proposition 2</strong> (Evolutionary Imperative). The transition from agents to actors is not merely advantageous but <strong>necessary</strong> for achieving artificial general intelligence.</p>
+**Proposition 2** (Evolutionary Imperative). The transition from agents to actors is not merely advantageous but **necessary** for achieving artificial general intelligence.
+
 </div>
 
 <div class="proof">
 
-<p><em>Proof.</em> Consider the space of all possible intelligent behaviors <span class="math inline">ℐ</span>. We partition this into:</p>
-<ul>
-<li><p><span class="math inline">ℐ<sub><em>A</em></sub></span>: Behaviors achievable by agents (finite, predetermined)</p></li>
-<li><p><span class="math inline">ℐ<sub><em>α</em></sub></span>: Behaviors achievable by actors (infinite, innovative)</p></li>
-</ul>
-<p>Since <span class="math inline">ℐ<sub><em>A</em></sub> ⊂ ℐ<sub><em>α</em></sub></span> and <span class="math inline">ℐ<sub><em>α</em></sub> \ ℐ<sub><em>A</em></sub></span> contains all creative, adaptive, and emergent behaviors, actors represent the minimal class capable of general intelligence. The necessity follows from the requirement to handle novel situations beyond training distributions—a capability exclusive to the actor class. 0◻ ◻</p>
+*Proof.* Consider the space of all possible intelligent behaviors $`\mathcal{I}`$. We partition this into:
+
+- $`\mathcal{I}_A`$: Behaviors achievable by agents (finite, predetermined)
+
+- $`\mathcal{I}_\alpha`$: Behaviors achievable by actors (infinite, innovative)
+
+Since $`\mathcal{I}_A \subset \mathcal{I}_\alpha`$ and $`\mathcal{I}_\alpha \setminus \mathcal{I}_A`$ contains all creative, adaptive, and emergent behaviors, actors represent the minimal class capable of general intelligence. The necessity follows from the requirement to handle novel situations beyond training distributions—a capability exclusive to the actor class. 0◻ ◻
+
 </div>
 
 <h1 id="systemic-architecture-and-deployment-protocol">Systemic Architecture and Deployment Protocol</h1>
 <div class="definition">
 
-<p><strong>Definition 5</strong> (Actor Deployment Stack).</p>
-<p><span class="math display">$$\begin{align}
+**Definition 5** (Actor Deployment Stack).
+
+<pre><code class="language-math">\begin{align}
 \text{Layer 1} &amp;: \text{Core Actor} \in \mathcal{A}\\
 \text{Layer 2} &amp;: \text{Cost Governance} (\Phi, \Psi) \\
 \text{Layer 3} &amp;: \text{Epistemic Validation} (\epsilon \geq 0.954) \\
 \text{Layer 4} &amp;: \text{Dimensional Innovation Engine} (\tau) \\
 \text{Layer 5} &amp;: \text{Environmental Interface} (S \leftrightarrow \text{World})
-\end{align}$$</span></p>
+\end{align}
+</code></pre>
+
+
 </div>
 
 <p>This five-layer architecture ensures actors maintain operational integrity while exercising creative autonomy—the synthesis that defines their superiority over conventional agents.</p>
 <h1 id="conclusion-the-actor-imperative">Conclusion: The Actor Imperative</h1>
 <p>We have established that:</p>
-<ol type="1">
-<li><p>Actors form a distinct class transcending agent limitations</p></li>
-<li><p>Continuous space navigation enables unbounded problem-solving</p></li>
-<li><p>Dual cost functions ensure safe deployment without constraining innovation</p></li>
-<li><p>Turing-complete epistemic autonomy emerges from the architecture</p></li>
-<li><p>The evolution from agents to actors is mathematically necessary</p></li>
+<ol>
+<li>
+<p>Actors form a distinct class transcending agent limitations</p>
+</li>
+<li>
+<p>Continuous space navigation enables unbounded problem-solving</p>
+</li>
+<li>
+<p>Dual cost functions ensure safe deployment without constraining innovation</p>
+</li>
+<li>
+<p>Turing-complete epistemic autonomy emerges from the architecture</p>
+</li>
+<li>
+<p>The evolution from agents to actors is mathematically necessary</p>
+</li>
 </ol>
 <p>The Actor class represents not an incremental improvement but a <strong>phase transition</strong> in artificial intelligence—from tools that execute predefined behaviors to entities that reason, innovate, and evolve within epistemic boundaries. This is not speculation; it is the inevitable trajectory of intelligence itself.</p>
 <p>As we deploy actors across internet-scale and physical-world environments, we witness the emergence of truly autonomous AI—entities that think, create, and navigate the infinite space of possibility while respecting the constraints that ensure their beneficial integration with human systems.</p>
 <p>The age of agents has ended. The age of actors has begun.</p>
-
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-a-categorical-foundation-for-epistemic-ai-systems-with-continuous-space-navigation-and-d</code></p>

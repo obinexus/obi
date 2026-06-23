@@ -68,13 +68,25 @@
 <h2 id="main">main</h2>
 <h1 id="governance-foundation">Governance Foundation</h1>
 <p><strong>Begin by exploring:</strong></p>
-<ol type="1">
-<li><p>What is the difference between a governance contract and a policy decorator?</p></li>
-<li><p>Who governs the governors? (Explain regulatory recursion and delegation of authority.)</p></li>
-<li><p>Why does governance matter <em>at the hardware/firmware level</em> (e.g. who can flash a BIOS or enable DMA)?</p></li>
-<li><p>Provide a 2x2 matrix of “governance enforcement methods” vs “system abstraction layers.”</p></li>
-<li><p>In military, medical, or critical infrastructure intranets, who gets root? What guarantees that?</p></li>
-<li><p>Describe how governance contracts are modeled in RIFT, using Aegis-style role enforcement.</p></li>
+<ol>
+<li>
+<p>What is the difference between a governance contract and a policy decorator?</p>
+</li>
+<li>
+<p>Who governs the governors? (Explain regulatory recursion and delegation of authority.)</p>
+</li>
+<li>
+<p>Why does governance matter <em>at the hardware/firmware level</em> (e.g. who can flash a BIOS or enable DMA)?</p>
+</li>
+<li>
+<p>Provide a 2x2 matrix of “governance enforcement methods” vs “system abstraction layers.”</p>
+</li>
+<li>
+<p>In military, medical, or critical infrastructure intranets, who gets root? What guarantees that?</p>
+</li>
+<li>
+<p>Describe how governance contracts are modeled in RIFT, using Aegis-style role enforcement.</p>
+</li>
 </ol>
 <p><em>Your answers must draw from the RIFT specification, memory-as-governance model, and formal language hierarchy where applicable (e.g., context-sensitive policies vs regular enforcement routines). Your responses must differentiate between passive monitoring and active enforcement. Include examples using Git-RAF and AuraSeal mechanisms. Do not assume the reader trusts anyone—trust must be mathematically earned. If governance fails, human lives or national systems are at risk. This is not theoretical.</em></p>
 <h3 id="governance-execution-pledge-natural-language-contract">Governance Execution Pledge (Natural Language Contract)</h3>
@@ -94,13 +106,14 @@
 <p>This distinction illuminates two fundamentally different approaches to constraint enforcement that represent different philosophical approaches to system security and reliability.</p>
 <h4 id="policy-decorators-aspirational-constraints">Policy Decorators: Aspirational Constraints</h4>
 <p>Policy decorators are annotations that describe intended behavior. They express how code <em>should</em> behave according to some external specification, but they depend on correct implementation and cannot guarantee enforcement. Consider this traditional approach:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">@requires_admin_role</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">@audit_log_enabled</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">@rate_limited</span>(max_calls<span class="op">=</span><span class="dv">100</span>, window<span class="op">=</span><span class="dv">3600</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> delete_user_account(user_id):</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Implementation logic here</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    database.execute(<span class="st">&quot;DELETE FROM users WHERE id = ?&quot;</span>, user_id)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    audit_logger.log(<span class="ss">f&quot;User </span><span class="sc">{</span>user_id<span class="sc">}</span><span class="ss"> deleted by </span><span class="sc">{</span>current_user<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code class="language-python">@requires_admin_role
+@audit_log_enabled
+@rate_limited(max_calls=100, window=3600)
+def delete_user_account(user_id):
+    # Implementation logic here
+    database.execute(&quot;DELETE FROM users WHERE id = ?&quot;, user_id)
+    audit_logger.log(f&quot;User {user_id} deleted by {current_user}&quot;)
+</code></pre>
 <p>These decorators are <em>aspirational</em>—they express the developer’s intent that the function should only be called by administrators, that calls should be logged, and that there should be rate limiting. However, several failure modes make this approach inadequate for governance-critical systems:</p>
 <p><strong>Decorator Removal</strong>: A determined developer (or attacker with code access) could simply remove the decorators. The underlying function would still work, but without the intended protections.</p>
 <p><strong>Implementation Bypassing</strong>: Even if the decorators remain, their implementation might be flawed. The <code>@requires_admin_role</code> decorator might have a logical error that allows privilege escalation, or it might depend on external systems that can be compromised.</p>
@@ -108,7 +121,7 @@
 <p>Most critically, policy decorators represent a <em>separation of concerns</em> that actually undermines security. The security policy is separate from the core logic, which means the core logic can potentially function without the security policy.</p>
 <h4 id="governance-contracts-architectural-constraints">Governance Contracts: Architectural Constraints</h4>
 <p>Governance contracts represent a fundamentally different approach where constraints become part of the computational model itself. In RIFTlang, governance is not applied to existing code—it defines what code can exist in the first place.</p>
-<pre class="rift"><code>@policy(&quot;user.deletion&quot;, level=&quot;critical&quot;)
+<pre><code class="language-rift">@policy(&quot;user.deletion&quot;, level=&quot;critical&quot;)
 @entropy_bound(max_deviation=0.01)
 @memory_contract(role=&quot;admin_only&quot;, validation=&quot;cryptographic&quot;)
 governance_contract user_account_deletion {
@@ -118,33 +131,34 @@ governance_contract user_account_deletion {
         user_exists_validation(target_user_id),
         deletion_impact_assessment_completed()
     },
-    
+
     // Execution constraints embedded in memory layout
     execution: {
         memory_aligned_deletion_with_audit_trail(),
         entropy_monitoring_during_operation(),
         rollback_capability_maintained()
     },
-    
+
     // Post-conditions that are automatically verified
     post_condition: {
         deletion_completion_verified(),
         entropy_consistency_validation(),
         audit_trail_cryptographically_sealed()
     },
-    
+
     // Failure handling that cannot be bypassed
     failure_mode: {
         automatic_rollback_with_incident_logging(),
         governance_violation_escalation(),
         system_state_preservation()
     }
-}</code></pre>
+}
+</code></pre>
 <p>The critical difference is that governance contracts are <em>compiled into the memory layout and execution semantics</em>. The RIFTlang compiler validates at compile-time that the memory architecture, type system, and execution flow all satisfy the governance requirements.</p>
 <p>This means you cannot execute the function without satisfying the contract—the system literally cannot represent the invalid state. If you attempt to call the function without proper administrative credentials, the system doesn’t just deny the request—it cannot even represent the concept of making such a request.</p>
 <h4 id="memory-first-governance-architecture">Memory-First Governance Architecture</h4>
 <p>The deeper innovation in RIFTlang’s approach is that governance constraints are embedded at the <em>memory level</em> before type checking or value assignment occurs. This creates what we call “memory-first governance architecture.”</p>
-<pre class="rift"><code>// Memory governance defines physical constraint boundaries
+<pre><code class="language-rift">// Memory governance defines physical constraint boundaries
 align span&lt;governance_critical_memory&gt; {
     direction: left -&gt; right,
     bytes: 8192,
@@ -170,7 +184,8 @@ admin_deletion_request := validate_and_assign(
     governance_critical_memory,
     ADMIN_DELETION_TOKEN,
     governance_context: user_account_deletion
-)</code></pre>
+)
+</code></pre>
 <p>This architecture ensures that governance is not an afterthought applied to existing computational models, but rather the foundational principle that determines how computation can occur. The memory layout enforces physical constraints on what data can be stored where. The type system enforces semantic constraints on what operations make sense. The value system enforces runtime constraints on what specific data is valid.</p>
 <h3 id="who-governs-the-governors-regulatory-recursion">Who Governs the Governors? (Regulatory Recursion)</h3>
 <p>This question strikes at the heart of any governance system and represents one of the most challenging aspects of designing trustworthy computational systems. In any system, someone must have ultimate authority, but how do we prevent that authority from being abused, subverted, or captured by malicious actors?</p>
@@ -178,7 +193,7 @@ admin_deletion_request := validate_and_assign(
 <h4 id="distributed-governance-hierarchies">Distributed Governance Hierarchies</h4>
 <p>The solution lies in <em>distributed governance hierarchies</em> with <em>cryptographic attestation chains</em>. Instead of concentrating ultimate authority in any single entity, governance authority is distributed across multiple independent entities, and every exercise of authority must be cryptographically provable.</p>
 <p>Consider how this works in a military command system. Traditional hierarchical models create single points of failure—if a commanding officer is compromised, coerced, or simply makes an error under pressure, the consequences can be catastrophic. In a governance-critical system, we need mathematical guarantees, not just procedural ones.</p>
-<pre class="rift"><code>governance_authority_chain military_command {
+<pre><code class="language-rift">governance_authority_chain military_command {
     // Constitutional source of authority (mathematical root of trust)
     level_0: constitutional_authority {
         cryptographic_root: national_defense_authorization_key,
@@ -186,7 +201,7 @@ admin_deletion_request := validate_and_assign(
         override_capability: constitutional_amendment_process_only,
         audit_requirement: complete_public_record
     },
-    
+
     // Legislative delegation (democratically accountable)
     level_1: legislative_delegation {
         source_authority: constitutional_authority,
@@ -195,7 +210,7 @@ admin_deletion_request := validate_and_assign(
         time_bounds: fiscal_year_limited,
         cryptographic_signature: congress_defense_committee_key
     },
-    
+
     // Executive implementation (operationally focused)
     level_2: executive_implementation {
         source_authority: legislative_delegation,
@@ -204,7 +219,7 @@ admin_deletion_request := validate_and_assign(
         geographic_bounds: theater_of_operations_limited,
         cryptographic_signature: secretary_of_defense_key
     },
-    
+
     // Operational command (tactically responsive)
     level_3: operational_command {
         source_authority: executive_implementation,
@@ -213,13 +228,14 @@ admin_deletion_request := validate_and_assign(
         time_bounds: mission_duration_limited,
         cryptographic_signature: theater_commander_key
     }
-}</code></pre>
+}
+</code></pre>
 <p>Each level can only delegate authority it actually possesses, and every delegation is cryptographically signed and time-bounded. When a field commander issues an order, the system verifies not just that they have command-level authority, but that their authority traces back through an unbroken cryptographic chain to the constitutional source.</p>
 <h4 id="cryptographic-authority-verification">Cryptographic Authority Verification</h4>
 <p>The crucial insight is that <strong>governance authority is not inherent—it’s mathematically provable</strong>. A compromised commander cannot simply declare new authority; they must provide cryptographic proof that their authority was properly delegated from a legitimate source.</p>
-<pre class="rift"><code>command_verification_process verify_command_authority {
+<pre><code class="language-rift">command_verification_process verify_command_authority {
     input: command_order, claimed_authority_level, cryptographic_proof,
-    
+
     validation_steps: {
         // Step 1: Verify cryptographic signature authenticity
         signature_validation: {
@@ -227,14 +243,14 @@ admin_deletion_request := validate_and_assign(
             check_certificate_chain_integrity(),
             validate_timestamp_within_authority_bounds()
         },
-        
+
         // Step 2: Verify authority delegation chain
         delegation_chain_validation: {
             trace_authority_to_constitutional_source(),
             verify_each_delegation_was_properly_authorized(),
             check_no_authority_exceeded_at_any_level()
         },
-        
+
         // Step 3: Verify operational constraints
         constraint_validation: {
             verify_geographic_bounds_compliance(),
@@ -242,7 +258,7 @@ admin_deletion_request := validate_and_assign(
             verify_scope_limits_compliance(),
             verify_rules_of_engagement_compliance()
         },
-        
+
         // Step 4: Verify current validity
         current_validity_check: {
             verify_authority_not_expired(),
@@ -251,7 +267,7 @@ admin_deletion_request := validate_and_assign(
             verify_no_superseding_orders_exist()
         }
     },
-    
+
     // Multi-signature requirement for critical operations
     consensus_requirement: {
         if (command_level &gt;= STRATEGIC_IMPACT) {
@@ -263,7 +279,8 @@ admin_deletion_request := validate_and_assign(
             )
         }
     }
-}</code></pre>
+}
+</code></pre>
 <p>This process ensures that no single entity, regardless of apparent authority, can make unilateral decisions about critical operations. Every decision must be mathematically provable as properly authorized through the complete chain of legitimate delegation.</p>
 <h4 id="governance-capture-prevention">Governance Capture Prevention</h4>
 <p>One of the most insidious threats to any governance system is <em>governance capture</em>—the gradual subversion of oversight mechanisms by the entities they are supposed to oversee. This can happen through corruption, intimidation, regulatory capture, or simply the natural tendency of oversight bodies to become friendly with those they regulate.</p>
@@ -281,7 +298,7 @@ admin_deletion_request := validate_and_assign(
 <h4 id="memory-as-governance-architecture">Memory-as-Governance Architecture</h4>
 <p>RIFTlang addresses this challenge through its <em>memory-as-governance</em> model, where governance constraints become part of the hardware’s operational model rather than software policies applied on top of generic hardware.</p>
 <p>Instead of treating memory as generic storage that software happens to use, we treat memory layout as a governance contract that defines what operations are physically possible:</p>
-<pre class="rift"><code>// Hardware memory governance embedded in silicon design
+<pre><code class="language-rift">// Hardware memory governance embedded in silicon design
 hardware_memory_governance_contract pacemaker_critical_memory {
     // Physical memory regions with governance constraints
     cardiac_monitoring_region: {
@@ -299,7 +316,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
         },
         failure_response: immediate_safe_mode_activation
     },
-    
+
     dosing_control_region: {
         base_address: 0x20000000,
         size: 0x00010000,  // 64KB for dosing algorithms
@@ -315,12 +332,13 @@ hardware_memory_governance_contract pacemaker_critical_memory {
         },
         failure_response: fail_to_safe_minimal_dosing
     }
-}</code></pre>
+}
+</code></pre>
 <p>The crucial innovation is that these constraints are implemented in <em>hardware</em>, not software. The memory controller itself enforces governance constraints. An attacker cannot bypass software-level security by directly manipulating memory, because the memory subsystem refuses operations that violate governance contracts.</p>
 <h4 id="firmware-governance-enforcement">Firmware Governance Enforcement</h4>
 <p>Firmware represents a particularly challenging governance boundary because it operates below the operating system but above the hardware abstraction layer. Firmware has extensive system access but often lacks the security scrutiny applied to operating system code.</p>
 <p>In governance-critical systems, firmware must be treated as part of the governance enforcement mechanism rather than simply trusted system code:</p>
-<pre class="rift"><code>firmware_governance_layer system_boot_governance {
+<pre><code class="language-rift">firmware_governance_layer system_boot_governance {
     // Cryptographic boot verification
     secure_boot_process: {
         hardware_root_of_trust: embedded_in_silicon,
@@ -339,7 +357,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
             runtime_integrity_monitoring: continuous
         }
     },
-    
+
     // Runtime governance enforcement
     runtime_enforcement: {
         memory_access_control: {
@@ -347,20 +365,20 @@ hardware_memory_governance_contract pacemaker_critical_memory {
             prevent_unauthorized_dma_operations(),
             monitor_unusual_access_patterns()
         },
-        
+
         peripheral_access_control: {
             authenticate_peripheral_communications(),
             enforce_peripheral_privilege_boundaries(),
             log_security_relevant_peripheral_events()
         },
-        
+
         network_interface_governance: {
             enforce_communication_policies(),
             validate_cryptographic_protocols(),
             prevent_unauthorized_data_exfiltration()
         }
     },
-    
+
     // Failure and attack response
     security_incident_response: {
         tamper_detection: immediate_safe_shutdown,
@@ -368,54 +386,22 @@ hardware_memory_governance_contract pacemaker_critical_memory {
         governance_violation: alert_and_audit_log,
         cryptographic_failure: fail_closed_with_notification
     }
-}</code></pre>
+}
+</code></pre>
 <p>This architecture makes firmware an active participant in governance enforcement rather than a potential governance bypass vector.</p>
 <h3 id="enforcement-methods-vs-system-abstraction-layers-matrix">Enforcement Methods vs. System Abstraction Layers Matrix</h3>
 <p>Understanding how different governance enforcement mechanisms operate at different system abstraction layers is crucial for designing comprehensive governance architectures. This matrix shows how enforcement capabilities and constraints vary across the computational stack:</p>
 <div id="tab:governance_enforcement_matrix">
 
-<table>
-<thead>
-<tr>
-<th style="text-align: left;"><strong>Enforcement Method</strong></th>
-<th style="text-align: left;"><strong>Hardware/ Firmware</strong></th>
-<th style="text-align: left;"><strong>Operating System</strong></th>
-<th style="text-align: left;"><strong>Middleware</strong></th>
-<th style="text-align: left;"><strong>Application</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Cryptographic Verification</strong></td>
-<td style="text-align: left;">Signed firmware, TPM attestation, hardware security modules</td>
-<td style="text-align: left;">Kernel code signing, secure boot, driver verification</td>
-<td style="text-align: left;">Certificate validation, API authentication, secure channels</td>
-<td style="text-align: left;">User credential verification, data encryption, digital signatures</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Memory/Resource Constraints</strong></td>
-<td style="text-align: left;">Hardware memory protection, DMA restrictions, address space isolation</td>
-<td style="text-align: left;">Process isolation, virtual memory, resource quotas</td>
-<td style="text-align: left;">Connection limits, buffer management, resource pools</td>
-<td style="text-align: left;">Object permissions, data access controls, sandbox isolation</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Behavioral Monitoring</strong></td>
-<td style="text-align: left;">Hardware performance counters, thermal monitoring, power analysis</td>
-<td style="text-align: left;">System call auditing, process behavior analysis, anomaly detection</td>
-<td style="text-align: left;">Network traffic analysis, API call patterns, performance metrics</td>
-<td style="text-align: left;">User activity logging, application metrics, usage analytics</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Policy Enforcement</strong></td>
-<td style="text-align: left;">Hardware-locked configuration, immutable firmware settings, fuse-blown restrictions</td>
-<td style="text-align: left;">Mandatory access controls, capability systems, security policies</td>
-<td style="text-align: left;">Role-based access control, service policies, governance contracts</td>
-<td style="text-align: left;">Application-specific rules, user preferences, business logic</td>
-</tr>
-</tbody>
-</table>
-<p>Governance Enforcement Methods Across System Abstraction Layers</p>
+| **Enforcement Method** | **Hardware/ Firmware** | **Operating System** | **Middleware** | **Application** |
+|:---|:---|:---|:---|:---|
+| **Cryptographic Verification** | Signed firmware, TPM attestation, hardware security modules | Kernel code signing, secure boot, driver verification | Certificate validation, API authentication, secure channels | User credential verification, data encryption, digital signatures |
+| **Memory/Resource Constraints** | Hardware memory protection, DMA restrictions, address space isolation | Process isolation, virtual memory, resource quotas | Connection limits, buffer management, resource pools | Object permissions, data access controls, sandbox isolation |
+| **Behavioral Monitoring** | Hardware performance counters, thermal monitoring, power analysis | System call auditing, process behavior analysis, anomaly detection | Network traffic analysis, API call patterns, performance metrics | User activity logging, application metrics, usage analytics |
+| **Policy Enforcement** | Hardware-locked configuration, immutable firmware settings, fuse-blown restrictions | Mandatory access controls, capability systems, security policies | Role-based access control, service policies, governance contracts | Application-specific rules, user preferences, business logic |
+
+Governance Enforcement Methods Across System Abstraction Layers
+
 </div>
 
 <h4 id="cross-layer-governance-dependencies">Cross-Layer Governance Dependencies</h4>
@@ -436,7 +422,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
 <p>In each case, traditional root access concentrates too much power in a single credential that can be stolen, coerced, or misused.</p>
 <h4 id="multi-party-cryptographic-consensus">Multi-Party Cryptographic Consensus</h4>
 <p>The solution is to eliminate traditional root access entirely and replace it with <em>multi-party cryptographic consensus</em> for critical operations. Instead of one account with unlimited privileges, critical operations require cryptographic agreement from multiple independent authorities.</p>
-<pre class="rift"><code>critical_system_operation emergency_reactor_shutdown {
+<pre><code class="language-rift">critical_system_operation emergency_reactor_shutdown {
     // Multiple independent authorities required
     required_authorities: [
         plant_manager_cryptographic_signature,
@@ -445,7 +431,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
         independent_technical_reviewer_approval,
         shift_supervisor_confirmation
     ],
-    
+
     // Consensus requirements
     consensus_requirement: {
         minimum_signatures: 4_of_5,
@@ -456,7 +442,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
             radiation_monitoring_disable
         ]
     },
-    
+
     // Time and context constraints
     operational_constraints: {
         maximum_decision_time: 60_seconds,
@@ -464,7 +450,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
         prohibited_system_state: planned_maintenance_mode,
         environmental_validation: radiation_levels_within_safe_bounds
     },
-    
+
     // Audit and verification
     audit_requirements: {
         complete_decision_chain_recorded: true,
@@ -472,7 +458,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
         regulatory_notification: automatic_immediate,
         independent_verification: required_within_24_hours
     },
-    
+
     // Failure handling
     consensus_failure_response: {
         if (insufficient_signatures) {
@@ -486,11 +472,12 @@ hardware_memory_governance_contract pacemaker_critical_memory {
             activate_independent_safety_monitoring()
         }
     }
-}</code></pre>
+}
+</code></pre>
 <p>This approach ensures that no single entity, regardless of apparent authority, can make unilateral decisions about life-critical systems. Every critical operation requires mathematical proof that multiple independent authorities have validated the decision.</p>
 <h4 id="role-based-cryptographic-capabilities">Role-Based Cryptographic Capabilities</h4>
 <p>Instead of traditional user accounts with fixed privilege levels, governance-critical systems implement <em>role-based cryptographic capabilities</em>. Instead of “giving someone root access,” the system grants specific cryptographic capabilities that enable specific operations under specific conditions.</p>
-<pre class="rift"><code>medical_system_capabilities patient_care_governance {
+<pre><code class="language-rift">medical_system_capabilities patient_care_governance {
     // Physician capabilities
     physician_role: {
         cryptographic_identity: medical_license_certificate,
@@ -507,7 +494,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
             peer_review: required_for_unusual_procedures
         }
     },
-    
+
     // Nurse capabilities  
     nurse_role: {
         cryptographic_identity: nursing_license_certificate,
@@ -523,7 +510,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
             emergency_escalation: automatic_physician_notification
         }
     },
-    
+
     // System administrator capabilities
     system_admin_role: {
         cryptographic_identity: employee_certificate_plus_background_check,
@@ -539,13 +526,14 @@ hardware_memory_governance_contract pacemaker_critical_memory {
             audit_trail_modification: impossible_by_design
         }
     }
-}</code></pre>
+}
+</code></pre>
 <p>This architecture ensures that system privileges scale appropriately with actual job responsibilities and cannot be escalated beyond what is necessary for legitimate functions.</p>
 <h3 id="rift-governance-contract-modeling">RIFT Governance Contract Modeling</h3>
 <p>RIFTlang implements governance through its unique <em>token triplet architecture</em> where every computational element consists of (memory, type, value) with governance constraints embedded at each level. This approach makes governance violations not just detectable, but <em>unrepresentable</em> within the computational model.</p>
 <h4 id="the-token-triplet-governance-model">The Token Triplet Governance Model</h4>
 <p>Understanding RIFTlang governance requires grasping how the token triplet model embeds governance at the most fundamental level of computation:</p>
-<pre class="rift"><code>// Every token in RIFTlang follows this fundamental structure
+<pre><code class="language-rift">// Every token in RIFTlang follows this fundamental structure
 token = (token_memory, token_type, token_value)
 
 // Memory governance defines the foundational constraints
@@ -574,16 +562,17 @@ token_value: {
     output_validation: clinical_accuracy_verification_required,
     audit_trail: complete_data_lineage_preserved,
     patient_privacy: hipaa_compliance_enforced
-}</code></pre>
+}
+</code></pre>
 <p>This architecture ensures that governance is not an afterthought applied to existing computational models, but rather the foundational principle that determines what computation can occur.</p>
-<h4 id="memory-first-governance-architecture-1">Memory-First Governance Architecture</h4>
+<h4 id="memory-first-governance-architecture_1">Memory-First Governance Architecture</h4>
 <p>The most innovative aspect of RIFTlang’s approach is that memory governance occurs <em>before</em> type checking or value assignment. This creates an architectural constraint that makes governance violations impossible to represent:</p>
-<pre class="rift"><code>// Medical device governance contract implementation
+<pre><code class="language-rift">// Medical device governance contract implementation
 @policy(&quot;medical_device_safety&quot;, level=&quot;life_critical&quot;)
 @entropy_bound(max_deviation=0.005)  // Very tight tolerance for medical devices
 @memory_contract(role=&quot;cardiac_monitoring&quot;, validation=&quot;continuous&quot;)
 governance_contract cardiac_sensor_processing {
-    
+
     // Memory allocation with embedded governance
     align span&lt;cardiac_sensor_memory&gt; {
         direction: sensor_input -&gt; processing_pipeline -&gt; medical_output,
@@ -601,7 +590,7 @@ governance_contract cardiac_sensor_processing {
             governance_violation: safe_shutdown_with_alarm
         }
     },
-    
+
     // Type system governance within memory constraints
     type CARDIAC_SENSOR_DATA = {
         bit_width: 32,
@@ -611,7 +600,7 @@ governance_contract cardiac_sensor_processing {
         medical_validation: require_clinical_correlation,
         governance_binding: cardiac_sensor_memory
     },
-    
+
     // Value governance within type and memory constraints
     sensor_reading := validate_and_process(
         raw_sensor_input,
@@ -624,11 +613,12 @@ governance_contract cardiac_sensor_processing {
             emergency_protocols: cardiac_emergency_response_ready
         }
     )
-}</code></pre>
+}
+</code></pre>
 <h4 id="cross-layer-governance-validation">Cross-Layer Governance Validation</h4>
 <p>RIFTlang’s governance architecture validates constraints across all system layers simultaneously. When you compile a RIFTlang program, the compiler verifies that governance requirements can be satisfied not just by the application code, but by the entire execution environment:</p>
-<pre class="rift"><code>governance_validation_pipeline medical_device_compilation {
-    
+<pre><code class="language-rift">governance_validation_pipeline medical_device_compilation {
+
     // Hardware layer validation
     hardware_governance_check: {
         verify_trusted_execution_environment_available(),
@@ -636,7 +626,7 @@ governance_contract cardiac_sensor_processing {
         verify_tamper_detection_mechanisms_functional(),
         verify_secure_boot_chain_integrity()
     },
-    
+
     // Firmware layer validation  
     firmware_governance_check: {
         verify_signed_firmware_authenticity(),
@@ -644,7 +634,7 @@ governance_contract cardiac_sensor_processing {
         verify_hardware_abstraction_layer_security(),
         verify_real_time_operating_system_safety_properties()
     },
-    
+
     // Operating system layer validation
     os_governance_check: {
         verify_process_isolation_capabilities(),
@@ -652,7 +642,7 @@ governance_contract cardiac_sensor_processing {
         verify_secure_inter_process_communication(),
         verify_audit_logging_infrastructure()
     },
-    
+
     // Application layer validation
     application_governance_check: {
         verify_governance_contract_implementation(),
@@ -660,7 +650,7 @@ governance_contract cardiac_sensor_processing {
         verify_patient_data_protection_compliance(),
         verify_clinical_workflow_integration()
     },
-    
+
     // Integration validation
     cross_layer_integration_check: {
         verify_governance_consistency_across_layers(),
@@ -668,7 +658,8 @@ governance_contract cardiac_sensor_processing {
         verify_audit_trail_completeness_across_layers(),
         verify_failure_handling_coordination_across_layers()
     }
-}</code></pre>
+}
+</code></pre>
 <p>This comprehensive validation ensures that governance properties are maintained throughout the entire computational stack, not just within the application logic.</p>
 <h3 id="governance-as-computational-physics">Governance as Computational Physics</h3>
 <p>The profound insight underlying all of this work is that <strong>governance becomes the physics of computation</strong>. Just as physical laws determine what operations are possible in the material world, governance contracts determine what operations are possible in computational systems.</p>
@@ -699,13 +690,14 @@ governance_contract cardiac_sensor_processing {
 <p>RIFT (Repository-Integrated Formal Translator) demonstrates that governance-first design is not just theoretically sound but practically superior for systems where failure is not an option. Unlike traditional programming languages that add security through libraries and frameworks, RIFTlang embeds governance constraints directly into the computational model itself.</p>
 <p>Consider the difference in approach when implementing access control for a cardiac monitoring system:</p>
 <p><strong>Traditional Approach (Aspirational Governance):</strong></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="at">@requires_medical_license</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="at">@audit_patient_access</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_heart_rate_data(patient_id, requesting_physician):</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Hope the decorators actually enforce their constraints</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> database.query(<span class="st">&quot;SELECT heart_rate FROM patients WHERE id = ?&quot;</span>, patient_id)</span></code></pre></div>
+<pre><code class="language-python">@requires_medical_license
+@audit_patient_access
+def get_heart_rate_data(patient_id, requesting_physician):
+    # Hope the decorators actually enforce their constraints
+    return database.query(&quot;SELECT heart_rate FROM patients WHERE id = ?&quot;, patient_id)
+</code></pre>
 <p><strong>RIFT Approach (Architectural Governance):</strong></p>
-<pre class="rift"><code>@policy(&quot;cardiac_monitoring&quot;, level=&quot;life_critical&quot;)
+<pre><code class="language-rift">@policy(&quot;cardiac_monitoring&quot;, level=&quot;life_critical&quot;)
 @entropy_bound(max_deviation=0.001)
 @memory_contract(role=&quot;medical_professional&quot;, validation=&quot;fda_certified&quot;)
 governance_contract cardiac_data_access {
@@ -714,7 +706,8 @@ governance_contract cardiac_data_access {
     execution: real_time_patient_monitoring(),
     post_condition: audit_trail_cryptographically_sealed(),
     failure_mode: immediate_safe_shutdown_with_alert()
-}</code></pre>
+}
+</code></pre>
 <p>In the traditional approach, a determined attacker could remove the decorators, compromise the enforcement libraries, or bypass the checks through privilege escalation. In the RIFT approach, the governance constraints are compiled into the memory layout and execution semantics—the system literally cannot represent an invalid access attempt.</p>
 <h3 id="computational-threading-models-for-governance-critical-systems">Computational Threading Models for Governance-Critical Systems</h3>
 <p>The implementation of governance constraints requires careful consideration of how computational work is distributed and controlled across processing resources. RIFT supports two distinct threading models that reflect different approaches to governance enforcement in concurrent environments.</p>
@@ -722,20 +715,36 @@ governance_contract cardiac_data_access {
 <p>In this model, each thread operates on a dedicated processing core with its own governance context and policy enforcement mechanisms. This approach provides the strongest isolation guarantees because governance violations in one thread cannot propagate to compromise other concurrent operations.</p>
 <p>The architecture implements a worker pool where each worker thread:</p>
 <ul>
-<li><p>Maintains its own cryptographic identity and authorization tokens</p></li>
-<li><p>Operates within memory segments governed by role-based access controls</p></li>
-<li><p>Performs work using tree-hierarchical task decomposition</p></li>
-<li><p>Returns results through linked-list resolution chains that preserve audit trails</p></li>
+<li>
+<p>Maintains its own cryptographic identity and authorization tokens</p>
+</li>
+<li>
+<p>Operates within memory segments governed by role-based access controls</p>
+</li>
+<li>
+<p>Performs work using tree-hierarchical task decomposition</p>
+</li>
+<li>
+<p>Returns results through linked-list resolution chains that preserve audit trails</p>
+</li>
 </ul>
 <p>This model excels in safety-critical applications where cross-thread contamination could have catastrophic consequences. Each worker operates as an independent governance domain, making it impossible for a compromised thread to affect the security posture of other concurrent operations.</p>
 <h4 id="model-2-shared-core-concurrent-threading-with-governance-reconciliation">Model 2: Shared-Core Concurrent Threading with Governance Reconciliation</h4>
 <p>In environments where processing resources are constrained, RIFT supports a time-sliced execution model where multiple threads share processing cores while maintaining governance isolation through temporal separation and state reconciliation protocols.</p>
 <p>This model implements:</p>
 <ul>
-<li><p>Parent-child thread hierarchies with inherited governance constraints</p></li>
-<li><p>Time-slice execution with governance context preservation across switches</p></li>
-<li><p>Consensus-based resolution when child threads rejoin parent contexts</p></li>
-<li><p>Cryptographic validation of all cross-thread communication</p></li>
+<li>
+<p>Parent-child thread hierarchies with inherited governance constraints</p>
+</li>
+<li>
+<p>Time-slice execution with governance context preservation across switches</p>
+</li>
+<li>
+<p>Consensus-based resolution when child threads rejoin parent contexts</p>
+</li>
+<li>
+<p>Cryptographic validation of all cross-thread communication</p>
+</li>
 </ul>
 <p>The critical innovation is that thread scheduling decisions are governance-aware. The system cannot schedule a thread to execute unless it can prove that the thread’s governance requirements can be satisfied within the current system state. This prevents race conditions that could lead to privilege escalation or policy violations.</p>
 <h3 id="why-architectural-constraints-matter-more-than-runtime-policies">Why Architectural Constraints Matter More Than Runtime Policies</h3>
@@ -757,10 +766,18 @@ governance_contract cardiac_data_access {
 <p>RIFT eliminates trust as a system requirement. Every operation that affects governance state must provide cryptographic proof of its authorization. Every component that participates in governance enforcement must demonstrate its compliance through mathematical attestation. No entity—human or machine—is trusted by default.</p>
 <p>This approach extends from individual function calls through entire system architectures. When a medical device requests permission to adjust insulin dosing, it must provide cryptographic proof that:</p>
 <ul>
-<li><p>The request originates from authorized medical personnel</p></li>
-<li><p>The dosing parameters fall within safe ranges for the specific patient</p></li>
-<li><p>The device itself has not been tampered with or compromised</p></li>
-<li><p>All intermediate systems in the authorization chain remain trusted</p></li>
+<li>
+<p>The request originates from authorized medical personnel</p>
+</li>
+<li>
+<p>The dosing parameters fall within safe ranges for the specific patient</p>
+</li>
+<li>
+<p>The device itself has not been tampered with or compromised</p>
+</li>
+<li>
+<p>All intermediate systems in the authorization chain remain trusted</p>
+</li>
 </ul>
 <p>Only when all proofs validate does the system permit the operation to proceed. This is not paranoia—it is the engineering discipline required when human lives depend on computational correctness.</p>
 <h3 id="the-path-forward">The Path Forward</h3>
@@ -775,8 +792,9 @@ governance_contract cardiac_data_access {
 <h2 id="introduction-governance-as-the-physics-of-critical-computation">Introduction: Governance as the Physics of Critical Computation</h2>
 <div class="flushright">
 
-<p><em>"We are only as good as we can communicate — That is why we theorise, and study theory."</em><br />
-– Nnamdi Michael Okpala, Founder of OBINexus</p>
+*"We are only as good as we can communicate — That is why we theorise, and study theory."*  
+– Nnamdi Michael Okpala, Founder of OBINexus
+
 </div>
 
 <p>This specification is not theoretical computer science. It is not a research prototype. It is not about what software <em>should</em> do in ideal circumstances.</p>
@@ -788,15 +806,16 @@ governance_contract cardiac_data_access {
 <p>This specification documents the RIFT ecosystem: a governance-first computational architecture where policy compliance is not verified at runtime but enforced at the architectural level. Unlike traditional systems that add security features to existing computational models, RIFT embeds governance constraints directly into memory layout, type systems, and execution semantics.</p>
 <h3 id="beyond-aspirational-constraints">Beyond Aspirational Constraints</h3>
 <p>Traditional software engineering applies governance through what we term <em>aspirational constraints</em>—decorators, middleware, and runtime checks that express developer intent about how code should behave:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="at">@requires_medical_license</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="at">@audit_patient_access</span>  </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="at">@hipaa_compliance_required</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> modify_insulin_dosage(patient_id, new_dosage):</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Hope these decorators actually enforce their constraints</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> device_controller.update_dosage(patient_id, new_dosage)</span></code></pre></div>
+<pre><code class="language-python">@requires_medical_license
+@audit_patient_access  
+@hipaa_compliance_required
+def modify_insulin_dosage(patient_id, new_dosage):
+    # Hope these decorators actually enforce their constraints
+    return device_controller.update_dosage(patient_id, new_dosage)
+</code></pre>
 <p>These annotations are <em>aspirational</em> because they depend on correct implementation of external enforcement mechanisms. A determined attacker can remove decorators, compromise validation libraries, or exploit implementation flaws to bypass intended constraints entirely.</p>
 <p>RIFT implements <em>architectural constraints</em> where governance requirements become part of the computational model itself:</p>
-<pre class="rift"><code>@policy(&quot;insulin_dosage_control&quot;, level=&quot;life_critical&quot;)
+<pre><code class="language-rift">@policy(&quot;insulin_dosage_control&quot;, level=&quot;life_critical&quot;)
 @entropy_bound(max_deviation=0.001)
 @memory_contract(role=&quot;certified_medical_professional&quot;, validation=&quot;fda_cryptographic&quot;)
 governance_contract insulin_dosage_modification {
@@ -805,7 +824,8 @@ governance_contract insulin_dosage_modification {
     execution: real_time_physiological_monitoring_required(),
     post_condition: dosage_change_audit_trail_cryptographically_sealed(),
     failure_mode: immediate_safe_shutdown_with_medical_alert()
-}</code></pre>
+}
+</code></pre>
 <p>In this architecture, governance violations are not merely detected and blocked—they are <em>unrepresentable</em> within the system’s computational model. The RIFTlang compiler validates that the memory layout, type constraints, and execution flow can only satisfy the governance contract. Operations that violate governance requirements cannot be compiled or executed because the system cannot represent invalid states.</p>
 <h3 id="concurrency-models-under-governance-constraint">Concurrency Models Under Governance Constraint</h3>
 <p>Critical systems require careful consideration of how computational work distributes across processing resources while maintaining governance guarantees. This specification documents two distinct threading models that reflect different approaches to governance enforcement in concurrent environments.</p>
@@ -826,50 +846,57 @@ governance_contract insulin_dosage_modification {
 <h2 id="governance-as-computational-constraint-architecture">Governance as Computational Constraint Architecture</h2>
 <div class="tcolorbox">
 
-<p><strong>Begin by exploring:</strong></p>
-<ol type="1">
-<li><p>What is the difference between a governance contract and a policy decorator?</p></li>
-<li><p>Who governs the governors? (Explain regulatory recursion and delegation of authority.)</p></li>
-<li><p>Why does governance matter <em>at the hardware/firmware level</em> (e.g. who can flash a BIOS or enable DMA)?</p></li>
-<li><p>Provide a 2x2 matrix of “governance enforcement methods” vs “system abstraction layers.”</p></li>
-<li><p>In military, medical, or critical infrastructure intranets, who gets root? What guarantees that?</p></li>
-<li><p>Describe how governance contracts are modeled in RIFT, using Aegis-style role enforcement.</p></li>
-</ol>
-<p><em>Your answers must draw from the RIFT specification, memory-as-governance model, and formal language hierarchy where applicable (e.g., context-sensitive policies vs regular enforcement routines). Your responses must differentiate between passive monitoring and active enforcement. Include examples using Git-RAF and AuraSeal mechanisms. Do not assume the reader trusts anyone—trust must be mathematically earned. If governance fails, human lives or national systems are at risk. This is not theoretical.</em></p>
+**Begin by exploring:**
+
+1.  What is the difference between a governance contract and a policy decorator?
+
+2.  Who governs the governors? (Explain regulatory recursion and delegation of authority.)
+
+3.  Why does governance matter *at the hardware/firmware level* (e.g. who can flash a BIOS or enable DMA)?
+
+4.  Provide a 2x2 matrix of “governance enforcement methods” vs “system abstraction layers.”
+
+5.  In military, medical, or critical infrastructure intranets, who gets root? What guarantees that?
+
+6.  Describe how governance contracts are modeled in RIFT, using Aegis-style role enforcement.
+
+*Your answers must draw from the RIFT specification, memory-as-governance model, and formal language hierarchy where applicable (e.g., context-sensitive policies vs regular enforcement routines). Your responses must differentiate between passive monitoring and active enforcement. Include examples using Git-RAF and AuraSeal mechanisms. Do not assume the reader trusts anyone—trust must be mathematically earned. If governance fails, human lives or national systems are at risk. This is not theoretical.*
+
 </div>
 
-<h3 id="governance-execution-pledge-natural-language-contract-1">Governance Execution Pledge (Natural Language Contract)</h3>
+<h3 id="governance-execution-pledge-natural-language-contract_1">Governance Execution Pledge (Natural Language Contract)</h3>
 <blockquote>
 <p>I acknowledge that I am participating in a computational environment where all operations are governed by formal contracts. I agree that any action I take—whether reading memory, writing data, compiling code, or issuing a network call—must satisfy all applicable governance constraints.</p>
 <p>These constraints include identity verification, role permissions, entropy deviation thresholds, policy inheritance rules, and cryptographic attestation of compliance. I understand that failure to meet these constraints will result in immediate prevention of the operation, automated rollback if required, and permanent logging of the incident for audit and review.</p>
 <p>I will not attempt to bypass, override, or weaken any governance mechanism, and I accept that the system is designed to fail closed rather than fail unsafe. By continuing, I bind all operations I perform to these governance rules, and I recognize that in this system, trust must be mathematically earned—not assumed.</p>
 </blockquote>
-<h3 id="foundation-governance-vs-management-1">Foundation: Governance vs. Management</h3>
+<h3 id="foundation-governance-vs-management_1">Foundation: Governance vs. Management</h3>
 <p>Before exploring the technical architecture of governance systems, we must establish a fundamental distinction that permeates every aspect of this work. Understanding this difference is crucial because conflating governance with management leads to systems that appear secure but fail catastrophically under pressure.</p>
 <p>Management is fundamentally about <em>optimization within known parameters</em>. When you manage a database, you tune queries for performance, balance loads across servers, and coordinate backup schedules. Management assumes that the basic operational framework is sound and focuses on making it work efficiently. Management asks: “How can we do this better?”</p>
 <p>Governance is fundamentally about <em>constraint definition and enforcement</em>. When you govern a database, you determine who can read which tables, under what circumstances schema modifications are permitted, and what cryptographic proofs are required for different operations. Governance defines the operational framework itself and ensures it cannot be violated. Governance asks: “What operations should be possible at all?”</p>
 <p>This distinction becomes life-and-death critical in safety systems. Consider a medical device like an insulin pump. Management concerns include optimizing battery life, improving user interface responsiveness, and streamlining data synchronization with health monitoring apps. These are important engineering challenges that affect user experience and device reliability.</p>
 <p>Governance concerns include ensuring that only authorized medical professionals can modify dosing algorithms, that patient data cannot be accessed without proper authentication, and that the device fails safely if tampering is detected. These constraints define the boundary between a helpful medical device and a potential instrument of harm.</p>
 <p>The key insight is that <strong>governance constraints must be enforced by the system’s architecture, not by procedural policies</strong>. A policy that says “only doctors can modify insulin dosing” is management guidance. A governance contract that makes it cryptographically impossible to modify dosing without a doctor’s private key creates an architectural constraint that cannot be bypassed through social engineering, insider threats, or procedural failures.</p>
-<h3 id="governance-contracts-vs-policy-decorators-1">Governance Contracts vs. Policy Decorators</h3>
+<h3 id="governance-contracts-vs-policy-decorators_1">Governance Contracts vs. Policy Decorators</h3>
 <p>This distinction illuminates two fundamentally different approaches to constraint enforcement that represent different philosophical approaches to system security and reliability.</p>
-<h4 id="policy-decorators-aspirational-constraints-1">Policy Decorators: Aspirational Constraints</h4>
+<h4 id="policy-decorators-aspirational-constraints_1">Policy Decorators: Aspirational Constraints</h4>
 <p>Policy decorators are annotations that describe intended behavior. They express how code <em>should</em> behave according to some external specification, but they depend on correct implementation and cannot guarantee enforcement. Consider this traditional approach:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="at">@requires_admin_role</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="at">@audit_log_enabled</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="at">@rate_limited</span>(max_calls<span class="op">=</span><span class="dv">100</span>, window<span class="op">=</span><span class="dv">3600</span>)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> delete_user_account(user_id):</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Implementation logic here</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    database.execute(<span class="st">&quot;DELETE FROM users WHERE id = ?&quot;</span>, user_id)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    audit_logger.log(<span class="ss">f&quot;User </span><span class="sc">{</span>user_id<span class="sc">}</span><span class="ss"> deleted by </span><span class="sc">{</span>current_user<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code class="language-python">@requires_admin_role
+@audit_log_enabled
+@rate_limited(max_calls=100, window=3600)
+def delete_user_account(user_id):
+    # Implementation logic here
+    database.execute(&quot;DELETE FROM users WHERE id = ?&quot;, user_id)
+    audit_logger.log(f&quot;User {user_id} deleted by {current_user}&quot;)
+</code></pre>
 <p>These decorators are <em>aspirational</em>—they express the developer’s intent that the function should only be called by administrators, that calls should be logged, and that there should be rate limiting. However, several failure modes make this approach inadequate for governance-critical systems:</p>
 <p><strong>Decorator Removal</strong>: A determined developer (or attacker with code access) could simply remove the decorators. The underlying function would still work, but without the intended protections.</p>
 <p><strong>Implementation Bypassing</strong>: Even if the decorators remain, their implementation might be flawed. The <code>@requires_admin_role</code> decorator might have a logical error that allows privilege escalation, or it might depend on external systems that can be compromised.</p>
 <p><strong>Runtime Modification</strong>: In languages that support dynamic modification, decorators might be altered or disabled at runtime, potentially without leaving clear audit trails.</p>
 <p>Most critically, policy decorators represent a <em>separation of concerns</em> that actually undermines security. The security policy is separate from the core logic, which means the core logic can potentially function without the security policy.</p>
-<h4 id="governance-contracts-architectural-constraints-1">Governance Contracts: Architectural Constraints</h4>
+<h4 id="governance-contracts-architectural-constraints_1">Governance Contracts: Architectural Constraints</h4>
 <p>Governance contracts represent a fundamentally different approach where constraints become part of the computational model itself. In RIFTlang, governance is not applied to existing code—it defines what code can exist in the first place.</p>
-<pre class="rift"><code>@policy(&quot;user.deletion&quot;, level=&quot;critical&quot;)
+<pre><code class="language-rift">@policy(&quot;user.deletion&quot;, level=&quot;critical&quot;)
 @entropy_bound(max_deviation=0.01)
 @memory_contract(role=&quot;admin_only&quot;, validation=&quot;cryptographic&quot;)
 governance_contract user_account_deletion {
@@ -879,33 +906,34 @@ governance_contract user_account_deletion {
         user_exists_validation(target_user_id),
         deletion_impact_assessment_completed()
     },
-    
+
     // Execution constraints embedded in memory layout
     execution: {
         memory_aligned_deletion_with_audit_trail(),
         entropy_monitoring_during_operation(),
         rollback_capability_maintained()
     },
-    
+
     // Post-conditions that are automatically verified
     post_condition: {
         deletion_completion_verified(),
         entropy_consistency_validation(),
         audit_trail_cryptographically_sealed()
     },
-    
+
     // Failure handling that cannot be bypassed
     failure_mode: {
         automatic_rollback_with_incident_logging(),
         governance_violation_escalation(),
         system_state_preservation()
     }
-}</code></pre>
+}
+</code></pre>
 <p>The critical difference is that governance contracts are <em>compiled into the memory layout and execution semantics</em>. The RIFTlang compiler validates at compile-time that the memory architecture, type system, and execution flow all satisfy the governance requirements.</p>
 <p>This means you cannot execute the function without satisfying the contract—the system literally cannot represent the invalid state. If you attempt to call the function without proper administrative credentials, the system doesn’t just deny the request—it cannot even represent the concept of making such a request.</p>
-<h4 id="memory-first-governance-architecture-2">Memory-First Governance Architecture</h4>
+<h4 id="memory-first-governance-architecture_2">Memory-First Governance Architecture</h4>
 <p>The deeper innovation in RIFTlang’s approach is that governance constraints are embedded at the <em>memory level</em> before type checking or value assignment occurs. This creates what we call “memory-first governance architecture.”</p>
-<pre class="rift"><code>// Memory governance defines physical constraint boundaries
+<pre><code class="language-rift">// Memory governance defines physical constraint boundaries
 align span&lt;governance_critical_memory&gt; {
     direction: left -&gt; right,
     bytes: 8192,
@@ -931,15 +959,16 @@ admin_deletion_request := validate_and_assign(
     governance_critical_memory,
     ADMIN_DELETION_TOKEN,
     governance_context: user_account_deletion
-)</code></pre>
+)
+</code></pre>
 <p>This architecture ensures that governance is not an afterthought applied to existing computational models, but rather the foundational principle that determines how computation can occur. The memory layout enforces physical constraints on what data can be stored where. The type system enforces semantic constraints on what operations make sense. The value system enforces runtime constraints on what specific data is valid.</p>
-<h3 id="who-governs-the-governors-regulatory-recursion-1">Who Governs the Governors? (Regulatory Recursion)</h3>
+<h3 id="who-governs-the-governors-regulatory-recursion_1">Who Governs the Governors? (Regulatory Recursion)</h3>
 <p>This question strikes at the heart of any governance system and represents one of the most challenging aspects of designing trustworthy computational systems. In any system, someone must have ultimate authority, but how do we prevent that authority from being abused, subverted, or captured by malicious actors?</p>
 <p>The traditional approach to this problem relies on <em>procedural controls</em>—checks and balances, separation of powers, oversight mechanisms, and accountability structures. While these approaches have value in human organizational contexts, they are insufficient for computational systems that must operate reliably even under adversarial conditions.</p>
-<h4 id="distributed-governance-hierarchies-1">Distributed Governance Hierarchies</h4>
+<h4 id="distributed-governance-hierarchies_1">Distributed Governance Hierarchies</h4>
 <p>The solution lies in <em>distributed governance hierarchies</em> with <em>cryptographic attestation chains</em>. Instead of concentrating ultimate authority in any single entity, governance authority is distributed across multiple independent entities, and every exercise of authority must be cryptographically provable.</p>
 <p>Consider how this works in a military command system. Traditional hierarchical models create single points of failure—if a commanding officer is compromised, coerced, or simply makes an error under pressure, the consequences can be catastrophic. In a governance-critical system, we need mathematical guarantees, not just procedural ones.</p>
-<pre class="rift"><code>governance_authority_chain military_command {
+<pre><code class="language-rift">governance_authority_chain military_command {
     // Constitutional source of authority (mathematical root of trust)
     level_0: constitutional_authority {
         cryptographic_root: national_defense_authorization_key,
@@ -947,7 +976,7 @@ admin_deletion_request := validate_and_assign(
         override_capability: constitutional_amendment_process_only,
         audit_requirement: complete_public_record
     },
-    
+
     // Legislative delegation (democratically accountable)
     level_1: legislative_delegation {
         source_authority: constitutional_authority,
@@ -956,7 +985,7 @@ admin_deletion_request := validate_and_assign(
         time_bounds: fiscal_year_limited,
         cryptographic_signature: congress_defense_committee_key
     },
-    
+
     // Executive implementation (operationally focused)
     level_2: executive_implementation {
         source_authority: legislative_delegation,
@@ -965,7 +994,7 @@ admin_deletion_request := validate_and_assign(
         geographic_bounds: theater_of_operations_limited,
         cryptographic_signature: secretary_of_defense_key
     },
-    
+
     // Operational command (tactically responsive)
     level_3: operational_command {
         source_authority: executive_implementation,
@@ -974,13 +1003,14 @@ admin_deletion_request := validate_and_assign(
         time_bounds: mission_duration_limited,
         cryptographic_signature: theater_commander_key
     }
-}</code></pre>
+}
+</code></pre>
 <p>Each level can only delegate authority it actually possesses, and every delegation is cryptographically signed and time-bounded. When a field commander issues an order, the system verifies not just that they have command-level authority, but that their authority traces back through an unbroken cryptographic chain to the constitutional source.</p>
-<h4 id="cryptographic-authority-verification-1">Cryptographic Authority Verification</h4>
+<h4 id="cryptographic-authority-verification_1">Cryptographic Authority Verification</h4>
 <p>The crucial insight is that <strong>governance authority is not inherent—it’s mathematically provable</strong>. A compromised commander cannot simply declare new authority; they must provide cryptographic proof that their authority was properly delegated from a legitimate source.</p>
-<pre class="rift"><code>command_verification_process verify_command_authority {
+<pre><code class="language-rift">command_verification_process verify_command_authority {
     input: command_order, claimed_authority_level, cryptographic_proof,
-    
+
     validation_steps: {
         // Step 1: Verify cryptographic signature authenticity
         signature_validation: {
@@ -988,14 +1018,14 @@ admin_deletion_request := validate_and_assign(
             check_certificate_chain_integrity(),
             validate_timestamp_within_authority_bounds()
         },
-        
+
         // Step 2: Verify authority delegation chain
         delegation_chain_validation: {
             trace_authority_to_constitutional_source(),
             verify_each_delegation_was_properly_authorized(),
             check_no_authority_exceeded_at_any_level()
         },
-        
+
         // Step 3: Verify operational constraints
         constraint_validation: {
             verify_geographic_bounds_compliance(),
@@ -1003,7 +1033,7 @@ admin_deletion_request := validate_and_assign(
             verify_scope_limits_compliance(),
             verify_rules_of_engagement_compliance()
         },
-        
+
         // Step 4: Verify current validity
         current_validity_check: {
             verify_authority_not_expired(),
@@ -1012,7 +1042,7 @@ admin_deletion_request := validate_and_assign(
             verify_no_superseding_orders_exist()
         }
     },
-    
+
     // Multi-signature requirement for critical operations
     consensus_requirement: {
         if (command_level &gt;= STRATEGIC_IMPACT) {
@@ -1024,25 +1054,26 @@ admin_deletion_request := validate_and_assign(
             )
         }
     }
-}</code></pre>
+}
+</code></pre>
 <p>This process ensures that no single entity, regardless of apparent authority, can make unilateral decisions about critical operations. Every decision must be mathematically provable as properly authorized through the complete chain of legitimate delegation.</p>
-<h4 id="governance-capture-prevention-1">Governance Capture Prevention</h4>
+<h4 id="governance-capture-prevention_1">Governance Capture Prevention</h4>
 <p>One of the most insidious threats to any governance system is <em>governance capture</em>—the gradual subversion of oversight mechanisms by the entities they are supposed to oversee. This can happen through corruption, intimidation, regulatory capture, or simply the natural tendency of oversight bodies to become friendly with those they regulate.</p>
 <p>Cryptographic governance systems prevent capture through several mechanisms:</p>
 <p><strong>Algorithmic Enforcement</strong>: Critical governance decisions are enforced by cryptographic algorithms rather than human judgment. A corrupted human cannot override mathematical constraints.</p>
 <p><strong>Distributed Trust</strong>: No single entity controls the entire governance apparatus. Even if some components are compromised, the system continues to function securely.</p>
 <p><strong>Transparent Audit Trails</strong>: All governance decisions are cryptographically logged in tamper-evident audit trails. Attempts at subversion leave mathematical evidence that can be independently verified.</p>
 <p><strong>Time-Bounded Authority</strong>: All delegated authority expires automatically unless explicitly renewed through the proper cryptographic process. This prevents authority from accumulating indefinitely in potentially compromised entities.</p>
-<h3 id="hardware-and-firmware-level-governance-1">Hardware and Firmware Level Governance</h3>
+<h3 id="hardware-and-firmware-level-governance_1">Hardware and Firmware Level Governance</h3>
 <p>This is where governance theory meets physical reality, and where the consequences of governance failures become most severe. At the hardware and firmware level, governance determines fundamental questions that can override all higher-level security measures: Who can modify BIOS settings? Who can enable direct memory access? Who can flash new firmware? Who can access hardware debugging interfaces?</p>
-<h4 id="the-hardware-trust-boundary-1">The Hardware Trust Boundary</h4>
+<h4 id="the-hardware-trust-boundary_1">The Hardware Trust Boundary</h4>
 <p>Consider why hardware-level governance is so critical. Every security measure implemented in software ultimately depends on the hardware behaving as expected. If an attacker can compromise the hardware or firmware, they can potentially subvert every software-based security control.</p>
 <p>Take a concrete example: a pacemaker. The device software might implement perfect cryptographic protocols, comprehensive audit logging, and sophisticated anomaly detection. All of this governance is meaningless if someone can directly flash malicious firmware onto the device’s hardware controller.</p>
 <p>The challenge is that traditional security models treat hardware as a trusted foundation and focus security efforts on software layers. But in governance-critical systems, we cannot simply assume hardware trustworthiness—we must <em>enforce</em> it through architectural constraints.</p>
-<h4 id="memory-as-governance-architecture-1">Memory-as-Governance Architecture</h4>
+<h4 id="memory-as-governance-architecture_1">Memory-as-Governance Architecture</h4>
 <p>RIFTlang addresses this challenge through its <em>memory-as-governance</em> model, where governance constraints become part of the hardware’s operational model rather than software policies applied on top of generic hardware.</p>
 <p>Instead of treating memory as generic storage that software happens to use, we treat memory layout as a governance contract that defines what operations are physically possible:</p>
-<pre class="rift"><code>// Hardware memory governance embedded in silicon design
+<pre><code class="language-rift">// Hardware memory governance embedded in silicon design
 hardware_memory_governance_contract pacemaker_critical_memory {
     // Physical memory regions with governance constraints
     cardiac_monitoring_region: {
@@ -1060,7 +1091,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
         },
         failure_response: immediate_safe_mode_activation
     },
-    
+
     dosing_control_region: {
         base_address: 0x20000000,
         size: 0x00010000,  // 64KB for dosing algorithms
@@ -1076,12 +1107,13 @@ hardware_memory_governance_contract pacemaker_critical_memory {
         },
         failure_response: fail_to_safe_minimal_dosing
     }
-}</code></pre>
+}
+</code></pre>
 <p>The crucial innovation is that these constraints are implemented in <em>hardware</em>, not software. The memory controller itself enforces governance constraints. An attacker cannot bypass software-level security by directly manipulating memory, because the memory subsystem refuses operations that violate governance contracts.</p>
-<h4 id="firmware-governance-enforcement-1">Firmware Governance Enforcement</h4>
+<h4 id="firmware-governance-enforcement_1">Firmware Governance Enforcement</h4>
 <p>Firmware represents a particularly challenging governance boundary because it operates below the operating system but above the hardware abstraction layer. Firmware has extensive system access but often lacks the security scrutiny applied to operating system code.</p>
 <p>In governance-critical systems, firmware must be treated as part of the governance enforcement mechanism rather than simply trusted system code:</p>
-<pre class="rift"><code>firmware_governance_layer system_boot_governance {
+<pre><code class="language-rift">firmware_governance_layer system_boot_governance {
     // Cryptographic boot verification
     secure_boot_process: {
         hardware_root_of_trust: embedded_in_silicon,
@@ -1100,7 +1132,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
             runtime_integrity_monitoring: continuous
         }
     },
-    
+
     // Runtime governance enforcement
     runtime_enforcement: {
         memory_access_control: {
@@ -1108,20 +1140,20 @@ hardware_memory_governance_contract pacemaker_critical_memory {
             prevent_unauthorized_dma_operations(),
             monitor_unusual_access_patterns()
         },
-        
+
         peripheral_access_control: {
             authenticate_peripheral_communications(),
             enforce_peripheral_privilege_boundaries(),
             log_security_relevant_peripheral_events()
         },
-        
+
         network_interface_governance: {
             enforce_communication_policies(),
             validate_cryptographic_protocols(),
             prevent_unauthorized_data_exfiltration()
         }
     },
-    
+
     // Failure and attack response
     security_incident_response: {
         tamper_detection: immediate_safe_shutdown,
@@ -1129,75 +1161,43 @@ hardware_memory_governance_contract pacemaker_critical_memory {
         governance_violation: alert_and_audit_log,
         cryptographic_failure: fail_closed_with_notification
     }
-}</code></pre>
+}
+</code></pre>
 <p>This architecture makes firmware an active participant in governance enforcement rather than a potential governance bypass vector.</p>
-<h3 id="enforcement-methods-vs-system-abstraction-layers-matrix-1">Enforcement Methods vs. System Abstraction Layers Matrix</h3>
+<h3 id="enforcement-methods-vs-system-abstraction-layers-matrix_1">Enforcement Methods vs. System Abstraction Layers Matrix</h3>
 <p>Understanding how different governance enforcement mechanisms operate at different system abstraction layers is crucial for designing comprehensive governance architectures. This matrix shows how enforcement capabilities and constraints vary across the computational stack:</p>
 <div id="tab:governance_enforcement_matrix2">
 
-<table>
-<thead>
-<tr>
-<th style="text-align: left;"><strong>Enforcement Method</strong></th>
-<th style="text-align: left;"><strong>Hardware/ Firmware</strong></th>
-<th style="text-align: left;"><strong>Operating System</strong></th>
-<th style="text-align: left;"><strong>Middleware</strong></th>
-<th style="text-align: left;"><strong>Application</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Cryptographic Verification</strong></td>
-<td style="text-align: left;">Signed firmware, TPM attestation, hardware security modules</td>
-<td style="text-align: left;">Kernel code signing, secure boot, driver verification</td>
-<td style="text-align: left;">Certificate validation, API authentication, secure channels</td>
-<td style="text-align: left;">User credential verification, data encryption, digital signatures</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Memory/Resource Constraints</strong></td>
-<td style="text-align: left;">Hardware memory protection, DMA restrictions, address space isolation</td>
-<td style="text-align: left;">Process isolation, virtual memory, resource quotas</td>
-<td style="text-align: left;">Connection limits, buffer management, resource pools</td>
-<td style="text-align: left;">Object permissions, data access controls, sandbox isolation</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Behavioral Monitoring</strong></td>
-<td style="text-align: left;">Hardware performance counters, thermal monitoring, power analysis</td>
-<td style="text-align: left;">System call auditing, process behavior analysis, anomaly detection</td>
-<td style="text-align: left;">Network traffic analysis, API call patterns, performance metrics</td>
-<td style="text-align: left;">User activity logging, application metrics, usage analytics</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Policy Enforcement</strong></td>
-<td style="text-align: left;">Hardware-locked configuration, immutable firmware settings, fuse-blown restrictions</td>
-<td style="text-align: left;">Mandatory access controls, capability systems, security policies</td>
-<td style="text-align: left;">Role-based access control, service policies, governance contracts</td>
-<td style="text-align: left;">Application-specific rules, user preferences, business logic</td>
-</tr>
-</tbody>
-</table>
-<p>Governance Enforcement Methods Across System Abstraction Layers</p>
+| **Enforcement Method** | **Hardware/ Firmware** | **Operating System** | **Middleware** | **Application** |
+|:---|:---|:---|:---|:---|
+| **Cryptographic Verification** | Signed firmware, TPM attestation, hardware security modules | Kernel code signing, secure boot, driver verification | Certificate validation, API authentication, secure channels | User credential verification, data encryption, digital signatures |
+| **Memory/Resource Constraints** | Hardware memory protection, DMA restrictions, address space isolation | Process isolation, virtual memory, resource quotas | Connection limits, buffer management, resource pools | Object permissions, data access controls, sandbox isolation |
+| **Behavioral Monitoring** | Hardware performance counters, thermal monitoring, power analysis | System call auditing, process behavior analysis, anomaly detection | Network traffic analysis, API call patterns, performance metrics | User activity logging, application metrics, usage analytics |
+| **Policy Enforcement** | Hardware-locked configuration, immutable firmware settings, fuse-blown restrictions | Mandatory access controls, capability systems, security policies | Role-based access control, service policies, governance contracts | Application-specific rules, user preferences, business logic |
+
+Governance Enforcement Methods Across System Abstraction Layers
+
 </div>
 
-<h4 id="cross-layer-governance-dependencies-1">Cross-Layer Governance Dependencies</h4>
+<h4 id="cross-layer-governance-dependencies_1">Cross-Layer Governance Dependencies</h4>
 <p>The crucial insight from this matrix is that <strong>governance must be enforced at every layer</strong> because compromise at any layer can undermine governance at higher layers. This creates a set of dependencies that must be carefully managed:</p>
 <p><strong>Hardware Compromise Propagation</strong>: If hardware-level governance is compromised (through firmware modification, hardware tampering, or supply chain attacks), all higher-level governance becomes potentially unreliable. A hardware backdoor can compromise everything above it.</p>
 <p><strong>Operating System Privilege Escalation</strong>: If operating system-level governance is compromised (through rootkits, kernel exploits, or privilege escalation attacks), application-level governance can be bypassed. A compromised OS can lie to applications about user identities, system state, or policy requirements.</p>
 <p><strong>Middleware Policy Subversion</strong>: If middleware-level governance is compromised (through API manipulation, protocol attacks, or service spoofing), application governance may receive incorrect information about authorization, authentication, or system state.</p>
 <p><strong>Application Logic Bypassing</strong>: Even if all lower layers maintain perfect governance, application-level logic errors can still create governance failures through incorrect implementation of policies, flawed authorization logic, or inadequate input validation.</p>
 <p>This is why RIFTlang implements <em>cross-layer governance validation</em>. When you compile a RIFTlang program, the compiler doesn’t just validate that your application code satisfies governance contracts—it validates that the entire execution stack can maintain those governance guarantees.</p>
-<h3 id="root-access-in-critical-systems-1">Root Access in Critical Systems</h3>
+<h3 id="root-access-in-critical-systems_1">Root Access in Critical Systems</h3>
 <p>In military, medical, or critical infrastructure systems, the question “who gets root?” fundamentally differs from typical IT environments. Root access in these contexts means the ability to override safety systems that protect human life, national security, or critical infrastructure operation.</p>
-<h4 id="the-fundamental-problem-with-traditional-root-access-1">The Fundamental Problem with Traditional Root Access</h4>
+<h4 id="the-fundamental-problem-with-traditional-root-access_1">The Fundamental Problem with Traditional Root Access</h4>
 <p>Traditional Unix-style root access creates an unacceptable single point of failure in critical systems. When one account has unlimited system privileges, that account becomes both the key to system administration and the target for every sophisticated attack.</p>
 <p>Consider the implications in different critical contexts:</p>
 <p><strong>Military Systems</strong>: Root access on a weapons control system could enable an attacker to redirect weapons, disable safety systems, or exfiltrate classified targeting information.</p>
 <p><strong>Medical Systems</strong>: Root access on a hospital network could enable modification of patient records, alteration of medical device behavior, or theft of protected health information.</p>
 <p><strong>Infrastructure Systems</strong>: Root access on power grid control systems could enable manipulation of electrical distribution, causing blackouts or equipment damage affecting millions of people.</p>
 <p>In each case, traditional root access concentrates too much power in a single credential that can be stolen, coerced, or misused.</p>
-<h4 id="multi-party-cryptographic-consensus-1">Multi-Party Cryptographic Consensus</h4>
+<h4 id="multi-party-cryptographic-consensus_1">Multi-Party Cryptographic Consensus</h4>
 <p>The solution is to eliminate traditional root access entirely and replace it with <em>multi-party cryptographic consensus</em> for critical operations. Instead of one account with unlimited privileges, critical operations require cryptographic agreement from multiple independent authorities.</p>
-<pre class="rift"><code>critical_system_operation emergency_reactor_shutdown {
+<pre><code class="language-rift">critical_system_operation emergency_reactor_shutdown {
     // Multiple independent authorities required
     required_authorities: [
         plant_manager_cryptographic_signature,
@@ -1206,7 +1206,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
         independent_technical_reviewer_approval,
         shift_supervisor_confirmation
     ],
-    
+
     // Consensus requirements
     consensus_requirement: {
         minimum_signatures: 4_of_5,
@@ -1217,7 +1217,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
             radiation_monitoring_disable
         ]
     },
-    
+
     // Time and context constraints
     operational_constraints: {
         maximum_decision_time: 60_seconds,
@@ -1225,7 +1225,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
         prohibited_system_state: planned_maintenance_mode,
         environmental_validation: radiation_levels_within_safe_bounds
     },
-    
+
     // Audit and verification
     audit_requirements: {
         complete_decision_chain_recorded: true,
@@ -1233,7 +1233,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
         regulatory_notification: automatic_immediate,
         independent_verification: required_within_24_hours
     },
-    
+
     // Failure handling
     consensus_failure_response: {
         if (insufficient_signatures) {
@@ -1247,11 +1247,12 @@ hardware_memory_governance_contract pacemaker_critical_memory {
             activate_independent_safety_monitoring()
         }
     }
-}</code></pre>
+}
+</code></pre>
 <p>This approach ensures that no single entity, regardless of apparent authority, can make unilateral decisions about life-critical systems. Every critical operation requires mathematical proof that multiple independent authorities have validated the decision.</p>
-<h4 id="role-based-cryptographic-capabilities-1">Role-Based Cryptographic Capabilities</h4>
+<h4 id="role-based-cryptographic-capabilities_1">Role-Based Cryptographic Capabilities</h4>
 <p>Instead of traditional user accounts with fixed privilege levels, governance-critical systems implement <em>role-based cryptographic capabilities</em>. Instead of “giving someone root access,” the system grants specific cryptographic capabilities that enable specific operations under specific conditions.</p>
-<pre class="rift"><code>medical_system_capabilities patient_care_governance {
+<pre><code class="language-rift">medical_system_capabilities patient_care_governance {
     // Physician capabilities
     physician_role: {
         cryptographic_identity: medical_license_certificate,
@@ -1268,7 +1269,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
             peer_review: required_for_unusual_procedures
         }
     },
-    
+
     // Nurse capabilities  
     nurse_role: {
         cryptographic_identity: nursing_license_certificate,
@@ -1284,7 +1285,7 @@ hardware_memory_governance_contract pacemaker_critical_memory {
             emergency_escalation: automatic_physician_notification
         }
     },
-    
+
     // System administrator capabilities
     system_admin_role: {
         cryptographic_identity: employee_certificate_plus_background_check,
@@ -1300,13 +1301,14 @@ hardware_memory_governance_contract pacemaker_critical_memory {
             audit_trail_modification: impossible_by_design
         }
     }
-}</code></pre>
+}
+</code></pre>
 <p>This architecture ensures that system privileges scale appropriately with actual job responsibilities and cannot be escalated beyond what is necessary for legitimate functions.</p>
-<h3 id="rift-governance-contract-modeling-1">RIFT Governance Contract Modeling</h3>
+<h3 id="rift-governance-contract-modeling_1">RIFT Governance Contract Modeling</h3>
 <p>RIFTlang implements governance through its unique <em>token triplet architecture</em> where every computational element consists of (memory, type, value) with governance constraints embedded at each level. This approach makes governance violations not just detectable, but <em>unrepresentable</em> within the computational model.</p>
-<h4 id="the-token-triplet-governance-model-1">The Token Triplet Governance Model</h4>
+<h4 id="the-token-triplet-governance-model_1">The Token Triplet Governance Model</h4>
 <p>Understanding RIFTlang governance requires grasping how the token triplet model embeds governance at the most fundamental level of computation:</p>
-<pre class="rift"><code>// Every token in RIFTlang follows this fundamental structure
+<pre><code class="language-rift">// Every token in RIFTlang follows this fundamental structure
 token = (token_memory, token_type, token_value)
 
 // Memory governance defines the foundational constraints
@@ -1335,16 +1337,17 @@ token_value: {
     output_validation: clinical_accuracy_verification_required,
     audit_trail: complete_data_lineage_preserved,
     patient_privacy: hipaa_compliance_enforced
-}</code></pre>
+}
+</code></pre>
 <p>This architecture ensures that governance is not an afterthought applied to existing computational models, but rather the foundational principle that determines what computation can occur.</p>
-<h4 id="memory-first-governance-architecture-3">Memory-First Governance Architecture</h4>
+<h4 id="memory-first-governance-architecture_3">Memory-First Governance Architecture</h4>
 <p>The most innovative aspect of RIFTlang’s approach is that memory governance occurs <em>before</em> type checking or value assignment. This creates an architectural constraint that makes governance violations impossible to represent:</p>
-<pre class="rift"><code>// Medical device governance contract implementation
+<pre><code class="language-rift">// Medical device governance contract implementation
 @policy(&quot;medical_device_safety&quot;, level=&quot;life_critical&quot;)
 @entropy_bound(max_deviation=0.005)  // Very tight tolerance for medical devices
 @memory_contract(role=&quot;cardiac_monitoring&quot;, validation=&quot;continuous&quot;)
 governance_contract cardiac_sensor_processing {
-    
+
     // Memory allocation with embedded governance
     align span&lt;cardiac_sensor_memory&gt; {
         direction: sensor_input -&gt; processing_pipeline -&gt; medical_output,
@@ -1362,7 +1365,7 @@ governance_contract cardiac_sensor_processing {
             governance_violation: safe_shutdown_with_alarm
         }
     },
-    
+
     // Type system governance within memory constraints
     type CARDIAC_SENSOR_DATA = {
         bit_width: 32,
@@ -1372,7 +1375,7 @@ governance_contract cardiac_sensor_processing {
         medical_validation: require_clinical_correlation,
         governance_binding: cardiac_sensor_memory
     },
-    
+
     // Value governance within type and memory constraints
     sensor_reading := validate_and_process(
         raw_sensor_input,
@@ -1385,11 +1388,12 @@ governance_contract cardiac_sensor_processing {
             emergency_protocols: cardiac_emergency_response_ready
         }
     )
-}</code></pre>
-<h4 id="cross-layer-governance-validation-1">Cross-Layer Governance Validation</h4>
+}
+</code></pre>
+<h4 id="cross-layer-governance-validation_1">Cross-Layer Governance Validation</h4>
 <p>RIFTlang’s governance architecture validates constraints across all system layers simultaneously. When you compile a RIFTlang program, the compiler verifies that governance requirements can be satisfied not just by the application code, but by the entire execution environment:</p>
-<pre class="rift"><code>governance_validation_pipeline medical_device_compilation {
-    
+<pre><code class="language-rift">governance_validation_pipeline medical_device_compilation {
+
     // Hardware layer validation
     hardware_governance_check: {
         verify_trusted_execution_environment_available(),
@@ -1397,7 +1401,7 @@ governance_contract cardiac_sensor_processing {
         verify_tamper_detection_mechanisms_functional(),
         verify_secure_boot_chain_integrity()
     },
-    
+
     // Firmware layer validation  
     firmware_governance_check: {
         verify_signed_firmware_authenticity(),
@@ -1405,7 +1409,7 @@ governance_contract cardiac_sensor_processing {
         verify_hardware_abstraction_layer_security(),
         verify_real_time_operating_system_safety_properties()
     },
-    
+
     // Operating system layer validation
     os_governance_check: {
         verify_process_isolation_capabilities(),
@@ -1413,7 +1417,7 @@ governance_contract cardiac_sensor_processing {
         verify_secure_inter_process_communication(),
         verify_audit_logging_infrastructure()
     },
-    
+
     // Application layer validation
     application_governance_check: {
         verify_governance_contract_implementation(),
@@ -1421,7 +1425,7 @@ governance_contract cardiac_sensor_processing {
         verify_patient_data_protection_compliance(),
         verify_clinical_workflow_integration()
     },
-    
+
     // Integration validation
     cross_layer_integration_check: {
         verify_governance_consistency_across_layers(),
@@ -1429,22 +1433,23 @@ governance_contract cardiac_sensor_processing {
         verify_audit_trail_completeness_across_layers(),
         verify_failure_handling_coordination_across_layers()
     }
-}</code></pre>
+}
+</code></pre>
 <p>This comprehensive validation ensures that governance properties are maintained throughout the entire computational stack, not just within the application logic.</p>
-<h3 id="governance-as-computational-physics-1">Governance as Computational Physics</h3>
+<h3 id="governance-as-computational-physics_1">Governance as Computational Physics</h3>
 <p>The profound insight underlying all of this work is that <strong>governance becomes the physics of computation</strong>. Just as physical laws determine what operations are possible in the material world, governance contracts determine what operations are possible in computational systems.</p>
-<h4 id="from-procedural-requests-to-physical-constraints-1">From Procedural Requests to Physical Constraints</h4>
+<h4 id="from-procedural-requests-to-physical-constraints_1">From Procedural Requests to Physical Constraints</h4>
 <p>When you write <code>x := 42</code> in a traditional programming language, you’re making a <em>request</em> to the system: “please store the value 42 in location x.” The system typically grants this request unless you’ve run out of memory or violated some basic type constraint.</p>
 <p>When you write the same operation in a governance-governed system, you’re making a request that must be validated against the complete governance context: “please store the value 42 in location x, provided that I have the cryptographically-verified authority to modify x, that storing 42 doesn’t violate any governance contracts associated with x, that the entropy implications of this change are within acceptable bounds, that this operation has been properly audited, and that the resulting system state remains within safe operational parameters.”</p>
 <p>This transforms programming from a creative activity into a <em>mathematically constrained problem-solving activity</em>. You cannot simply implement any algorithm you can imagine—you can only implement algorithms that satisfy the governance constraints of your operational context.</p>
-<h4 id="the-liberation-of-constraint-1">The Liberation of Constraint</h4>
+<h4 id="the-liberation-of-constraint_1">The Liberation of Constraint</h4>
 <p>This constraint might seem limiting, but it’s actually liberating in critical systems. When you know that every operation in your system has been mathematically proven to satisfy governance requirements, you can deploy that system with confidence that it will behave predictably even under attack or failure conditions.</p>
 <p>Traditional programming is like civil engineering where you design structures and then inspect them for safety. Governance-driven programming is like physics, where the fundamental laws of the universe prevent unsafe structures from existing in the first place.</p>
 <p>Consider the difference in confidence levels:</p>
 <p><strong>Traditional Approach</strong>: “We have implemented comprehensive security measures and thoroughly tested our system. We believe it will behave safely in production.”</p>
 <p><strong>Governance-Driven Approach</strong>: “Our system has been mathematically proven to be incapable of representing unsafe states. Governance violations are not just unlikely—they are computationally impossible within our architectural constraints.”</p>
 <p>This represents a fundamental shift from probabilistic security (“our system is very unlikely to fail”) to architectural security (“our system cannot fail in certain ways because such failures are not representable within its computational model”).</p>
-<h4 id="implications-for-safety-critical-systems-1">Implications for Safety-Critical Systems</h4>
+<h4 id="implications-for-safety-critical-systems_1">Implications for Safety-Critical Systems</h4>
 <p>In safety-critical systems, this shift from probabilistic to architectural security can mean the difference between theoretical safety and guaranteed protection of human life. When software controls medical devices, autonomous vehicles, or critical infrastructure, “very unlikely to fail” is not sufficient—we need “mathematically guaranteed to operate within safe parameters.”</p>
 <p>This is why RIFTlang represents such a fundamental departure from traditional programming paradigms. It’s not just adding security features to existing computational models—it’s reimagining computation itself as an activity that occurs within governance constraints from the very beginning.</p>
 <p>The result is a computational environment where trust is not assumed or hoped for, but mathematically earned through cryptographic proof and architecturally enforced through foundational design principles that make governance violations not just detectable, but impossible to represent within the system’s computational model.</p>
@@ -1458,7 +1463,8 @@ governance_contract cardiac_sensor_processing {
 <p>The compilation model implements a strict <strong>single-pass architecture</strong> following the pattern:</p>
 <div class="center">
 
-<p><code>TOKENIZER → PARSER → AST</code></p>
+`TOKENIZER → PARSER → AST`
+
 </div>
 
 <p>with no recursive feedback loops. This design prevents Abstract Syntax Tree reanalysis or mutation after initial compilation, ensuring that governance decisions made during parsing cannot be circumvented through subsequent processing stages. Each source file undergoes exactly one interpretation cycle, eliminating ambiguity about which governance rules apply to specific code segments.</p>
@@ -1468,10 +1474,18 @@ governance_contract cardiac_sensor_processing {
 <p>RIFTlang functions as the primary compilation engine within the OBINexus Governance Stack, serving as the foundational layer that enables cryptographic policy enforcement across the triangular trust infrastructure. The language integrates with Git-RAF for pre-merge policy validation, ensuring that commits containing governance violations cannot enter the main development branch.</p>
 <p>The compilation process generates <strong>signed policy bytecode</strong> that carries:</p>
 <ul>
-<li><p>Cryptographic proof of governance compliance</p></li>
-<li><p>Entropy summaries enabling runtime verification of behavioral consistency</p></li>
-<li><p>Consumer impact validation certificates</p></li>
-<li><p>Telemetry binding metadata</p></li>
+<li>
+<p>Cryptographic proof of governance compliance</p>
+</li>
+<li>
+<p>Entropy summaries enabling runtime verification of behavioral consistency</p>
+</li>
+<li>
+<p>Consumer impact validation certificates</p>
+</li>
+<li>
+<p>Telemetry binding metadata</p>
+</li>
 </ul>
 <p>This output format supports the OBINexus requirement that deployed systems maintain verifiable governance compliance without requiring access to original source code.</p>
 <h3 id="token-architecture-the-triplet-model">Token Architecture: The Triplet Model</h3>
@@ -1479,33 +1493,18 @@ governance_contract cardiac_sensor_processing {
 <p>RIFTlang implements a three-element token structure where memory allocation must be declared before type assignment, and type must be established before value binding. This memory-first logic ensures that governance constraints on resource usage are evaluated before any behavioral logic executes.</p>
 <div id="tab:token_triplet">
 
-<table>
-<thead>
-<tr>
-<th style="text-align: left;"><strong>Token Element</strong></th>
-<th style="text-align: left;"><strong>Governance Function</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><code>memory</code></td>
-<td style="text-align: left;">Declares resource allocation bounds and access permissions</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>type</code></td>
-<td style="text-align: left;">Defines semantic constraints and validation rules</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>value</code></td>
-<td style="text-align: left;">Contains payload data bound by memory and type constraints</td>
-</tr>
-</tbody>
-</table>
-<p>RIFTlang Token Triplet Structure</p>
+| **Token Element** | **Governance Function** |
+|:---|:---|
+| `memory` | Declares resource allocation bounds and access permissions |
+| `type` | Defines semantic constraints and validation rules |
+| `value` | Contains payload data bound by memory and type constraints |
+
+RIFTlang Token Triplet Structure
+
 </div>
 
 <p>The triplet model enforces governance at the most fundamental level of program execution:</p>
-<pre class="rift"><code>// Memory declaration with governance constraints
+<pre><code class="language-rift">// Memory declaration with governance constraints
 align span&lt;row&gt; {
     direction: right -&gt; left,
     bytes: 4096,
@@ -1523,47 +1522,25 @@ type SafeInt = {
 }
 
 // Value assignment satisfying both constraints
-SafeInt sensor_reading := 42;</code></pre>
+SafeInt sensor_reading := 42;
+</code></pre>
 <h4 id="classical-vs-quantum-mode-compilation">Classical vs. Quantum Mode Compilation</h4>
 <p>RIFTlang supports dual compilation modes with distinct governance enforcement patterns:</p>
 <div id="tab:mode_comparison">
 
-<table>
-<thead>
-<tr>
-<th style="text-align: left;"><strong>Feature</strong></th>
-<th style="text-align: left;"><strong>Classical Mode</strong></th>
-<th style="text-align: left;"><strong>Quantum Mode</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">Memory Alignment</td>
-<td style="text-align: left;">Fixed 4096-bit</td>
-<td style="text-align: left;">Dynamic 8-qubit</td>
-</tr>
-<tr>
-<td style="text-align: left;">Value Assignment</td>
-<td style="text-align: left;"><code>:=</code> (immediate)</td>
-<td style="text-align: left;"><code>=:</code> (deferred)</td>
-</tr>
-<tr>
-<td style="text-align: left;">Resolution</td>
-<td style="text-align: left;">Immediate, type-checked</td>
-<td style="text-align: left;">DAG traversal</td>
-</tr>
-<tr>
-<td style="text-align: left;">Policy Enforcement</td>
-<td style="text-align: left;">Immediate after assignment</td>
-<td style="text-align: left;">Deferred until threshold</td>
-</tr>
-</tbody>
-</table>
-<p>Classical vs. Quantum Mode Comparison</p>
+| **Feature**        | **Classical Mode**         | **Quantum Mode**         |
+|:-------------------|:---------------------------|:-------------------------|
+| Memory Alignment   | Fixed 4096-bit             | Dynamic 8-qubit          |
+| Value Assignment   | `:=` (immediate)           | `=:` (deferred)          |
+| Resolution         | Immediate, type-checked    | DAG traversal            |
+| Policy Enforcement | Immediate after assignment | Deferred until threshold |
+
+Classical vs. Quantum Mode Comparison
+
 </div>
 
 <h5 id="classical-mode-governance">Classical Mode Governance</h5>
-<pre class="rift"><code>!govern classic {
+<pre><code class="language-rift">!govern classic {
     token_memory: {
         alignment: fixed(4096),
         access: [CREATE, READ, UPDATE, DELETE],
@@ -1574,9 +1551,10 @@ SafeInt sensor_reading := 42;</code></pre>
         violation: error,
         recovery: none
     }
-}</code></pre>
+}
+</code></pre>
 <h5 id="quantum-mode-governance">Quantum Mode Governance</h5>
-<pre class="rift"><code>!govern quantum {
+<pre><code class="language-rift">!govern quantum {
     token_memory: {
         alignment: dynamic(8),
         access: [CREATE, READ, UPDATE, DELETE, SUPERPOSE, ENTANGLE],
@@ -1587,11 +1565,12 @@ SafeInt sensor_reading := 42;</code></pre>
         violation: warning,
         recovery: auto_collapse
     }
-}</code></pre>
+}
+</code></pre>
 <h3 id="policy-integration-framework">Policy Integration Framework</h3>
 <h4 id="governance-contracts-riftgov-files">Governance Contracts: .rift.gov Files</h4>
 <p>Governance contracts function as embedded policy declarations that become executable constraints within compiled programs. These contracts specify governance requirements in machine-readable format, enabling automated validation during compilation and runtime enforcement during execution.</p>
-<pre class="rift"><code>@policy(&quot;medical.safety_critical&quot;, severity=&quot;maximum&quot;)
+<pre><code class="language-rift">@policy(&quot;medical.safety_critical&quot;, severity=&quot;maximum&quot;)
 @entropy_guard(max_deviation=0.05)
 @telemetry_binding(&quot;device_serial&quot;, &quot;patient_id&quot;)
 def calculate_airflow_rate(sensor_data):
@@ -1603,15 +1582,24 @@ def calculate_airflow_rate(sensor_data):
     - Dual-signature requirement for deployment
     &quot;&quot;&quot;
     # Implementation with embedded governance hooks
-    pass</code></pre>
+    pass
+</code></pre>
 <h4 id="structural-enforcement-through-compilation">Structural Enforcement Through Compilation</h4>
 <p>Structural enforcement provides absolute governance guarantees through compilation failure. Programs that violate governance policies cannot compile successfully, making it impossible to deploy non-compliant systems through standard development workflows.</p>
 <p>The enforcement mechanism operates through four validation stages:</p>
-<ol type="1">
-<li><p><strong>Tokenization Validation</strong>: Source text conforms to lexical governance requirements</p></li>
-<li><p><strong>Parse Tree Generation</strong>: Syntactic structures satisfy governance constraints</p></li>
-<li><p><strong>AST Binding</strong>: Semantic relationships comply with established policies</p></li>
-<li><p><strong>Governance Contract Verification</strong>: All <code>.rift.gov</code> declarations are satisfied</p></li>
+<ol>
+<li>
+<p><strong>Tokenization Validation</strong>: Source text conforms to lexical governance requirements</p>
+</li>
+<li>
+<p><strong>Parse Tree Generation</strong>: Syntactic structures satisfy governance constraints</p>
+</li>
+<li>
+<p><strong>AST Binding</strong>: Semantic relationships comply with established policies</p>
+</li>
+<li>
+<p><strong>Governance Contract Verification</strong>: All <code>.rift.gov</code> declarations are satisfied</p>
+</li>
 </ol>
 <h4 id="integration-with-git-raf">Integration with Git-RAF</h4>
 <p>Git-RAF integration enables pre-merge policy checks that validate governance compliance before code enters the main development branch. Each commit structure includes:</p>
@@ -1622,7 +1610,8 @@ def calculate_airflow_rate(sensor_data):
     entropy_checksum: hash&lt;sha3_256&gt;
     governance_vector: tuple&lt;attack_risk, rollback_cost, stability_impact&gt;
     aura_seal: one_way_hash&lt;entropy_model_64&gt;
-}</code></pre>
+}
+</code></pre>
 <h3 id="lexical-philosophy-point-free-dsa-alignment">Lexical Philosophy: Point-Free DSA Alignment</h3>
 <h4 id="referential-transparency-requirements">Referential Transparency Requirements</h4>
 <p>RIFTlang enforces referential transparency through point-free data structure and algorithm requirements that eliminate hidden state dependencies and ensure predictable compilation behavior. All token operations must originate from point-free DSA patterns that maintain functional consistency and prevent side effects that could compromise governance validation.</p>
@@ -1631,41 +1620,17 @@ def calculate_airflow_rate(sensor_data):
 <p>The system implements six required operators for point-free programming:</p>
 <div id="tab:operators">
 
-<table>
-<thead>
-<tr>
-<th style="text-align: left;"><strong>Operator</strong></th>
-<th style="text-align: left;"><strong>Function</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><code>aggregate</code></td>
-<td style="text-align: left;">Combines multiple values into structured collections</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>compose</code></td>
-<td style="text-align: left;">Creates function pipelines with explicit dependency chains</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>filter</code></td>
-<td style="text-align: left;">Selects elements based on predicate functions</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>map</code></td>
-<td style="text-align: left;">Transforms collections through uniform operations</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>reduce</code></td>
-<td style="text-align: left;">Collapses collections to scalar values</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>chain</code></td>
-<td style="text-align: left;">Sequences operations with error handling</td>
-</tr>
-</tbody>
-</table>
-<p>Required Point-Free Operators</p>
+| **Operator** | **Function**                                               |
+|:-------------|:-----------------------------------------------------------|
+| `aggregate`  | Combines multiple values into structured collections       |
+| `compose`    | Creates function pipelines with explicit dependency chains |
+| `filter`     | Selects elements based on predicate functions              |
+| `map`        | Transforms collections through uniform operations          |
+| `reduce`     | Collapses collections to scalar values                     |
+| `chain`      | Sequences operations with error handling                   |
+
+Required Point-Free Operators
+
 </div>
 
 <h4 id="functional-consistency-guarantees">Functional Consistency Guarantees</h4>
@@ -1676,23 +1641,27 @@ def calculate_airflow_rate(sensor_data):
 <p>RIFTlang treats memory safety as a governance requirement rather than a performance optimization. The system implements typed memory precedence where memory characteristics must be declared before type assignment, ensuring that governance constraints on memory usage are established before any behavioral logic can execute.</p>
 <h5 id="memory-classification-system">Memory Classification System</h5>
 <p>Memory segments are classified into three governance categories:</p>
-<p><code>SPAN_ROW</code><br />
+<p><code>SPAN_ROW</code><br>
 Ordered, expandable contexts with explicit anchors</p>
-<p><code>SPAN_FIXED</code><br />
+<p><code>SPAN_FIXED</code><br>
 Singleton authority with permanent role binding</p>
-<p><code>SPAN_SUPERPOSED</code><br />
+<p><code>SPAN_SUPERPOSED</code><br>
 Tokens existing in multiple states simultaneously</p>
 <h4 id="null-vs-nil-distinction">Null vs. Nil Distinction</h4>
 <p>The memory model distinguishes between <code>null</code> as a type classification and <code>nil</code> as a value state:</p>
 <ul>
-<li><p><strong>null type</strong>: Uninitialized or invalid memory that cannot be used for computation</p></li>
-<li><p><strong>nil value</strong>: Valid memory that has been cleared or emptied</p></li>
+<li>
+<p><strong>null type</strong>: Uninitialized or invalid memory that cannot be used for computation</p>
+</li>
+<li>
+<p><strong>nil value</strong>: Valid memory that has been cleared or emptied</p>
+</li>
 </ul>
 <p>This distinction prevents double-free vulnerabilities and unsafe memory reuse by making memory state explicit in the type system.</p>
 <h3 id="extension-and-modularity-framework">Extension and Modularity Framework</h3>
 <h4 id="configurable-grammar-injection">Configurable Grammar Injection</h4>
 <p>RIFTlang supports configurable grammar injection through a controlled extension mechanism that maintains compilation safety. Grammar extensions undergo validation against existing governance policies before integration, ensuring that new language features cannot undermine established governance guarantees.</p>
-<pre class="rift"><code>// Adding a new token type through extension
+<pre><code class="language-rift">// Adding a new token type through extension
 !extend token_type {
     name: TENSOR,
     parent: matrix&lt;T&gt;,
@@ -1704,242 +1673,340 @@ Tokens existing in multiple states simultaneously</p>
         memory_alignment: 512,
         access_control: [READ, TENSOROP]
     }
-}</code></pre>
+}
+</code></pre>
 <h4 id="independent-module-development">Independent Module Development</h4>
 <p>The extension framework enables contributors to develop RIFTlang extensions without creating dependency chains between compiler components. Each module undergoes governance validation independently, preventing the coupling problems that plague traditional compiler architectures.</p>
 <p>Pattern-based validation for new constructs provides a systematic framework for evaluating proposed language extensions against existing governance requirements, ensuring that community contributions maintain the integrity of the governance model.</p>
 <h3 id="implementation-lifecycle">Implementation Lifecycle</h3>
 <h4 id="compilation-stages">Compilation Stages</h4>
 <p>RIFTlang compilation proceeds through four mandatory validation stages:</p>
-<ol type="1">
-<li><p><strong>Tokenization</strong>: Validates lexical governance requirements including resource declaration syntax and policy annotation formatting</p></li>
-<li><p><strong>Parse Tree Generation</strong>: Verifies syntactic structures satisfy governance constraints on program organization and complexity</p></li>
-<li><p><strong>AST Binding</strong>: Confirms semantic relationships comply with established governance policies</p></li>
-<li><p><strong>Governance Contract Verification</strong>: Ensures all <code>.rift.gov</code> policy declarations are satisfied</p></li>
+<ol>
+<li>
+<p><strong>Tokenization</strong>: Validates lexical governance requirements including resource declaration syntax and policy annotation formatting</p>
+</li>
+<li>
+<p><strong>Parse Tree Generation</strong>: Verifies syntactic structures satisfy governance constraints on program organization and complexity</p>
+</li>
+<li>
+<p><strong>AST Binding</strong>: Confirms semantic relationships comply with established governance policies</p>
+</li>
+<li>
+<p><strong>Governance Contract Verification</strong>: Ensures all <code>.rift.gov</code> policy declarations are satisfied</p>
+</li>
 </ol>
 <h3 id="governance-triangle-model-and-dynamic-cost-function-enforcement">Governance Triangle Model and Dynamic Cost Function Enforcement</h3>
 <h4 id="architectural-foundation">Architectural Foundation</h4>
 <p>The Governance Triangle Model provides systematic risk assessment and cost enforcement for all AST mutations, function injections, and contributor integrations within the RIFT compiler pipeline. This model operates as a three-dimensional constraint space that ensures governance-first policy compliance during compilation and runtime execution.</p>
 <h5 id="governance-triangle-definition">Governance Triangle Definition</h5>
-<p>The Governance Triangle <span class="math inline">𝒯<sub><em>G</em></sub></span> is defined as a three-dimensional constraint space:</p>
-<p><span class="math display">𝒯<sub><em>G</em></sub> = {(<em>a</em>, <em>r</em>, <em>s</em>) ∈ ℝ<sub>+</sub><sup>3</sup> : <em>a</em> + <em>r</em> + <em>s</em> ≤ <em>θ</em><sub><em>m</em><em>a</em><em>x</em></sub>,  where <em>a</em>, <em>r</em>, <em>s</em> ≥ 0}</span></p>
+<p>The Governance Triangle $<code>\mathcal{T}_G</code>$ is defined as a three-dimensional constraint space:</p>
+<pre><code class="language-math">\begin{equation}
+\mathcal{T}_G = \{(a, r, s) \in \mathbb{R}^3_+ : a + r + s \leq \theta_{max}, \text{ where } a, r, s \geq 0\}
+\end{equation}
+</code></pre>
 <p>Where:</p>
 <ul>
-<li><p><span class="math inline"><em>a</em></span> represents the Attack Risk Plane measurement</p></li>
-<li><p><span class="math inline"><em>r</em></span> represents the Rollback Cost Plane measurement</p></li>
-<li><p><span class="math inline"><em>s</em></span> represents the Stability Impact Plane measurement</p></li>
-<li><p><span class="math inline"><em>θ</em><sub><em>m</em><em>a</em><em>x</em></sub></span> is the maximum allowable governance threshold</p></li>
+<li>
+<p>$<code>a</code>$ represents the Attack Risk Plane measurement</p>
+</li>
+<li>
+<p>$<code>r</code>$ represents the Rollback Cost Plane measurement</p>
+</li>
+<li>
+<p>$<code>s</code>$ represents the Stability Impact Plane measurement</p>
+</li>
+<li>
+<p>$<code>\theta_{max}</code>$ is the maximum allowable governance threshold</p>
+</li>
 </ul>
 <h4 id="governance-triangle-planes">Governance Triangle Planes</h4>
-<h5 id="attack-risk-plane-a_risk">Attack Risk Plane (<span class="math inline"><em>A</em><sub><em>r</em><em>i</em><em>s</em><em>k</em></sub></span>)</h5>
+<h5 id="attack-risk-plane-a_risk">Attack Risk Plane ($<code>A_{risk}</code>$)</h5>
 <p>The Attack Risk Plane quantifies the potential security vulnerability introduced by a proposed change:</p>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 A_{risk} = \sum_{i=1}^{n} w_i \cdot \text{risk}_i + \lambda_{crypto} \cdot C_{crypto} + \lambda_{input} \cdot V_{input}
-\end{equation}$$</span></p>
+\end{equation}
+</code></pre>
 <p>Where:</p>
 <ul>
-<li><p><span class="math inline"><em>w</em><sub><em>i</em></sub></span> are weighted risk factors for component <span class="math inline"><em>i</em></span></p></li>
-<li><p><span class="math inline"><em>C</em><sub><em>c</em><em>r</em><em>y</em><em>p</em><em>t</em><em>o</em></sub></span> measures cryptographic validation bypass potential</p></li>
-<li><p><span class="math inline"><em>V</em><sub><em>i</em><em>n</em><em>p</em><em>u</em><em>t</em></sub></span> measures input validation weakness introduction</p></li>
-<li><p><span class="math inline"><em>λ</em><sub><em>c</em><em>r</em><em>y</em><em>p</em><em>t</em><em>o</em></sub>, <em>λ</em><sub><em>i</em><em>n</em><em>p</em><em>u</em><em>t</em></sub></span> are security amplification coefficients</p></li>
+<li>
+<p>$<code>w_i</code>$ are weighted risk factors for component $<code>i</code>$</p>
+</li>
+<li>
+<p>$<code>C_{crypto}</code>$ measures cryptographic validation bypass potential</p>
+</li>
+<li>
+<p>$<code>V_{input}</code>$ measures input validation weakness introduction</p>
+</li>
+<li>
+<p>$<code>\lambda_{crypto}, \lambda_{input}</code>$ are security amplification coefficients</p>
+</li>
 </ul>
-<h5 id="rollback-cost-plane-r_cost">Rollback Cost Plane (<span class="math inline"><em>R</em><sub><em>c</em><em>o</em><em>s</em><em>t</em></sub></span>)</h5>
+<h5 id="rollback-cost-plane-r_cost">Rollback Cost Plane ($<code>R_{cost}</code>$)</h5>
 <p>The Rollback Cost Plane evaluates the computational and architectural cost of reversing a change:</p>
-<p><span class="math display"><em>R</em><sub><em>c</em><em>o</em><em>s</em><em>t</em></sub> = <em>α</em> ⋅ complexity(<em>A</em><em>S</em><em>T</em><sub><em>Δ</em></sub>) + <em>β</em> ⋅ deps(<em>i</em><em>n</em><em>j</em><em>e</em><em>c</em><em>t</em><em>i</em><em>o</em><em>n</em>) + <em>γ</em> ⋅ cascade(<em>e</em><em>f</em><em>f</em><em>e</em><em>c</em><em>t</em><em>s</em>)</span></p>
+<pre><code class="language-math">\begin{equation}
+R_{cost} = \alpha \cdot \text{complexity}(AST_{\Delta}) + \beta \cdot \text{deps}(injection) + \gamma \cdot \text{cascade}(effects)
+\end{equation}
+</code></pre>
 <p>Where:</p>
 <ul>
-<li><p><span class="math inline"><em>A</em><em>S</em><em>T</em><sub><em>Δ</em></sub></span> represents the AST mutation differential</p></li>
-<li><p><span class="math inline">deps(<em>i</em><em>n</em><em>j</em><em>e</em><em>c</em><em>t</em><em>i</em><em>o</em><em>n</em>)</span> counts dependency graph modifications</p></li>
-<li><p><span class="math inline">cascade(<em>e</em><em>f</em><em>f</em><em>e</em><em>c</em><em>t</em><em>s</em>)</span> measures downstream impact propagation</p></li>
-<li><p><span class="math inline"><em>α</em>, <em>β</em>, <em>γ</em></span> are cost weighting parameters</p></li>
+<li>
+<p>$<code>AST_{\Delta}</code>$ represents the AST mutation differential</p>
+</li>
+<li>
+<p>$<code>\text{deps}(injection)</code>$ counts dependency graph modifications</p>
+</li>
+<li>
+<p>$<code>\text{cascade}(effects)</code>$ measures downstream impact propagation</p>
+</li>
+<li>
+<p>$<code>\alpha, \beta, \gamma</code>$ are cost weighting parameters</p>
+</li>
 </ul>
-<h5 id="stability-impact-plane-s_impact">Stability Impact Plane (<span class="math inline"><em>S</em><sub><em>i</em><em>m</em><em>p</em><em>a</em><em>c</em><em>t</em></sub></span>)</h5>
+<h5 id="stability-impact-plane-s_impact">Stability Impact Plane ($<code>S_{impact}</code>$)</h5>
 <p>The Stability Impact Plane measures system reliability degradation risk:</p>
-<p><span class="math display"><em>S</em><sub><em>i</em><em>m</em><em>p</em><em>a</em><em>c</em><em>t</em></sub> = <em>ρ</em> ⋅ entropy(<em>Δ</em>) + <em>σ</em> ⋅ coupling(<em>n</em><em>e</em><em>w</em>) + <em>τ</em> ⋅ temporal(<em>p</em><em>r</em><em>e</em><em>s</em><em>s</em><em>u</em><em>r</em><em>e</em>)</span></p>
+<pre><code class="language-math">\begin{equation}
+S_{impact} = \rho \cdot \text{entropy}(\Delta) + \sigma \cdot \text{coupling}(new) + \tau \cdot \text{temporal}(pressure)
+\end{equation}
+</code></pre>
 <p>Where:</p>
 <ul>
-<li><p><span class="math inline">entropy(<em>Δ</em>)</span> measures information-theoretic system disorder increase</p></li>
-<li><p><span class="math inline">coupling(<em>n</em><em>e</em><em>w</em>)</span> evaluates new inter-component dependencies</p></li>
-<li><p><span class="math inline">temporal(<em>p</em><em>r</em><em>e</em><em>s</em><em>s</em><em>u</em><em>r</em><em>e</em>)</span> measures time-dependent instability introduction</p></li>
-<li><p><span class="math inline"><em>ρ</em>, <em>σ</em>, <em>τ</em></span> are stability coefficients</p></li>
+<li>
+<p>$<code>\text{entropy}(\Delta)</code>$ measures information-theoretic system disorder increase</p>
+</li>
+<li>
+<p>$<code>\text{coupling}(new)</code>$ evaluates new inter-component dependencies</p>
+</li>
+<li>
+<p>$<code>\text{temporal}(pressure)</code>$ measures time-dependent instability introduction</p>
+</li>
+<li>
+<p>$<code>\rho, \sigma, \tau</code>$ are stability coefficients</p>
+</li>
 </ul>
 <h4 id="dynamic-cost-function-enforcement">Dynamic Cost Function Enforcement</h4>
 <h5 id="cost-function-architecture">Cost Function Architecture</h5>
 <p>Dynamic cost functions operate during compilation and runtime to enforce governance constraints:</p>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 \mathcal{C}_{dynamic}(operation, context) = \begin{cases}
 \text{ALLOW} &amp; \text{if } \mathcal{T}_G(operation) \leq \theta_{max} \\
 \text{WARN} &amp; \text{if } \theta_{max} &lt; \mathcal{T}_G(operation) \leq \theta_{warn} \\
 \text{REJECT} &amp; \text{if } \mathcal{T}_G(operation) &gt; \theta_{warn}
 \end{cases}
-\end{equation}$$</span></p>
+\end{equation}
+</code></pre>
 <h5 id="example-dynamic-cost-functions">Example Dynamic Cost Functions</h5>
 <h6 id="entropy-cost-function">Entropy Cost Function:</h6>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 C_{entropy}(f) = -\sum_{i=1}^{k} p_i \log_2(p_i) \cdot w_{complexity}
-\end{equation}$$</span></p>
-<p>Where <span class="math inline"><em>p</em><sub><em>i</em></sub></span> represents the probability distribution of execution paths through function <span class="math inline"><em>f</em></span>.</p>
+\end{equation}
+</code></pre>
+<p>Where $<code>p_i</code>$ represents the probability distribution of execution paths through function $<code>f</code>$.</p>
 <h6 id="cycle-cost-function">Cycle Cost Function:</h6>
-<p><span class="math display"><em>C</em><sub><em>c</em><em>y</em><em>c</em><em>l</em><em>e</em></sub>(<em>G</em>) = ∑<sub><em>c</em><em>y</em><em>c</em><em>l</em><em>e</em> ∈ cycles(<em>G</em>)</sub>|<em>c</em><em>y</em><em>c</em><em>l</em><em>e</em>|⋅<em>p</em><em>e</em><em>n</em><em>a</em><em>l</em><em>t</em><em>y</em><sub><em>c</em><em>i</em><em>r</em><em>c</em><em>u</em><em>l</em><em>a</em><em>r</em></sub> + <em>d</em><em>e</em><em>p</em><em>e</em><em>n</em><em>d</em><em>e</em><em>n</em><em>c</em><em>y</em><sub><em>d</em><em>e</em><em>p</em><em>t</em><em>h</em></sub></span></p>
-<p>Where <span class="math inline"><em>G</em></span> represents the dependency graph and <span class="math inline"><em>p</em><em>e</em><em>n</em><em>a</em><em>l</em><em>t</em><em>y</em><sub><em>c</em><em>i</em><em>r</em><em>c</em><em>u</em><em>l</em><em>a</em><em>r</em></sub> = 0.2</span> per the Sinphasé specification.</p>
+<pre><code class="language-math">\begin{equation}
+C_{cycle}(G) = \sum_{cycle \in \text{cycles}(G)} |cycle| \cdot penalty_{circular} + dependency_{depth}
+\end{equation}
+</code></pre>
+<p>Where $<code>G</code>$ represents the dependency graph and $<code>penalty_{circular} = 0.2</code>$ per the Sinphasé specification.</p>
 <h6 id="memory-cost-function">Memory Cost Function:</h6>
-<p><span class="math display"><em>C</em><sub><em>m</em><em>e</em><em>m</em><em>o</em><em>r</em><em>y</em></sub>(<em>a</em><em>l</em><em>l</em><em>o</em><em>c</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em>) = <em>s</em><em>i</em><em>z</em><em>e</em><sub><em>a</em><em>l</em><em>l</em><em>o</em><em>c</em><em>a</em><em>t</em><em>e</em><em>d</em></sub> ⋅ <em>f</em><em>r</em><em>a</em><em>g</em><em>m</em><em>e</em><em>n</em><em>t</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em><sub><em>f</em><em>a</em><em>c</em><em>t</em><em>o</em><em>r</em></sub> + <em>g</em><em>c</em><sub><em>p</em><em>r</em><em>e</em><em>s</em><em>s</em><em>u</em><em>r</em><em>e</em></sub></span></p>
+<pre><code class="language-math">\begin{equation}
+C_{memory}(allocation) = size_{allocated} \cdot fragmentation_{factor} + gc_{pressure}
+\end{equation}
+</code></pre>
 <h4 id="integration-with-governance-vector-thresholds">Integration with Governance Vector Thresholds</h4>
 <h5 id="threshold-enforcement-protocol">Threshold Enforcement Protocol</h5>
-<p>The governance vector <span class="math inline"><em>G⃗</em> = (<em>g</em><sub>1</sub>, <em>g</em><sub>2</sub>, …, <em>g</em><sub><em>n</em></sub>)</span> enforces multi-dimensional constraints:</p>
-<p><span class="math display">Valid(<em>o</em><em>p</em><em>e</em><em>r</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em>) ⇔ ∀<em>i</em> : <em>g</em><sub><em>i</em></sub> ≤ <em>θ</em><sub><em>i</em></sub> ∧ 𝒯<sub><em>G</em></sub>(<em>o</em><em>p</em><em>e</em><em>r</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em>) ∈ AUTONOMOUS_ZONE</span></p>
+<p>The governance vector $<code>\vec{G} = (g_1, g_2, \ldots, g_n)</code>$ enforces multi-dimensional constraints:</p>
+<pre><code class="language-math">\begin{equation}
+\text{Valid}(operation) \iff \forall i: g_i \leq \theta_i \land \mathcal{T}_G(operation) \in \text{AUTONOMOUS\_ZONE}
+\end{equation}
+</code></pre>
 <h5 id="zone-classification">Zone Classification</h5>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 \text{Zone}(\mathcal{T}_G) = \begin{cases}
 \text{AUTONOMOUS} &amp; \text{if } \|\mathcal{T}_G\|_1 \leq 0.5 \\
 \text{WARNING} &amp; \text{if } 0.5 &lt; \|\mathcal{T}_G\|_1 \leq 0.6 \\
 \text{GOVERNANCE} &amp; \text{if } \|\mathcal{T}_G\|_1 &gt; 0.6
 \end{cases}
-\end{equation}$$</span></p>
+\end{equation}
+</code></pre>
 <h4 id="ast-mutation-and-function-injection-application">AST Mutation and Function Injection Application</h4>
 <h5 id="ast-mutation-validation">AST Mutation Validation</h5>
-<p>Before any AST transformation <span class="math inline"><em>T</em> : <em>A</em><em>S</em><em>T</em> → <em>A</em><em>S</em><em>T</em><sup>′</sup></span>:</p>
+<p>Before any AST transformation $<code>T: AST \rightarrow AST'</code>$:</p>
 <div class="algorithm">
 
 <div class="algorithmic">
 
-<p><span class="math inline"><em>A</em><em>S</em><em>T</em><sub><em>p</em><em>r</em><em>o</em><em>p</em><em>o</em><em>s</em><em>e</em><em>d</em></sub> ← <em>T</em><sub><em>m</em><em>u</em><em>t</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em></sub>(<em>A</em><em>S</em><em>T</em><sub><em>o</em><em>r</em><em>i</em><em>g</em><em>i</em><em>n</em><em>a</em><em>l</em></sub>)</span> <span class="math inline"><em>Δ</em><sub><em>A</em><em>S</em><em>T</em></sub> ← diff(<em>A</em><em>S</em><em>T</em><sub><em>o</em><em>r</em><em>i</em><em>g</em><em>i</em><em>n</em><em>a</em><em>l</em></sub>, <em>A</em><em>S</em><em>T</em><sub><em>p</em><em>r</em><em>o</em><em>p</em><em>o</em><em>s</em><em>e</em><em>d</em></sub>)</span> <span class="math inline"><em>a</em> ← <em>A</em><sub><em>r</em><em>i</em><em>s</em><em>k</em></sub>(<em>Δ</em><sub><em>A</em><em>S</em><em>T</em></sub>)</span> <span class="math inline"><em>r</em> ← <em>R</em><sub><em>c</em><em>o</em><em>s</em><em>t</em></sub>(<em>Δ</em><sub><em>A</em><em>S</em><em>T</em></sub>)</span> <span class="math inline"><em>s</em> ← <em>S</em><sub><em>i</em><em>m</em><em>p</em><em>a</em><em>c</em><em>t</em></sub>(<em>Δ</em><sub><em>A</em><em>S</em><em>T</em></sub>)</span> <span class="math inline">𝒯<sub><em>G</em></sub> ← (<em>a</em>, <em>r</em>, <em>s</em>)</span></p>
+$`AST_{proposed} \leftarrow T_{mutation}(AST_{original})`$ $`\Delta_{AST} \leftarrow \text{diff}(AST_{original}, AST_{proposed})`$ $`a \leftarrow A_{risk}(\Delta_{AST})`$ $`r \leftarrow R_{cost}(\Delta_{AST})`$ $`s \leftarrow S_{impact}(\Delta_{AST})`$ $`\mathcal{T}_G \leftarrow (a, r, s)`$
+
 </div>
 
 </div>
 
 <h5 id="function-injection-governance">Function Injection Governance</h5>
 <p>Function injection requires pre-validation through the governance triangle:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Governance Triangle Pre-Check</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>governance_result_t validate_injection<span class="op">(</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    function_signature_t<span class="op">*</span> proposed_func<span class="op">,</span></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    injection_context_t<span class="op">*</span> context</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    triangle_metrics_t metrics <span class="op">=</span> <span class="op">{</span></span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>attack_risk <span class="op">=</span> calculate_attack_risk<span class="op">(</span>proposed_func<span class="op">),</span></span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>rollback_cost <span class="op">=</span> calculate_rollback_cost<span class="op">(</span>proposed_func<span class="op">,</span> context<span class="op">),</span></span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>stability_impact <span class="op">=</span> calculate_stability_impact<span class="op">(</span>proposed_func<span class="op">,</span> context<span class="op">)</span></span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="op">(</span>metrics<span class="op">.</span>attack_risk <span class="op">+</span> metrics<span class="op">.</span>rollback_cost <span class="op">+</span> </span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>        metrics<span class="op">.</span>stability_impact <span class="op">&lt;=</span> GOVERNANCE_THRESHOLD_MAX<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> GOVERNANCE_APPROVED<span class="op">;</span></span>
-<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> GOVERNANCE_REJECTED<span class="op">;</span></span>
-<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<pre><code class="language-objectivec">// Governance Triangle Pre-Check
+governance_result_t validate_injection(
+    function_signature_t* proposed_func,
+    injection_context_t* context
+) {
+    triangle_metrics_t metrics = {
+        .attack_risk = calculate_attack_risk(proposed_func),
+        .rollback_cost = calculate_rollback_cost(proposed_func, context),
+        .stability_impact = calculate_stability_impact(proposed_func, context)
+    };
+
+    if (metrics.attack_risk + metrics.rollback_cost + 
+        metrics.stability_impact &lt;= GOVERNANCE_THRESHOLD_MAX) {
+        return GOVERNANCE_APPROVED;
+    }
+
+    return GOVERNANCE_REJECTED;
+}
+</code></pre>
 <h4 id="tdd-qa-integration-and-contributor-validation">TDD QA Integration and Contributor Validation</h4>
 <h5 id="governance-vector-test-templates">Governance Vector Test Templates</h5>
 <p>TDD test templates must validate governance constraints:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Test Template: Governance Triangle Compliance</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>TEST<span class="op">(</span>governance_triangle<span class="op">,</span> feature_injection_compliance<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Arrange</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    feature_spec_t proposed_feature <span class="op">=</span> create_test_feature<span class="op">();</span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    governance_context_t context <span class="op">=</span> get_current_governance_context<span class="op">();</span></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Act</span></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    triangle_metrics_t metrics <span class="op">=</span> </span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>        evaluate_governance_triangle<span class="op">(&amp;</span>proposed_feature<span class="op">,</span> <span class="op">&amp;</span>context<span class="op">);</span></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Assert - Governance Triangle Constraints</span></span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    ASSERT_LE<span class="op">(</span>metrics<span class="op">.</span>attack_risk<span class="op">,</span> MAX_ATTACK_RISK<span class="op">);</span></span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>    ASSERT_LE<span class="op">(</span>metrics<span class="op">.</span>rollback_cost<span class="op">,</span> MAX_ROLLBACK_COST<span class="op">);</span></span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>    ASSERT_LE<span class="op">(</span>metrics<span class="op">.</span>stability_impact<span class="op">,</span> MAX_STABILITY_IMPACT<span class="op">);</span></span>
-<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>    ASSERT_LE<span class="op">(</span>triangle_norm<span class="op">(</span>metrics<span class="op">),</span> GOVERNANCE_THRESHOLD_MAX<span class="op">);</span></span>
-<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Assert - Zone Classification</span></span>
-<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>    governance_zone_t zone <span class="op">=</span> classify_governance_zone<span class="op">(</span>metrics<span class="op">);</span></span>
-<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>    ASSERT_NE<span class="op">(</span>zone<span class="op">,</span> GOVERNANCE_ZONE<span class="op">);</span> <span class="co">// Must not exceed governance zone</span></span>
-<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<pre><code class="language-objectivec">// Test Template: Governance Triangle Compliance
+TEST(governance_triangle, feature_injection_compliance) {
+    // Arrange
+    feature_spec_t proposed_feature = create_test_feature();
+    governance_context_t context = get_current_governance_context();
+
+    // Act
+    triangle_metrics_t metrics = 
+        evaluate_governance_triangle(&amp;proposed_feature, &amp;context);
+
+    // Assert - Governance Triangle Constraints
+    ASSERT_LE(metrics.attack_risk, MAX_ATTACK_RISK);
+    ASSERT_LE(metrics.rollback_cost, MAX_ROLLBACK_COST);
+    ASSERT_LE(metrics.stability_impact, MAX_STABILITY_IMPACT);
+    ASSERT_LE(triangle_norm(metrics), GOVERNANCE_THRESHOLD_MAX);
+
+    // Assert - Zone Classification
+    governance_zone_t zone = classify_governance_zone(metrics);
+    ASSERT_NE(zone, GOVERNANCE_ZONE); // Must not exceed governance zone
+}
+</code></pre>
 <h5 id="contributor-compliance-framework">Contributor Compliance Framework</h5>
 <p>All contributor submissions must pass governance triangle validation:</p>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 \text{Contributor\_Valid}(submission) = \begin{cases}
 \text{ACCEPT} &amp; \text{if } \mathcal{T}_G(submission) \in \text{AUTONOMOUS} \\
 \text{REVIEW} &amp; \text{if } \mathcal{T}_G(submission) \in \text{WARNING} \\
 \text{REJECT} &amp; \text{if } \mathcal{T}_G(submission) \in \text{GOVERNANCE}
 \end{cases}
-\end{equation}$$</span></p>
+\end{equation}
+</code></pre>
 <h4 id="gitraf-and-polybuildnlink-pipeline-alignment">GitRAF and Polybuild/NLink Pipeline Alignment</h4>
 <h5 id="gitraf-integration-points">GitRAF Integration Points</h5>
 <p>The Governance Triangle Model integrates with GitRAF at multiple enforcement points:</p>
 <ul>
-<li><p><strong>Pre-commit hooks</strong>: Validate governance triangle metrics before repository commit</p></li>
-<li><p><strong>Pull request validation</strong>: Automated governance scoring for proposed changes</p></li>
-<li><p><strong>Merge gate enforcement</strong>: Block merges exceeding governance thresholds</p></li>
-<li><p><strong>Post-merge monitoring</strong>: Continuous governance drift detection</p></li>
+<li>
+<p><strong>Pre-commit hooks</strong>: Validate governance triangle metrics before repository commit</p>
+</li>
+<li>
+<p><strong>Pull request validation</strong>: Automated governance scoring for proposed changes</p>
+</li>
+<li>
+<p><strong>Merge gate enforcement</strong>: Block merges exceeding governance thresholds</p>
+</li>
+<li>
+<p><strong>Post-merge monitoring</strong>: Continuous governance drift detection</p>
+</li>
 </ul>
 <h5 id="polybuild-integration">Polybuild Integration</h5>
 <p>The polybuild system enforces governance constraints during compilation:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># polybuild governance enforcement</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="ex">polybuild</span> <span class="at">--governance-mode</span> strict <span class="dt">\</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">--triangle-threshold</span> 0.5 <span class="dt">\</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">--enforce-zones</span> autonomous,warning <span class="dt">\</span></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">--reject-governance-zone</span> <span class="dt">\</span></span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>         target_specification.toml</span></code></pre></div>
+<pre><code class="language-bash"># polybuild governance enforcement
+polybuild --governance-mode strict \
+         --triangle-threshold 0.5 \
+         --enforce-zones autonomous,warning \
+         --reject-governance-zone \
+         target_specification.toml
+</code></pre>
 <h5 id="nlink-specification-compliance">NLink Specification Compliance</h5>
 <p>NLink enforces governance constraints during linking:</p>
-<p><span class="math display">Link_Valid(<em>o</em><em>b</em><em>j</em><em>e</em><em>c</em><em>t</em><em>s</em>) = ⋀<sub><em>o</em><em>b</em><em>j</em> ∈ <em>o</em><em>b</em><em>j</em><em>e</em><em>c</em><em>t</em><em>s</em></sub>𝒯<sub><em>G</em></sub>(<em>o</em><em>b</em><em>j</em>) ≤ <em>θ</em><sub><em>l</em><em>i</em><em>n</em><em>k</em></sub></span></p>
-<p>Where <span class="math inline"><em>θ</em><sub><em>l</em><em>i</em><em>n</em><em>k</em></sub></span> represents the maximum allowable governance score for linkable objects.</p>
-<h3 id="governance-triangle-model-and-dynamic-cost-function-enforcement-1">Governance Triangle Model and Dynamic Cost Function Enforcement</h3>
-<h4 id="architectural-foundation-1">Architectural Foundation</h4>
+<pre><code class="language-math">\begin{equation}
+\text{Link\_Valid}(objects) = \bigwedge_{obj \in objects} \mathcal{T}_G(obj) \leq \theta_{link}
+\end{equation}
+</code></pre>
+<p>Where $<code>\theta_{link}</code>$ represents the maximum allowable governance score for linkable objects.</p>
+<h3 id="governance-triangle-model-and-dynamic-cost-function-enforcement_1">Governance Triangle Model and Dynamic Cost Function Enforcement</h3>
+<h4 id="architectural-foundation_1">Architectural Foundation</h4>
 <p>The Governance Triangle Model provides systematic risk assessment and cost enforcement for all AST mutations, function injections, and contributor integrations within the RIFT compiler pipeline. This model operates as a three-dimensional constraint space that ensures governance-first policy compliance during compilation and runtime execution.</p>
-<h5 id="governance-triangle-definition-1">Governance Triangle Definition</h5>
-<p>The Governance Triangle <span class="math inline">𝒯<sub><em>G</em></sub></span> is defined as a three-dimensional constraint space:</p>
-<p><span class="math display">𝒯<sub><em>G</em></sub> = {(<em>a</em>, <em>r</em>, <em>s</em>) ∈ ℝ<sub>+</sub><sup>3</sup> : <em>a</em> + <em>r</em> + <em>s</em> ≤ <em>θ</em><sub><em>m</em><em>a</em><em>x</em></sub>,  where <em>a</em>, <em>r</em>, <em>s</em> ≥ 0}</span></p>
+<h5 id="governance-triangle-definition_1">Governance Triangle Definition</h5>
+<p>The Governance Triangle $<code>\mathcal{T}_G</code>$ is defined as a three-dimensional constraint space:</p>
+<pre><code class="language-math">\begin{equation}
+\mathcal{T}_G = \{(a, r, s) \in \mathbb{R}^3_+ : a + r + s \leq \theta_{max}, \text{ where } a, r, s \geq 0\}
+\end{equation}
+</code></pre>
 <p>Where:</p>
 <ul>
-<li><p><span class="math inline"><em>a</em></span> represents the Attack Risk Plane measurement</p></li>
-<li><p><span class="math inline"><em>r</em></span> represents the Rollback Cost Plane measurement</p></li>
-<li><p><span class="math inline"><em>s</em></span> represents the Stability Impact Plane measurement</p></li>
-<li><p><span class="math inline"><em>θ</em><sub><em>m</em><em>a</em><em>x</em></sub></span> is the maximum allowable governance threshold</p></li>
+<li>
+<p>$<code>a</code>$ represents the Attack Risk Plane measurement</p>
+</li>
+<li>
+<p>$<code>r</code>$ represents the Rollback Cost Plane measurement</p>
+</li>
+<li>
+<p>$<code>s</code>$ represents the Stability Impact Plane measurement</p>
+</li>
+<li>
+<p>$<code>\theta_{max}</code>$ is the maximum allowable governance threshold</p>
+</li>
 </ul>
-<h4 id="governance-triangle-planes-1">Governance Triangle Planes</h4>
-<h5 id="attack-risk-plane-a_risk-1">Attack Risk Plane (<span class="math inline"><em>A</em><sub><em>r</em><em>i</em><em>s</em><em>k</em></sub></span>)</h5>
+<h4 id="governance-triangle-planes_1">Governance Triangle Planes</h4>
+<h5 id="attack-risk-plane-a_risk_1">Attack Risk Plane ($<code>A_{risk}</code>$)</h5>
 <p>The Attack Risk Plane quantifies the potential security vulnerability introduced by a proposed change:</p>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 A_{risk} = \sum_{i=1}^{n} w_i \cdot \text{risk}_i + \lambda_{crypto} \cdot C_{crypto} + \lambda_{input} \cdot V_{input}
-\end{equation}$$</span></p>
-<h5 id="rollback-cost-plane-r_cost-1">Rollback Cost Plane (<span class="math inline"><em>R</em><sub><em>c</em><em>o</em><em>s</em><em>t</em></sub></span>)</h5>
+\end{equation}
+</code></pre>
+<h5 id="rollback-cost-plane-r_cost_1">Rollback Cost Plane ($<code>R_{cost}</code>$)</h5>
 <p>The Rollback Cost Plane evaluates the computational and architectural cost of reversing a change:</p>
-<p><span class="math display"><em>R</em><sub><em>c</em><em>o</em><em>s</em><em>t</em></sub> = <em>α</em> ⋅ complexity(<em>A</em><em>S</em><em>T</em><sub><em>Δ</em></sub>) + <em>β</em> ⋅ deps(<em>i</em><em>n</em><em>j</em><em>e</em><em>c</em><em>t</em><em>i</em><em>o</em><em>n</em>) + <em>γ</em> ⋅ cascade(<em>e</em><em>f</em><em>f</em><em>e</em><em>c</em><em>t</em><em>s</em>)</span></p>
-<h5 id="stability-impact-plane-s_impact-1">Stability Impact Plane (<span class="math inline"><em>S</em><sub><em>i</em><em>m</em><em>p</em><em>a</em><em>c</em><em>t</em></sub></span>)</h5>
+<pre><code class="language-math">\begin{equation}
+R_{cost} = \alpha \cdot \text{complexity}(AST_{\Delta}) + \beta \cdot \text{deps}(injection) + \gamma \cdot \text{cascade}(effects)
+\end{equation}
+</code></pre>
+<h5 id="stability-impact-plane-s_impact_1">Stability Impact Plane ($<code>S_{impact}</code>$)</h5>
 <p>The Stability Impact Plane measures system reliability degradation risk:</p>
-<p><span class="math display"><em>S</em><sub><em>i</em><em>m</em><em>p</em><em>a</em><em>c</em><em>t</em></sub> = <em>ρ</em> ⋅ entropy(<em>Δ</em>) + <em>σ</em> ⋅ coupling(<em>n</em><em>e</em><em>w</em>) + <em>τ</em> ⋅ temporal(<em>p</em><em>r</em><em>e</em><em>s</em><em>s</em><em>u</em><em>r</em><em>e</em>)</span></p>
-<h4 id="dynamic-cost-function-enforcement-1">Dynamic Cost Function Enforcement</h4>
-<h5 id="cost-function-architecture-1">Cost Function Architecture</h5>
+<pre><code class="language-math">\begin{equation}
+S_{impact} = \rho \cdot \text{entropy}(\Delta) + \sigma \cdot \text{coupling}(new) + \tau \cdot \text{temporal}(pressure)
+\end{equation}
+</code></pre>
+<h4 id="dynamic-cost-function-enforcement_1">Dynamic Cost Function Enforcement</h4>
+<h5 id="cost-function-architecture_1">Cost Function Architecture</h5>
 <p>Dynamic cost functions operate during compilation and runtime to enforce governance constraints:</p>
-<p><span class="math display">$$\begin{equation}
+<pre><code class="language-math">\begin{equation}
 \mathcal{C}_{dynamic}(operation, context) = \begin{cases}
 \text{ALLOW} &amp; \text{if } \mathcal{T}_G(operation) \leq \theta_{max} \\
 \text{WARN} &amp; \text{if } \theta_{max} &lt; \mathcal{T}_G(operation) \leq \theta_{warn} \\
 \text{REJECT} &amp; \text{if } \mathcal{T}_G(operation) &gt; \theta_{warn}
 \end{cases}
-\end{equation}$$</span></p>
-<h4 id="ast-mutation-and-function-injection-application-1">AST Mutation and Function Injection Application</h4>
-<h5 id="ast-mutation-validation-1">AST Mutation Validation</h5>
-<p>Before any AST transformation <span class="math inline"><em>T</em> : <em>A</em><em>S</em><em>T</em> → <em>A</em><em>S</em><em>T</em><sup>′</sup></span>, the following governance triangle validation procedure must be executed:</p>
-<p>Input:<br />
-<span class="math inline"><em>A</em><em>S</em><em>T</em><sub><em>o</em><em>r</em><em>i</em><em>g</em><em>i</em><em>n</em><em>a</em><em>l</em></sub></span>, <span class="math inline"><em>T</em><sub><em>m</em><em>u</em><em>t</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em></sub></span>, <span class="math inline"><em>θ</em><sub><em>m</em><em>a</em><em>x</em></sub></span></p>
-<p>Output:<br />
+\end{equation}
+</code></pre>
+<h4 id="ast-mutation-and-function-injection-application_1">AST Mutation and Function Injection Application</h4>
+<h5 id="ast-mutation-validation_1">AST Mutation Validation</h5>
+<p>Before any AST transformation $<code>T: AST \rightarrow AST'</code>$, the following governance triangle validation procedure must be executed:</p>
+<p>Input:<br>
+$<code>AST_{original}</code>$, $<code>T_{mutation}</code>$, $<code>\theta_{max}</code>$</p>
+<p>Output:<br>
 Validation result and governance metrics</p>
-<p>Step 1:<br />
-Compute <span class="math inline"><em>A</em><em>S</em><em>T</em><sub><em>p</em><em>r</em><em>o</em><em>p</em><em>o</em><em>s</em><em>e</em><em>d</em></sub> ← <em>T</em><sub><em>m</em><em>u</em><em>t</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em></sub>(<em>A</em><em>S</em><em>T</em><sub><em>o</em><em>r</em><em>i</em><em>g</em><em>i</em><em>n</em><em>a</em><em>l</em></sub>)</span></p>
-<p>Step 2:<br />
-Calculate <span class="math inline"><em>Δ</em><sub><em>A</em><em>S</em><em>T</em></sub> ← diff(<em>A</em><em>S</em><em>T</em><sub><em>o</em><em>r</em><em>i</em><em>g</em><em>i</em><em>n</em><em>a</em><em>l</em></sub>, <em>A</em><em>S</em><em>T</em><sub><em>p</em><em>r</em><em>o</em><em>p</em><em>o</em><em>s</em><em>e</em><em>d</em></sub>)</span></p>
-<p>Step 3:<br />
-Evaluate <span class="math inline"><em>a</em> ← <em>A</em><sub><em>r</em><em>i</em><em>s</em><em>k</em></sub>(<em>Δ</em><sub><em>A</em><em>S</em><em>T</em></sub>)</span></p>
-<p>Step 4:<br />
-Evaluate <span class="math inline"><em>r</em> ← <em>R</em><sub><em>c</em><em>o</em><em>s</em><em>t</em></sub>(<em>Δ</em><sub><em>A</em><em>S</em><em>T</em></sub>)</span></p>
-<p>Step 5:<br />
-Evaluate <span class="math inline"><em>s</em> ← <em>S</em><sub><em>i</em><em>m</em><em>p</em><em>a</em><em>c</em><em>t</em></sub>(<em>Δ</em><sub><em>A</em><em>S</em><em>T</em></sub>)</span></p>
-<p>Step 6:<br />
-Form <span class="math inline">𝒯<sub><em>G</em></sub> ← (<em>a</em>, <em>r</em>, <em>s</em>)</span></p>
-<p>Step 7:<br />
-<strong>If</strong> <span class="math inline">∥𝒯<sub><em>G</em></sub>∥<sub>1</sub> ≤ <em>θ</em><sub><em>m</em><em>a</em><em>x</em></sub></span> <strong>then</strong> return APPROVED, <span class="math inline">𝒯<sub><em>G</em></sub></span></p>
-<p>Step 8:<br />
-<strong>Else</strong> return REJECTED, <span class="math inline">𝒯<sub><em>G</em></sub></span></p>
-<p>Before any AST transformation <span class="math inline"><em>T</em> : <em>A</em><em>S</em><em>T</em> → <em>A</em><em>S</em><em>T</em><sup>′</sup></span>:</p>
+<p>Step 1:<br>
+Compute $<code>AST_{proposed} \leftarrow T_{mutation}(AST_{original})</code>$</p>
+<p>Step 2:<br>
+Calculate $<code>\Delta_{AST} \leftarrow \text{diff}(AST_{original}, AST_{proposed})</code>$</p>
+<p>Step 3:<br>
+Evaluate $<code>a \leftarrow A_{risk}(\Delta_{AST})</code>$</p>
+<p>Step 4:<br>
+Evaluate $<code>r \leftarrow R_{cost}(\Delta_{AST})</code>$</p>
+<p>Step 5:<br>
+Evaluate $<code>s \leftarrow S_{impact}(\Delta_{AST})</code>$</p>
+<p>Step 6:<br>
+Form $<code>\mathcal{T}_G \leftarrow (a, r, s)</code>$</p>
+<p>Step 7:<br>
+<strong>If</strong> $<code>\|\mathcal{T}_G\|_1 \leq \theta_{max}</code>$ <strong>then</strong> return APPROVED, $<code>\mathcal{T}_G</code>$</p>
+<p>Step 8:<br>
+<strong>Else</strong> return REJECTED, $<code>\mathcal{T}_G</code>$</p>
+<p>Before any AST transformation $<code>T: AST \rightarrow AST'</code>$:</p>
 <pre><code>ALGORITHM: Governance Triangle AST Validation
 INPUT: AST_original, T_mutation, theta_max
 OUTPUT: Validation result and governance metrics
@@ -1954,10 +2021,11 @@ OUTPUT: Validation result and governance metrics
 8.     RETURN APPROVED, T_G
 9. ELSE
 10.    RETURN REJECTED, T_G
-11. END IF</code></pre>
-<h5 id="function-injection-governance-1">Function Injection Governance</h5>
+11. END IF
+</code></pre>
+<h5 id="function-injection-governance_1">Function Injection Governance</h5>
 <p>Function injection requires pre-validation through the governance triangle:</p>
-<pre class="rift"><code>// Governance Triangle Pre-Check
+<pre><code class="language-rift">// Governance Triangle Pre-Check
 governance_result_t validate_injection(
     function_signature_t* proposed_func,
     injection_context_t* context
@@ -1967,77 +2035,106 @@ governance_result_t validate_injection(
         .rollback_cost = calculate_rollback_cost(proposed_func, context),
         .stability_impact = calculate_stability_impact(proposed_func, context)
     };
-    
+
     if (metrics.attack_risk + metrics.rollback_cost + 
         metrics.stability_impact &lt;= GOVERNANCE_THRESHOLD_MAX) {
         return GOVERNANCE_APPROVED;
     }
-    
+
     return GOVERNANCE_REJECTED;
-}</code></pre>
+}
+</code></pre>
 <h4 id="integration-with-polybuildnlink-pipeline">Integration with Polybuild/NLink Pipeline</h4>
-<h5 id="polybuild-integration-1">Polybuild Integration</h5>
+<h5 id="polybuild-integration_1">Polybuild Integration</h5>
 <p>The polybuild system enforces governance constraints during compilation:</p>
-<p>Pre-compile validation:<br />
+<p>Pre-compile validation:<br>
 Check governance triangle metrics before compilation</p>
-<p>Triangle threshold enforcement:<br />
-Block compilation if <span class="math inline">𝒯<sub><em>G</em></sub> &gt; <em>θ</em><sub><em>m</em><em>a</em><em>x</em></sub></span></p>
-<p>Zone classification:<br />
+<p>Triangle threshold enforcement:<br>
+Block compilation if $<code>\mathcal{T}_G &gt; \theta_{max}</code>$</p>
+<p>Zone classification:<br>
 Categorize changes as AUTONOMOUS, WARNING, or GOVERNANCE</p>
-<p>Automated rejection:<br />
+<p>Automated rejection:<br>
 Prevent governance zone violations from compilation</p>
-<h5 id="nlink-specification-compliance-1">NLink Specification Compliance</h5>
+<h5 id="nlink-specification-compliance_1">NLink Specification Compliance</h5>
 <p>NLink enforces governance constraints during linking:</p>
-<p><span class="math display">Link_Valid(<em>o</em><em>b</em><em>j</em><em>e</em><em>c</em><em>t</em><em>s</em>) = ⋀<sub><em>o</em><em>b</em><em>j</em> ∈ <em>o</em><em>b</em><em>j</em><em>e</em><em>c</em><em>t</em><em>s</em></sub>𝒯<sub><em>G</em></sub>(<em>o</em><em>b</em><em>j</em>) ≤ <em>θ</em><sub><em>l</em><em>i</em><em>n</em><em>k</em></sub></span></p>
-<p>Where <span class="math inline"><em>θ</em><sub><em>l</em><em>i</em><em>n</em><em>k</em></sub></span> represents the maximum allowable governance score for linkable objects.</p>
+<pre><code class="language-math">\begin{equation}
+\text{Link\_Valid}(objects) = \bigwedge_{obj \in objects} \mathcal{T}_G(obj) \leq \theta_{link}
+\end{equation}
+</code></pre>
+<p>Where $<code>\theta_{link}</code>$ represents the maximum allowable governance score for linkable objects.</p>
 <h4 id="example-governance-triangle-scoring-case">Example: Governance Triangle Scoring Case</h4>
 <h5 id="scenario-new-cryptographic-function-injection">Scenario: New Cryptographic Function Injection</h5>
 <p>Consider injection of a new cryptographic validation function with enhanced security validation capabilities.</p>
 <p><strong>Governance Triangle Evaluation:</strong></p>
-<p><span class="math display">$$\begin{align}
+<pre><code class="language-math">\begin{align}
 A_{risk} &amp;= 0.1 \text{ (low risk - security enhancement)} \\
 R_{cost} &amp;= 0.3 \text{ (moderate - new dependency introduction)} \\
 S_{impact} &amp;= 0.2 \text{ (low-moderate - contained scope)} \\
 \mathcal{T}_G &amp;= (0.1, 0.3, 0.2) \\
 \|\mathcal{T}_G\|_1 &amp;= 0.6
-\end{align}$$</span></p>
-<p><strong>Zone Classification:</strong> WARNING ZONE (<span class="math inline">0.5 &lt; 0.6 ≤ 0.6</span>)</p>
+\end{align}
+</code></pre>
+<p><strong>Zone Classification:</strong> WARNING ZONE ($<code>0.5 &lt; 0.6 \leq 0.6</code>$)</p>
 <p><strong>Decision:</strong> APPROVE with mandatory code review and extended testing requirements.</p>
 <h4 id="implementation-requirements">Implementation Requirements</h4>
 <h5 id="compiler-integration">Compiler Integration</h5>
 <p>The RIFT compiler must implement governance triangle evaluation at:</p>
 <ul>
-<li><p>Semantic analysis phase (pattern layer analysis)</p></li>
-<li><p>AST transformation phase (mutation validation)</p></li>
-<li><p>Code generation phase (injection point validation)</p></li>
-<li><p>Link-time optimization phase (cross-component governance)</p></li>
+<li>
+<p>Semantic analysis phase (pattern layer analysis)</p>
+</li>
+<li>
+<p>AST transformation phase (mutation validation)</p>
+</li>
+<li>
+<p>Code generation phase (injection point validation)</p>
+</li>
+<li>
+<p>Link-time optimization phase (cross-component governance)</p>
+</li>
 </ul>
 <h5 id="runtime-enforcement">Runtime Enforcement</h5>
 <p>Dynamic cost functions must operate during:</p>
 <ul>
-<li><p>Function call overhead monitoring</p></li>
-<li><p>Memory allocation governance</p></li>
-<li><p>Security boundary enforcement</p></li>
-<li><p>Performance degradation detection</p></li>
+<li>
+<p>Function call overhead monitoring</p>
+</li>
+<li>
+<p>Memory allocation governance</p>
+</li>
+<li>
+<p>Security boundary enforcement</p>
+</li>
+<li>
+<p>Performance degradation detection</p>
+</li>
 </ul>
 <h4 id="verification-and-compliance">Verification and Compliance</h4>
 <p>The Governance Triangle Model ensures NASA-STD-8739.8 compliance through:</p>
 <ul>
-<li><p><strong>Deterministic execution</strong>: All governance decisions are mathematically deterministic</p></li>
-<li><p><strong>Bounded resource usage</strong>: Triangle metrics provide provable upper bounds</p></li>
-<li><p><strong>Formal verification</strong>: Mathematical foundation enables automated verification</p></li>
-<li><p><strong>Graceful degradation</strong>: Zone classification enables controlled system behavior</p></li>
+<li>
+<p><strong>Deterministic execution</strong>: All governance decisions are mathematically deterministic</p>
+</li>
+<li>
+<p><strong>Bounded resource usage</strong>: Triangle metrics provide provable upper bounds</p>
+</li>
+<li>
+<p><strong>Formal verification</strong>: Mathematical foundation enables automated verification</p>
+</li>
+<li>
+<p><strong>Graceful degradation</strong>: Zone classification enables controlled system behavior</p>
+</li>
 </ul>
 <p>This comprehensive governance framework ensures that all RIFT compiler operations maintain strict adherence to security, reliability, and performance constraints while enabling systematic architectural evolution.</p>
 <h4 id="output-generation">Output Generation</h4>
 <p>The compilation process generates multiple outputs supporting the complete governance lifecycle:</p>
-<p><strong>Signed Policy Bytecode</strong><br />
+<p><strong>Signed Policy Bytecode</strong><br>
 Executable code with embedded governance contracts</p>
-<p><strong>Entropy Summary</strong><br />
+<p><strong>Entropy Summary</strong><br>
 Statistical signature enabling runtime behavior verification</p>
-<p><strong>Audit Trail</strong><br />
+<p><strong>Audit Trail</strong><br>
 Complete record of governance decisions during compilation</p>
-<p><strong>Consumer Impact Certificate</strong><br />
+<p><strong>Consumer Impact Certificate</strong><br>
 Validation that compiled system serves documented user needs</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>RIFTlang represents a fundamental evolution in programming language design, treating governance as a first-class compilation concern rather than an afterthought. By embedding policy enforcement directly into the token architecture and compilation pipeline, the language makes governance violations impossible rather than merely detectable.</p>
@@ -2052,75 +2149,101 @@ Validation that compiled system serves documented user needs</p>
 <p>The rationale for using arithmetic primitives in governance-enforced integrity checks stems from their mathematical immutability—GCD and LCM relationships are number-theoretic invariants that cannot be manipulated through software exploits or privilege escalation attacks. When properly integrated into the compilation pipeline, these relationships create architectural constraints that make governance violations impossible to represent within the system’s computational model.</p>
 <h1 id="algorithm-specification">Algorithm Specification</h1>
 <h2 id="mathematical-foundation">Mathematical Foundation</h2>
-<p>The Divisor Echo Algorithm is formally defined through the following mathematical constraints. For a candidate number <span class="math inline"><em>n</em></span> with proper divisor set <span class="math inline"><em>D</em> = {<em>d</em><sub>1</sub>, <em>d</em><sub>2</sub>, …, <em>d</em><sub><em>k</em></sub>}</span>, the algorithm validates structural integrity through three simultaneous conditions:</p>
-<p><span class="math display">$$\begin{align}
+<p>The Divisor Echo Algorithm is formally defined through the following mathematical constraints. For a candidate number $<code>n</code>$ with proper divisor set $<code>D = \{d_1, d_2, \ldots, d_k\}</code>$, the algorithm validates structural integrity through three simultaneous conditions:</p>
+<pre><code class="language-math">\begin{align}
 \gcd(n, d_i) &amp;= d_i \quad \forall d_i \in D \label{eq:gcd_condition}\\
 \text{lcm}(n, d_i) &amp;= n \quad \forall d_i \in D \label{eq:lcm_condition}\\
 \sum_{i=1}^{k} d_i &amp;= n \label{eq:sum_condition}
-\end{align}$$</span></p>
+\end{align}
+</code></pre>
 <p>These conditions establish what we term the <strong>Divisor Echo Hypothesis</strong>: a number exhibits cryptographic soundness when its divisor structure preserves mathematical integrity under transformation.</p>
 <h2 id="structural-verification-process">Structural Verification Process</h2>
 <p>The verification process implements a three-phase validation protocol:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> verify_divisor_echo(n, claimed_divisors):</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Verifies structural integrity through Divisor Echo properties</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co">        n: Candidate number for validation</span></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="co">        claimed_divisors: Set of proper divisors to verify</span></span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="co">        ValidationResult with integrity status</span></span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Phase 1: GCD Relationship Validation</span></span>
-<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d <span class="kw">in</span> claimed_divisors:</span>
-<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> gcd(n, d) <span class="op">!=</span> d:</span>
-<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> ValidationResult.INVALID_GCD_RELATIONSHIP</span>
-<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Phase 2: LCM Relationship Validation  </span></span>
-<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d <span class="kw">in</span> claimed_divisors:</span>
-<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> lcm(n, d) <span class="op">!=</span> n:</span>
-<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> ValidationResult.INVALID_LCM_RELATIONSHIP</span>
-<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Phase 3: Summation Property Validation</span></span>
-<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">sum</span>(claimed_divisors) <span class="op">!=</span> n:</span>
-<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> ValidationResult.INVALID_SUM_PROPERTY</span>
-<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ValidationResult.VALID_STRUCTURAL_INTEGRITY</span></code></pre></div>
+<pre><code class="language-python">def verify_divisor_echo(n, claimed_divisors):
+    &quot;&quot;&quot;
+    Verifies structural integrity through Divisor Echo properties
+
+    Args:
+        n: Candidate number for validation
+        claimed_divisors: Set of proper divisors to verify
+
+    Returns:
+        ValidationResult with integrity status
+    &quot;&quot;&quot;
+    # Phase 1: GCD Relationship Validation
+    for d in claimed_divisors:
+        if gcd(n, d) != d:
+            return ValidationResult.INVALID_GCD_RELATIONSHIP
+
+    # Phase 2: LCM Relationship Validation  
+    for d in claimed_divisors:
+        if lcm(n, d) != n:
+            return ValidationResult.INVALID_LCM_RELATIONSHIP
+
+    # Phase 3: Summation Property Validation
+    if sum(claimed_divisors) != n:
+        return ValidationResult.INVALID_SUM_PROPERTY
+
+    return ValidationResult.VALID_STRUCTURAL_INTEGRITY
+</code></pre>
 <h1 id="validation-criteria">Validation Criteria</h1>
 <h2 id="verification-complexity-analysis">Verification Complexity Analysis</h2>
-<p>The verification complexity is bounded by <span class="math inline"><em>O</em>(<em>k</em> ⋅ log <em>n</em>)</span> where <span class="math inline"><em>k</em> = |<em>D</em>|</span> represents the number of proper divisors. This complexity derives from:</p>
+<p>The verification complexity is bounded by $<code>O(k \cdot \log n)</code>$ where $<code>k = |D|</code>$ represents the number of proper divisors. This complexity derives from:</p>
 <ul>
-<li><p>GCD computation: <span class="math inline"><em>O</em>(log min (<em>n</em>, <em>d</em><sub><em>i</em></sub>))</span> per divisor using Euclidean algorithm</p></li>
-<li><p>LCM computation: <span class="math inline"><em>O</em>(log min (<em>n</em>, <em>d</em><sub><em>i</em></sub>))</span> per divisor via <span class="math inline">$\text{lcm}(a,b) = \frac{ab}{\gcd(a,b)}$</span></p></li>
-<li><p>Summation validation: <span class="math inline"><em>O</em>(<em>k</em>)</span> linear accumulation</p></li>
+<li>
+<p>GCD computation: $<code>O(\log \min(n,d_i))</code>$ per divisor using Euclidean algorithm</p>
+</li>
+<li>
+<p>LCM computation: $<code>O(\log \min(n,d_i))</code>$ per divisor via $<code>\text{lcm}(a,b) = \frac{ab}{\gcd(a,b)}</code>$</p>
+</li>
+<li>
+<p>Summation validation: $<code>O(k)</code>$ linear accumulation</p>
+</li>
 </ul>
-<p>Since <span class="math inline"><em>k</em> ≪ <em>n</em></span> for practical applications, verification remains efficient even for large numbers used in cryptographic contexts.</p>
+<p>Since $<code>k \ll n</code>$ for practical applications, verification remains efficient even for large numbers used in cryptographic contexts.</p>
 <h2 id="hardness-analysis">Hardness Analysis</h2>
 <p>The computational hardness of constructing valid Divisor Echo instances derives from the simultaneous satisfaction of three independent mathematical constraints. Analysis indicates:</p>
-<ol type="1">
-<li><p><strong>Factorization Dependency</strong>: Complete proper divisor identification requires factorization capabilities</p></li>
-<li><p><strong>Constraint Intersection</strong>: The intersection of conditions (<a href="#eq:gcd_condition" data-reference-type="ref" data-reference="eq:gcd_condition">[eq:gcd_condition]</a>), (<a href="#eq:lcm_condition" data-reference-type="ref" data-reference="eq:lcm_condition">[eq:lcm_condition]</a>), and (<a href="#eq:sum_condition" data-reference-type="ref" data-reference="eq:sum_condition">[eq:sum_condition]</a>) forms a severely constrained solution space</p></li>
-<li><p><strong>No Polynomial Construction</strong>: No known polynomial-time algorithm exists for constructing numbers satisfying all three conditions</p></li>
+<ol>
+<li>
+<p><strong>Factorization Dependency</strong>: Complete proper divisor identification requires factorization capabilities</p>
+</li>
+<li>
+<p><strong>Constraint Intersection</strong>: The intersection of conditions (<a href="#eq:gcd_condition" data-reference-type="ref" data-reference="eq:gcd_condition">[eq:gcd_condition]</a>), (<a href="#eq:lcm_condition" data-reference-type="ref" data-reference="eq:lcm_condition">[eq:lcm_condition]</a>), and (<a href="#eq:sum_condition" data-reference-type="ref" data-reference="eq:sum_condition">[eq:sum_condition]</a>) forms a severely constrained solution space</p>
+</li>
+<li>
+<p><strong>No Polynomial Construction</strong>: No known polynomial-time algorithm exists for constructing numbers satisfying all three conditions</p>
+</li>
 </ol>
-<p>Conservative estimates place construction complexity at <span class="math inline"><em>O</em>(2<sup>log <em>n</em></sup>)</span> for brute force approaches, potentially exceeding integer factorization hardness for structured instances.</p>
+<p>Conservative estimates place construction complexity at $<code>O(2^{\log n})</code>$ for brute force approaches, potentially exceeding integer factorization hardness for structured instances.</p>
 <h2 id="soundness-guarantees">Soundness Guarantees</h2>
 <p>The algorithm provides strong soundness guarantees against forgery attempts:</p>
 <ul>
-<li><p><strong>Mathematical Rigidity</strong>: GCD/LCM relationships are number-theoretic invariants immune to software manipulation</p></li>
-<li><p><strong>Multi-Dimensional Validation</strong>: Three independent constraints must be satisfied simultaneously</p></li>
-<li><p><strong>Structural Authentication</strong>: Cannot satisfy properties without genuine mathematical structure</p></li>
+<li>
+<p><strong>Mathematical Rigidity</strong>: GCD/LCM relationships are number-theoretic invariants immune to software manipulation</p>
+</li>
+<li>
+<p><strong>Multi-Dimensional Validation</strong>: Three independent constraints must be satisfied simultaneously</p>
+</li>
+<li>
+<p><strong>Structural Authentication</strong>: Cannot satisfy properties without genuine mathematical structure</p>
+</li>
 </ul>
 <p>Spoofing resistance emerges from the requirement that all three conditions must hold simultaneously. An attacker cannot easily construct fake divisors because:</p>
 <ul>
-<li><p>The GCD constraint requires <span class="math inline"><em>d</em></span> to actually divide <span class="math inline"><em>n</em></span></p></li>
-<li><p>The LCM constraint requires specific multiplicative structure</p></li>
-<li><p>The sum constraint requires precise additive balance</p></li>
+<li>
+<p>The GCD constraint requires $<code>d</code>$ to actually divide $<code>n</code>$</p>
+</li>
+<li>
+<p>The LCM constraint requires specific multiplicative structure</p>
+</li>
+<li>
+<p>The sum constraint requires precise additive balance</p>
+</li>
 </ul>
 <h1 id="governance-integration-in-riftlang">Governance Integration in RIFTlang</h1>
 <h2 id="memory-layout-validation">Memory Layout Validation</h2>
 <p>Integration with RIFTlang’s memory-first governance architecture occurs through structural fingerprinting of memory regions:</p>
-<pre class="rift"><code>@policy(&quot;memory_integrity&quot;, level=&quot;critical&quot;)
+<pre><code class="language-rift">@policy(&quot;memory_integrity&quot;, level=&quot;critical&quot;)
 @entropy_bound(max_deviation=0.001)
 governance_contract memory_checksum_validation {
     // Memory alignment with governance constraints
@@ -2132,15 +2255,16 @@ governance_contract memory_checksum_validation {
         verification_cost: O(k*log_n),
         forgery_resistance: exponential_hardness
     },
-    
+
     // Validation function embedding
     validation_function: divisor_echo_verify(memory_fingerprint),
     hardness_requirement: exponential_construction_complexity,
     soundness_guarantee: mathematical_structural_authenticity
-}</code></pre>
+}
+</code></pre>
 <h2 id="token-triplet-architecture-integration">Token Triplet Architecture Integration</h2>
-<p>The algorithm integrates seamlessly with RIFTlang’s token triplet model <span class="math inline">(<em>m</em><em>e</em><em>m</em><em>o</em><em>r</em><em>y</em>, <em>t</em><em>y</em><em>p</em><em>e</em>, <em>v</em><em>a</em><em>l</em><em>u</em><em>e</em>)</span>:</p>
-<pre class="rift"><code>// Token memory with embedded structural validation
+<p>The algorithm integrates seamlessly with RIFTlang’s token triplet model $<code>(memory, type, value)</code>$:</p>
+<pre><code class="language-rift">// Token memory with embedded structural validation
 token_memory: {
     governance_role: cryptographic_attestation,
     access_control: structural_integrity_required,
@@ -2155,53 +2279,74 @@ token_type: {
     semantic_classification: GOVERNANCE_CRITICAL_OPERATION,
     validation_binding: divisor_echo_contract,
     cross_type_interaction: mathematically_verified_only
-}</code></pre>
+}
+</code></pre>
 <h2 id="authority-chain-validation">Authority Chain Validation</h2>
 <p>For Git-RAF multi-signature enforcement, Divisor Echo provides cryptographic proof of authority legitimacy:</p>
-<pre class="rift"><code>authority_validation_chain {
+<pre><code class="language-rift">authority_validation_chain {
     signature_authenticity: divisor_echo_verify(authority_fingerprint),
     consensus_requirement: mathematical_proof_of_legitimacy,
     audit_trail: cryptographic_structural_attestation,
-    
+
     // Multi-party consensus with structural validation
     consensus_protocol: {
         minimum_signatures: computed_from_divisor_echo(authority_set),
         validation_threshold: structural_integrity_maintained,
         governance_escalation: automatic_on_echo_failure
     }
-}</code></pre>
+}
+</code></pre>
 <h1 id="implementation-considerations">Implementation Considerations</h1>
 <h2 id="performance-optimization">Performance Optimization</h2>
 <p>Several optimization strategies enhance practical deployment:</p>
-<ol type="1">
-<li><p><strong>Precomputed Divisor Tables</strong>: Cache common divisor patterns for frequent validation operations</p></li>
-<li><p><strong>Parallel GCD Computation</strong>: Distribute calculations across available processing cores</p></li>
-<li><p><strong>Hierarchical Validation</strong>: Apply Divisor Echo for high-security operations, lighter checksums for routine validation</p></li>
+<ol>
+<li>
+<p><strong>Precomputed Divisor Tables</strong>: Cache common divisor patterns for frequent validation operations</p>
+</li>
+<li>
+<p><strong>Parallel GCD Computation</strong>: Distribute calculations across available processing cores</p>
+</li>
+<li>
+<p><strong>Hierarchical Validation</strong>: Apply Divisor Echo for high-security operations, lighter checksums for routine validation</p>
+</li>
 </ol>
 <h2 id="toolchain-integration">Toolchain Integration</h2>
 <p>Integration with existing rift ecosystem project components follows the waterfall methodology:</p>
 <ul>
-<li><p><strong>Requirements Phase</strong>: Structural integrity requirements defined through Divisor Echo properties</p></li>
-<li><p><strong>Design Phase</strong>: Verification functions incorporated into governance contracts</p></li>
-<li><p><strong>Implementation Phase</strong>: Efficient GCD/LCM verification routines developed</p></li>
-<li><p><strong>Testing Phase</strong>: Validation against known mathematical cases and edge conditions</p></li>
-<li><p><strong>Verification Phase</strong>: Formal proof of soundness properties</p></li>
-<li><p><strong>Integration Phase</strong>: Deployment within AuraSeal attestation framework</p></li>
+<li>
+<p><strong>Requirements Phase</strong>: Structural integrity requirements defined through Divisor Echo properties</p>
+</li>
+<li>
+<p><strong>Design Phase</strong>: Verification functions incorporated into governance contracts</p>
+</li>
+<li>
+<p><strong>Implementation Phase</strong>: Efficient GCD/LCM verification routines developed</p>
+</li>
+<li>
+<p><strong>Testing Phase</strong>: Validation against known mathematical cases and edge conditions</p>
+</li>
+<li>
+<p><strong>Verification Phase</strong>: Formal proof of soundness properties</p>
+</li>
+<li>
+<p><strong>Integration Phase</strong>: Deployment within AuraSeal attestation framework</p>
+</li>
 </ul>
 <h2 id="nlink-header-integration">nLink Header Integration</h2>
 <p>The algorithm integrates with nLink governance headers through embedded structural attestation:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> nlink_governance_header <span class="op">{</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    uint64_t governance_version<span class="op">;</span></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    uint64_t entropy_baseline<span class="op">;</span></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    uint64_t policy_hash<span class="op">;</span></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    uint64_t aura_seal<span class="op">;</span></span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    uint64_t compilation_timestamp<span class="op">;</span></span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Divisor Echo integration</span></span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>    uint64_t structural_fingerprint<span class="op">;</span></span>
-<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>    uint64_t divisor_echo_proof<span class="op">;</span></span>
-<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>    uint64_t mathematical_attestation<span class="op">;</span></span>
-<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> nlink_gov_header_t<span class="op">;</span></span></code></pre></div>
+<pre><code class="language-objectivec">typedef struct nlink_governance_header {
+    uint64_t governance_version;
+    uint64_t entropy_baseline;
+    uint64_t policy_hash;
+    uint64_t aura_seal;
+    uint64_t compilation_timestamp;
+
+    // Divisor Echo integration
+    uint64_t structural_fingerprint;
+    uint64_t divisor_echo_proof;
+    uint64_t mathematical_attestation;
+} nlink_gov_header_t;
+</code></pre>
 <h1 id="strategic-assessment">Strategic Assessment</h1>
 <h2 id="validation-outcome">Validation Outcome</h2>
 <p>Based on comprehensive analysis of verification complexity, hardness properties, and soundness guarantees, the Divisor Echo Algorithm demonstrates the asymmetric computational burden required for AuraSeal governance contracts.</p>
@@ -2209,18 +2354,32 @@ token_type: {
 <p>The algorithm provides strong cryptographic guarantees through mathematical foundation while maintaining efficient verification properties essential for real-time governance enforcement in safety-critical systems.</p>
 <h2 id="deployment-recommendation">Deployment Recommendation</h2>
 <p>Immediate advancement to prototype phase is recommended with the following development priorities:</p>
-<ol type="1">
-<li><p>Implementation of prototype verification functions within nLink governance headers</p></li>
-<li><p>Development of comprehensive test harnesses for mathematical edge cases</p></li>
-<li><p>Integration testing with Git-RAF cryptographic attestation pipeline</p></li>
-<li><p>Performance benchmarking against existing entropy validation methods</p></li>
+<ol>
+<li>
+<p>Implementation of prototype verification functions within nLink governance headers</p>
+</li>
+<li>
+<p>Development of comprehensive test harnesses for mathematical edge cases</p>
+</li>
+<li>
+<p>Integration testing with Git-RAF cryptographic attestation pipeline</p>
+</li>
+<li>
+<p>Performance benchmarking against existing entropy validation methods</p>
+</li>
 </ol>
 <h2 id="risk-assessment">Risk Assessment</h2>
 <p>The primary risks for deployment center on computational performance in high-throughput environments. Mitigation strategies include:</p>
 <ul>
-<li><p>Precomputation of common divisor patterns</p></li>
-<li><p>Hierarchical application based on security criticality</p></li>
-<li><p>Parallel processing optimization for multi-core environments</p></li>
+<li>
+<p>Precomputation of common divisor patterns</p>
+</li>
+<li>
+<p>Hierarchical application based on security criticality</p>
+</li>
+<li>
+<p>Parallel processing optimization for multi-core environments</p>
+</li>
 </ul>
 <h1 id="appendix-mathematical-foundations-from-the-hidden-cipher">Appendix: Mathematical Foundations from The Hidden Cipher</h1>
 <h2 id="perfect-number-theory-connection">Perfect Number Theory Connection</h2>
@@ -2229,11 +2388,10 @@ token_type: {
 <p>The entropy-aware modeling approach described in the foundational research enables strategic validation of candidate numbers. Rather than uniform validation across all inputs, the system can prioritize high-entropy regions where structural integrity is most critical.</p>
 <h2 id="context-aware-one-way-function-properties">Context-Aware One-Way Function Properties</h2>
 <p>The structural awareness properties identified in the research enable context-aware validation that goes beyond simple hash verification. The algorithm evaluates not just data values but the mathematical relationships between components, providing deeper integrity assurance.</p>
-<h1 id="conclusion-1">Conclusion</h1>
+<h1 id="conclusion_1">Conclusion</h1>
 <p>The Divisor Echo Algorithm represents a novel approach to structural integrity validation that aligns with the governance-first architecture philosophy of the rift ecosystem project. The mathematical rigor provides provable security properties required for safety-critical systems deployment while maintaining the computational efficiency necessary for practical governance enforcement.</p>
 <p>Integration with the RIFTlang ecosystem through memory-first governance contracts, token triplet architecture, and AuraSeal cryptographic attestation creates a comprehensive framework for trustworthy software development in governance-critical environments.</p>
 <p>The approval for AuraSeal integration enables advancement to prototype development phase, supporting the broader objective of creating computational systems that can be trusted with society’s most critical infrastructure through mathematical certainty rather than procedural hope.</p>
-
   </main>
   <footer>
     <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-obinexus-computing-riftecosystem</code></p>

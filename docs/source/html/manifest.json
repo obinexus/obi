@@ -1471,7 +1471,7 @@
   ],
   "toolchain": {
     "tools": {
-      "python": "C:\\Users\\Nnamdi\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "python": "C:\\ProgramData\\anaconda3\\python.exe",
       "pandoc": "C:\\ProgramData\\anaconda3\\Library\\bin\\pandoc.EXE",
       "pdflatex": null,
       "xelatex": null,
@@ -1479,6 +1479,6 @@
       "bibtex": null
     },
     "pdf_extractor": "pdfplumber",
-    "python_markdown": false
+    "python_markdown": true
   }
 }
