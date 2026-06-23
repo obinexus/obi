@@ -34,6 +34,12 @@ classifiers = [
 
 dependencies = []
 
+[project.optional-dependencies]
+docs = [
+  "beautifulsoup4>=4.12",
+  "lxml>=5.0"
+]
+
 [project.urls]
 Homepage = "https://github.com/obinexus/obi"
 Repository = "https://github.com/obinexus/obi"

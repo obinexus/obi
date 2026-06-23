@@ -1,0 +1,28 @@
+{
+  "name": "obi-documentation",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Static documentation toolchain for OBI - Ontological Bayesian Intelligence.",
+  "scripts": {
+    "clean": "node scripts/clean-docs.mjs",
+    "docs:build": "node scripts/build-docs.mjs",
+    "docs:serve": "node scripts/serve-docs.mjs",
+    "docs:index": "node scripts/index-docs.mjs",
+    "docs:validate": "node scripts/validate-docs.mjs",
+    "publish:check": "npm run docs:build && npm run docs:validate",
+    "nw:start": "nw nw",
+    "nw:build": "echo \"NW.js packaging placeholder\""
+  },
+  "keywords": [
+    "OBI",
+    "OBINexus",
+    "Ontological Bayesian Intelligence",
+    "documentation",
+    "Bayesian reasoning",
+    "semantic graphs"
+  ],
+  "author": "Nnamdi Michael Okpala / OBINexus",
+  "license": "MIT",
+  "dependencies": {}
+}
