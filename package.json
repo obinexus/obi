@@ -26,5 +26,7 @@
   ],
   "author": "Nnamdi Michael Okpala / OBINexus",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "nwjs": "^0.0.15"
+  }
 }
