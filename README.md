@@ -43,11 +43,15 @@ The Node build currently has no external runtime dependencies, so it is easy to 
 
 ```powershell
 npm run clean
+npm run docs:populate
 npm run docs:build
 npm run docs:validate
 npm run docs:serve
+npm run docs:serve:html
 npm run publish:check
 ```
+
+`npm run docs:populate` extracts ZIP bundles from `docs/archive`, converts extracted text/LaTeX/PDF material into Markdown under `docs/source/md`, and writes standalone source HTML under `docs/source/html`.
 
 `npm run docs:build` generates:
 
@@ -60,6 +64,8 @@ npm run publish:check
 - `docs/public/manifest.json`
 - `docs/public/assets/obi.css`
 - `docs/public/assets/obi.js`
+- copied PDFs under `docs/public/pdf`
+- copied source HTML under `docs/public/source-html`
 
 ## Source Formats
 
@@ -68,16 +74,28 @@ Place source files in these folders:
 - `.tex` in `docs/source/tex`
 - `.bib` in `docs/source/bib`
 - `.md` in `docs/source/md`
+- `.pdf` in `docs/source/pdf`
 - `.txt` in `docs/source/txt`
 - images and diagrams in `docs/source/assets`
+- generated archive/PDF HTML in `docs/source/html`
 
 The build converts source pages into static HTML under `docs/public/sources`.
 
-## LaTeX and MiKTeX Notes
+## Archive, PDF, Pandoc, and MiKTeX Notes
 
-The HTML build does not require MiKTeX. The Node converter handles common LaTeX structures directly, including titles, authors, abstracts, sections, lists, citations, labels, references, and TeX math blocks.
+The population step uses Python and prefers Pandoc for LaTeX-to-Markdown and Markdown-to-HTML conversion. The script also uses Python Markdown when it is installed, and uses `pdfplumber` or `pypdf` for PDF text extraction.
 
-Math syntax is preserved and rendered in HTML with MathJax. If a local TeX toolchain such as MiKTeX, `pdflatex`, `xelatex`, or `bibtex` is installed, it can be added later as an optional PDF build path without blocking the static HTML pipeline.
+MiKTeX or another LaTeX distribution is optional for future PDF compilation. The HTML path does not require a TeX engine, but the generated `docs/source/html/manifest.json` records whether Pandoc, `pdflatex`, `xelatex`, `lualatex`, and `bibtex` were available.
+
+Math syntax is preserved and rendered in HTML with MathJax. Image Markdown is rendered with `alt` text and responsive sizing so certificate images, diagrams, and extracted figures remain accessible in the HTML view.
+
+To inspect the raw generated HTML directly:
+
+```powershell
+npm run docs:serve:html
+```
+
+Open `http://127.0.0.1:8000/html/`.
 
 ## BibTeX Notes
 

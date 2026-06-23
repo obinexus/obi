@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deterministic Replay Monoid Homomorphism and Induction Proof | OBI Source HTML</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8f5;
+      --surface: #ffffff;
+      --text: #202321;
+      --muted: #626962;
+      --accent: #147d7e;
+      --border: #d9ddd4;
+      --code: #eef1eb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    header, main, footer { max-width: 1060px; margin: 0 auto; padding: 1.25rem; }
+    header { border-bottom: 4px solid var(--accent); background: #161819; color: #f5f7f2; max-width: none; }
+    header > div { max-width: 1060px; margin: 0 auto; }
+    a { color: #0f5f60; }
+    header a { color: inherit; }
+    main { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-top: 1.25rem; }
+    h1, h2, h3 { line-height: 1.25; }
+    h1 { margin-top: 0; font-size: clamp(2rem, 5vw, 3.5rem); }
+    p, li { max-width: 78ch; }
+    img { max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; }
+    pre { overflow: auto; background: #20251f; color: #f7fbf2; padding: 1rem; border-radius: 8px; }
+    code { background: var(--code); padding: 0.12rem 0.25rem; border-radius: 5px; }
+    pre code { background: transparent; padding: 0; }
+    table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; }
+    th, td { border: 1px solid var(--border); padding: 0.45rem 0.6rem; text-align: left; }
+    blockquote { border-left: 4px solid var(--accent); margin-left: 0; padding-left: 1rem; color: var(--muted); }
+    .skip-link { position: absolute; left: 1rem; top: 0.75rem; transform: translateY(-200%); }
+    .skip-link:focus { transform: translateY(0); background: var(--surface); color: var(--text); padding: 0.5rem; }
+  </style>
+  <script>
+    window.MathJax = { tex: { inlineMath: [["\\(", "\\)"], ["$", "$"]], displayMath: [["\\[", "\\]"], ["$$", "$$"]] } };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header>
+    <div>
+      <a href="../index.html">OBI Source HTML</a>
+      <h1>Deterministic Replay Monoid Homomorphism and Induction Proof</h1>
+      <p>Generated from Markdown with Python tooling and Pandoc-compatible source preservation.</p>
+    </div>
+  </header>
+  <main id="content" tabindex="-1">
+    <h1 id="deterministic-replay-monoid-homomorphism-and-induction-proof">Deterministic Replay Monoid Homomorphism and Induction Proof</h1>
+<p>Source folder: <code>overleaf-projects-75-items-copy/Deterministic Replay - Monoid Homomorphism and Induction Proof</code></p>
+<h2 id="extracted-files">Extracted Files</h2>
+<ul>
+<li><code>main.tex</code></li>
+</ul>
+<h2 id="main">main</h2>
+<h1 id="deterministic-replay-monoid-homomorphism-and-induction-proof-1">Deterministic Replay: Monoid Homomorphism and Induction Proof</h1>
+<div class="definition">
+
+<p><strong>Definition 1</strong> (State space). <em>Let <span class="math inline">𝔹 = {0, 1}</span>. Let <span class="math inline"><em>Σ</em></span> denote the system state space (finite or otherwise well-typed).</em></p>
+</div>
+
+<div class="definition">
+
+<p><strong>Definition 2</strong> (Events, event monoid). *Let <span class="math inline">𝒯</span> be a finite set of <em>transition labels</em> and let <span class="math inline"><em>I</em></span> be the set of <em>input tokens</em> (including recorded external responses, binding/router identifiers, timestamps, etc.). Define the event set</p>
+<p><span class="math display">ℰ := 𝒯 × <em>I</em> × ℳ,</span></p>
+<p>where <span class="math inline">ℳ</span> is an environment metadata space. The free monoid <span class="math inline">ℰ<sup>*</sup></span> consists of all finite sequences (strings) of events with concatenation <span class="math inline">⋅</span> and empty word <span class="math inline"><em>ε</em></span>.*</p>
+</div>
+
+<div class="definition">
+
+<p><strong>Definition 3</strong> (Endomorphism monoid). <em>Let <span class="math inline">End(<em>Σ</em>)</span> denote the monoid of endomorphisms on <span class="math inline"><em>Σ</em></span> under composition <span class="math inline">∘</span>, with identity <span class="math inline">id<sub><em>Σ</em></sub></span>.</em></p>
+</div>
+
+<div class="definition">
+
+<p><strong>Definition 4</strong> (Per-event semantics). *For each transition label <span class="math inline"><em>τ</em> ∈ 𝒯</span> define a <em>pure</em> transition function</p>
+<p><span class="math display"><em>ϕ</em><sub><em>τ</em></sub> : <em>Σ</em> × <em>I</em> × <em>R</em> × ℳ → <em>Σ</em>,</span></p>
+<p>where <span class="math inline"><em>R</em></span> denotes a deterministic random-output domain (the PRNG output space). For an event <span class="math inline"><em>e</em> = (<em>τ</em>, <em>i</em>, <em>η</em>) ∈ ℰ</span> and a PRNG sample <span class="math inline"><em>r</em> ∈ <em>R</em></span> the per-event endomorphism is</p>
+<p><span class="math display">$$F(e;r) : \Sigma \to \Sigma,\qquad F(e;r)(\sigma) := \phi_\tau(\sigma,i,r,\eta).
+```*
+
+&lt;/div&gt;
+
+&lt;div class="definition"&gt;
+
+**Definition 5** (Telemetry record). *A telemetry record is a tuple $`R=(g, s, w, \Delta)`$ where*
+
+- *$`g`$ is a GUID trace identifier,*
+
+- *$`s`$ is a cryptographic seed (integer),*
+
+- *$`w = e_1 e_2 \dots e_n \in \mathcal{E}^*`$ is the ordered event log,*
+
+- *$`\Delta`$ is an optional set of snapshot state(s) (checkpoint(s)).*
+
+*Associated to seed $`s`$ and a deterministic PRNG is a sequence of outputs $`(r_1,r_2,\dots)`$.*
+
+&lt;/div&gt;
+
+&lt;div class="assumption"&gt;
+
+**Assumption 6** (Completeness of recorded nondeterminism). *All sources of nondeterminism present in the original execution are either:*
+
+1.  *explicitly recorded in $`w`$ or $`\Delta`$, or*
+
+2.  *deterministically derivable from the seed $`s`$ via the PRNG.*
+
+&lt;/div&gt;
+
+&lt;div class="assumption"&gt;
+
+**Assumption 7** (Purity of replay semantics). *During replay, the binding implementations used to compute $`\phi_\tau`$ are pure functions of their explicit inputs: prior state, input token, PRNG output, and environment metadata. External side effects are replaced by recorded responses or deterministic stubs.*
+
+&lt;/div&gt;
+
+&lt;div class="definition"&gt;
+
+**Definition 8** (Extension of $`F`$ to sequences). *Fix a record $`R=(g,s,w,\Delta)`$ and PRNG outputs $`(r_1,r_2,\dots,r_n)`$. For event $`e_j`$ define $`F(e_j):=F(e_j;r_j)\in\mathrm{End}(\Sigma)`$. Extend $`F`$ multiplicatively to sequences by
+``` math
+F(e_1 e_2 \cdots e_n) := F(e_n)\circ F(e_{n-1})\circ \cdots \circ F(e_1).$$</span></p>
+<p>By convention, <span class="math inline"><em>F</em>(<em>ε</em>) := id<sub><em>Σ</em></sub></span>.*</p>
+</div>
+
+<div class="lemma">
+
+<p><strong>Lemma 9</strong> (Monoid homomorphism). *The map</p>
+<p><span class="math display"><em>F</em> : (ℰ<sup>*</sup>, ⋅, <em>ε</em>) → (End(<em>Σ</em>), ∘, id<sub><em>Σ</em></sub>)</span></p>
+<p>defined above is a monoid homomorphism: for all <span class="math inline"><em>u</em>, <em>v</em> ∈ ℰ<sup>*</sup></span>,</p>
+<p><span class="math display">$$F(u\cdot v) = F(v)\circ F(u),
+\qquad F(\varepsilon)=\mathrm{id}_\Sigma.
+```*
+
+&lt;/div&gt;
+
+&lt;div class="proof"&gt;
+
+*Proof.* Immediate from the definition. The empty word maps to identity by definition. Concatenation $`u\cdot v`$ corresponds to the sequential application of event endomorphisms; by definition of composition ordering we have $`F(u\cdot v)=F(v)\circ F(u)`$. Hence $`F`$ preserves the monoid structure. ◻
+
+&lt;/div&gt;
+
+&lt;div class="theorem"&gt;
+
+**Theorem 10** (Deterministic Replay — formal statement). *Let $`R=(g,s,w,\Delta)`$ be a telemetry record satisfying the stated assumptions. Let $`w=e_1 e_2 \cdots e_n`$ and let $`(r_1,\dots,r_n)`$ be the PRNG outputs deterministically generated from seed $`s`$ according to the agreed indexing convention. Then there exists a deterministic replay procedure $`\mathrm{Replay}(R)`$ that reconstructs the unique state sequence
+``` math
+\sigma_0 \xrightarrow{e_1} \sigma_1 \xrightarrow{e_2} \cdots \xrightarrow{e_n} \sigma_n,$$</span></p>
+<p>where <span class="math inline"><em>σ</em><sub><em>j</em></sub> = <em>F</em>(<em>e</em><sub>1</sub>⋯<em>e</em><sub><em>j</em></sub>)(<em>σ</em><sub>0</sub>)</span> and <span class="math inline"><em>σ</em><sub>0</sub></span> equals the snapshot in <span class="math inline"><em>Δ</em></span> (if provided) or the canonical initial state.*</p>
+</div>
+
+<div class="proof">
+
+<p><em>Proof.</em> We prove by induction on <span class="math inline"><em>n</em> = |<em>w</em>|</span> that replay reconstructs the same states as the original execution.</p>
+<h4 id="base-case-n0">Base case (<span class="math inline"><em>n</em> = 0</span>).</h4>
+<p>If <span class="math inline"><em>w</em> = <em>ε</em></span> then <span class="math inline"><em>F</em>(<em>w</em>) = id<sub><em>Σ</em></sub></span> and the replayed state sequence is the singleton <span class="math inline">{<em>σ</em><sub>0</sub>}</span> where <span class="math inline"><em>σ</em><sub>0</sub></span> is the snapshot in <span class="math inline"><em>Δ</em></span> (or the canonical initial state). Equality with the original trivially holds.</p>
+<h4 id="inductive-hypothesis">Inductive hypothesis.</h4>
+<p>Assume for some <span class="math inline"><em>k</em> ≥ 0</span> that for any telemetry record whose event log length is <span class="math inline"><em>k</em></span> the replay procedure reconstructs the original states <span class="math inline"><em>σ</em><sub>0</sub>, <em>σ</em><sub>1</sub>, …, <em>σ</em><sub><em>k</em></sub></span> satisfying</p>
+<p><span class="math display"><em>σ</em><sub><em>j</em></sub> = <em>F</em>(<em>e</em><sub>1</sub>⋯<em>e</em><sub><em>j</em></sub>)(<em>σ</em><sub>0</sub>)  for 0 ≤ <em>j</em> ≤ <em>k</em>.</span></p>
+<h4 id="inductive-step-kto-k1">Inductive step (<span class="math inline"><em>k</em> → <em>k</em> + 1</span>).</h4>
+<p>Consider a record with <span class="math inline"><em>w</em> = <em>e</em><sub>1</sub>⋯<em>e</em><sub><em>k</em></sub><em>e</em><sub><em>k</em> + 1</sub></span> and associated PRNG outputs <span class="math inline">(<em>r</em><sub>1</sub>, …, <em>r</em><sub><em>k</em> + 1</sub>)</span>. By the inductive hypothesis, replaying the prefix <span class="math inline"><em>e</em><sub>1</sub>⋯<em>e</em><sub><em>k</em></sub></span> produces the state <span class="math inline"><em>σ</em><sub><em>k</em></sub> = <em>F</em>(<em>e</em><sub>1</sub>⋯<em>e</em><sub><em>k</em></sub>)(<em>σ</em><sub>0</sub>)</span>. For step <span class="math inline"><em>k</em> + 1</span> the replay computes</p>
+<p><span class="math display"><em>σ</em><sub><em>k</em> + 1<sup>′</sup></sub> := <em>F</em>(<em>e</em><sub><em>k</em> + 1</sub>; <em>r</em><sub><em>k</em> + 1</sub>)(<em>σ</em><sub><em>k</em></sub>),</span></p>
+<p>where <span class="math inline"><em>F</em>(<em>e</em><sub><em>k</em> + 1</sub>; <em>r</em><sub><em>k</em> + 1</sub>)</span> is the per-event endomorphism computed with the recorded input token, environment metadata, and the PRNG output <span class="math inline"><em>r</em><sub><em>k</em> + 1</sub></span>. By the assumptions:</p>
+<ul>
+<li><p>the PRNG output <span class="math inline"><em>r</em><sub><em>k</em> + 1</sub></span> equals the original run’s <span class="math inline"><em>r</em><sub><em>k</em> + 1</sub></span> (determinism of PRNG given seed <span class="math inline"><em>s</em></span>),</p></li>
+<li><p>the input token and environment metadata match the original values (they are recorded),</p></li>
+<li><p>the per-event function <span class="math inline"><em>ϕ</em><sub><em>τ</em><sub><em>k</em> + 1</sub></sub></span> is pure and deterministic for the given arguments.</p></li>
+</ul>
+<p>Thus <span class="math inline"><em>σ</em><sub><em>k</em> + 1<sup>′</sup></sub> = <em>σ</em><sub><em>k</em> + 1</sub></span>, where <span class="math inline"><em>σ</em><sub><em>k</em> + 1</sub></span> is the state the original execution produced after event <span class="math inline"><em>e</em><sub><em>k</em> + 1</sub></span>. This completes the inductive step.</p>
+<p>Therefore, by mathematical induction, replay reconstructs the same state sequence for all <span class="math inline"><em>n</em></span>. ◻</p>
+</div>
+
+<div class="corollary">
+
+<p><strong>Corollary 11</strong> (Closure under concatenation). *If <span class="math inline"><em>R</em><sub>1</sub> = (<em>g</em><sub>1</sub>, <em>s</em><sub>1</sub>, <em>w</em><sub>1</sub>, <em>Δ</em><sub>1</sub>)</span> and <span class="math inline"><em>R</em><sub>2</sub> = (<em>g</em><sub>2</sub>, <em>s</em><sub>2</sub>, <em>w</em><sub>2</sub>, <em>Δ</em><sub>2</sub>)</span> are replayable traces and the concatenation <span class="math inline"><em>w</em><sub>1</sub> ⋅ <em>w</em><sub>2</sub></span> is provided with a consistent PRNG indexing scheme (or equivalent combined seed), then the concatenated trace is replayable and</p>
+<p><span class="math display">$$F(w_1\cdot w_2) = F(w_2)\circ F(w_1).
+```*
+
+&lt;/div&gt;
+
+&lt;div class="remark"&gt;
+
+**Remark 12** (Practical caveats). *The theorem is only valid under the stated assumptions. In practice, ensure:*
+
+- *explicit recording of external responses and wall-clock values if they influence $`\phi_\tau`$;*
+
+- *deterministic handling (or recording) of concurrency interleavings (vector clocks, global counters, or total-order logs);*
+
+- *PRNG outputs are indexed and/or recorded so the mapping event index $`\mapsto r_j`$ is unambiguous.*
+
+*Failure to observe these requirements yields partial or no reproducibility.*
+
+&lt;/div&gt;
+$$</span></p>
+
+  </main>
+  <footer>
+    <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-deterministic-replay-monoid-homomorphism-and-induction-proof</code></p>
+  </footer>
+</body>
+</html>

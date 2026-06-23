@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A Non Isomorphic Lattice Based Post Quantum Identity Proof | OBI Source HTML</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8f5;
+      --surface: #ffffff;
+      --text: #202321;
+      --muted: #626962;
+      --accent: #147d7e;
+      --border: #d9ddd4;
+      --code: #eef1eb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    header, main, footer { max-width: 1060px; margin: 0 auto; padding: 1.25rem; }
+    header { border-bottom: 4px solid var(--accent); background: #161819; color: #f5f7f2; max-width: none; }
+    header > div { max-width: 1060px; margin: 0 auto; }
+    a { color: #0f5f60; }
+    header a { color: inherit; }
+    main { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-top: 1.25rem; }
+    h1, h2, h3 { line-height: 1.25; }
+    h1 { margin-top: 0; font-size: clamp(2rem, 5vw, 3.5rem); }
+    p, li { max-width: 78ch; }
+    img { max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; }
+    pre { overflow: auto; background: #20251f; color: #f7fbf2; padding: 1rem; border-radius: 8px; }
+    code { background: var(--code); padding: 0.12rem 0.25rem; border-radius: 5px; }
+    pre code { background: transparent; padding: 0; }
+    table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; }
+    th, td { border: 1px solid var(--border); padding: 0.45rem 0.6rem; text-align: left; }
+    blockquote { border-left: 4px solid var(--accent); margin-left: 0; padding-left: 1rem; color: var(--muted); }
+    .skip-link { position: absolute; left: 1rem; top: 0.75rem; transform: translateY(-200%); }
+    .skip-link:focus { transform: translateY(0); background: var(--surface); color: var(--text); padding: 0.5rem; }
+  </style>
+  <script>
+    window.MathJax = { tex: { inlineMath: [["\\(", "\\)"], ["$", "$"]], displayMath: [["\\[", "\\]"], ["$$", "$$"]] } };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header>
+    <div>
+      <a href="../index.html">OBI Source HTML</a>
+      <h1>A Non Isomorphic Lattice Based Post Quantum Identity Proof</h1>
+      <p>Generated from Markdown with Python tooling and Pandoc-compatible source preservation.</p>
+    </div>
+  </header>
+  <main id="content" tabindex="-1">
+    <h1 id="a-non-isomorphic-lattice-based-post-quantum-identity-proof">A Non Isomorphic Lattice Based Post Quantum Identity Proof</h1>
+<p>Source folder: <code>overleaf-projects-75-items-copy/A Non-Isomorphic Lattice-Based Post-Quantum Identity Proof</code></p>
+<h2 id="extracted-files">Extracted Files</h2>
+<ul>
+<li><code>main.tex</code></li>
+</ul>
+<h2 id="main">main</h2>
+<h1 id="introduction">Introduction</h1>
+<p>ThreadProof addresses the fundamental challenge of creating cryptographically secure identities that maintain their integrity across different computational bases while resisting quantum attacks. Traditional identity systems rely on algebraic structures that may be vulnerable to transformation attacks or quantum algorithms. ThreadProof introduces a novel approach using non-isomorphic lattice transformations that are inherently locked to their coordinate system.</p>
+<h2 id="motivation">Motivation</h2>
+<p>The advent of quantum computing necessitates cryptographic systems that resist both classical and quantum attacks. While lattice-based cryptography provides quantum resistance through the Learning With Errors (LWE) problem, existing implementations often allow transformations between coordinate systems that may weaken security guarantees. ThreadProof addresses this by enforcing strict non-isomorphism between geometric representations.</p>
+<h2 id="contributions">Contributions</h2>
+<p>This work makes the following contributions:</p>
+<ol type="1">
+<li><p>A formal framework for non-isomorphic lattice-based identity proofs</p></li>
+<li><p>Mathematical proofs of completeness, soundness, and quantum resistance</p></li>
+<li><p>Integration methodology with existing OBINexus cryptographic infrastructure</p></li>
+<li><p>Practical implementation guidelines with performance guarantees</p></li>
+</ol>
+<h1 id="system-architecture">System Architecture</h1>
+<h2 id="canonical-identity-definition-cid">Canonical Identity Definition (CID)</h2>
+<p>The CID serves as the fundamental identity primitive in ThreadProof:</p>
+<div class="definition">
+
+<p><strong>Definition 1</strong> (Canonical Identity Definition). A CID is a tuple <span class="math inline">(<em>I</em>, <em>V</em>, <em>S</em>, <em>B</em>, <em>E</em>, <em>K</em>, <em>P</em>, <em>C</em>)</span> where:</p>
+<ul>
+<li><p><span class="math inline"><em>I</em></span> = Identity string following format <code>ZID:QZ-Lattice-XX</code></p></li>
+<li><p><span class="math inline"><em>V</em></span> = Version string using semantic versioning</p></li>
+<li><p><span class="math inline"><em>S</em></span> = Structure type (non-isomorphic lattice)</p></li>
+<li><p><span class="math inline"><em>B</em></span> = Base space (Cartesian, Polar, etc.)</p></li>
+<li><p><span class="math inline"><em>E</em></span> = Encoding function (HKDF-SHA3-512)</p></li>
+<li><p><span class="math inline"><em>K</em></span> = Key derivation method (context-bound)</p></li>
+<li><p><span class="math inline"><em>P</em></span> = Proof type (post-quantum lattice)</p></li>
+<li><p><span class="math inline"><em>C</em></span> = Configuration parameters</p></li>
+</ul>
+</div>
+
+<h2 id="congregation-linker">Congregation Linker</h2>
+<p>The Congregation Linker provides modular component integration:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Congregation <span class="op">=</span> {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;linked_components&quot;</span>: [</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;ZID Root Key&quot;</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Proof Generator&quot;</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Lattice Mapper&quot;</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Non-Isomorphic Verifier&quot;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;validation&quot;</span>: {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;structure_check&quot;</span>: <span class="va">True</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;transform_space&quot;</span>: <span class="st">&quot;Locked&quot;</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;derivation_protection&quot;</span>: <span class="st">&quot;Enabled&quot;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h1 id="mathematical-foundation">Mathematical Foundation</h1>
+<h2 id="lattice-structure">Lattice Structure</h2>
+<p>Let <span class="math inline"><em>Λ</em></span> be a lattice in <span class="math inline">ℝ<sup><em>n</em></sup></span> generated by basis <span class="math inline"><strong>B</strong> = {<strong>b</strong><sub>1</sub>, …, <strong>b</strong><sub><em>n</em></sub>}</span>:</p>
+<p><span class="math display">$$\Lambda = \left\{ \sum_{i=1}^{n} z_i \mathbf{b}_i : z_i \in \mathbb{Z} \right\}$$</span></p>
+<h2 id="non-isomorphism-constraint">Non-Isomorphism Constraint</h2>
+<div class="definition">
+
+<p><strong>Definition 2</strong> (Non-Isomorphic Lattices). Two lattices <span class="math inline"><em>Λ</em><sub>1</sub></span> and <span class="math inline"><em>Λ</em><sub>2</sub></span> with bases in different coordinate systems are non-isomorphic if there exists no linear transformation <span class="math inline"><em>T</em></span> such that:</p>
+<p><span class="math display"><em>T</em>(<em>Λ</em><sub>1</sub>) = <em>Λ</em><sub>2</sub> and det (<em>T</em>) = ±1</span></p>
+</div>
+
+<h1 id="axiomatic-framework">Axiomatic Framework</h1>
+<p>ThreadProof operates under three fundamental axioms:</p>
+<div id="ax:non-iso" class="axiom">
+
+<p><strong>Axiom 1</strong> (Structural Non-Isomorphism). A cryptographic lattice transformation must be non-isomorphic across coordinate systems. For all transformations <span class="math inline"><em>T</em> : <em>X</em> → <em>Y</em></span>, where <span class="math inline"><em>X</em></span> is Cartesian and <span class="math inline"><em>Y</em></span> is polar, there exists no bijection <span class="math inline"><em>f</em></span> such that <span class="math inline"><em>T</em><sub><em>X</em></sub> ≅ <em>T</em><sub><em>Y</em></sub></span>.</p>
+</div>
+
+<div id="ax:encoding" class="axiom">
+
+<p><strong>Axiom 2</strong> (Encoding Rigidity). Proofs generated in a given lattice-structured system <span class="math inline"><em>L</em></span> are valid only within the coordinate space of <span class="math inline"><em>L</em></span>. Translation to an alternate geometric form invalidates verification.</p>
+</div>
+
+<div id="ax:kdf" class="axiom">
+
+<p><strong>Axiom 3</strong> (Key Derivation Invariance). Derived keys <span class="math inline"><em>k</em><sup>′</sup> ← HKDF(<em>k</em>, context)</span> preserve the transformation structure of their origin key. Any attempt to derive across systems (Cartesian <span class="math inline">→</span> polar) breaks key validity.</p>
+</div>
+
+<h1 id="security-properties">Security Properties</h1>
+<h2 id="completeness">Completeness</h2>
+<div class="theorem">
+
+<p><strong>Theorem 1</strong> (Completeness of ThreadProof). For any valid identity <span class="math inline"><em>I</em></span> with corresponding proof <span class="math inline"><em>π</em></span>, the verification algorithm <span class="math inline"><em>V</em></span> always accepts:</p>
+<p><span class="math display">Pr [<em>V</em>(<em>I</em>, <em>π</em>) = 1|Valid(<em>I</em>, <em>π</em>)] = 1</span></p>
+</div>
+
+<div class="proof">
+
+<p><em>Proof.</em> Let <span class="math inline"><em>I</em></span> be a valid identity with CID structure <span class="math inline">(<em>I</em>, <em>V</em>, <em>S</em>, <em>B</em>, <em>E</em>, <em>K</em>, <em>P</em>, <em>C</em>)</span> and proof <span class="math inline"><em>π</em></span> generated by the honest prover algorithm. By construction:</p>
+<p>1. The lattice basis <span class="math inline"><strong>B</strong></span> is correctly formed in the specified coordinate system 2. The encoding <span class="math inline"><em>E</em></span> produces a deterministic output for given input 3. The proof <span class="math inline"><em>π</em></span> contains valid witness vectors <span class="math inline"><strong>w</strong> ∈ <em>Λ</em></span></p>
+<p>Since the verifier checks: - Lattice membership: <span class="math inline"><strong>w</strong> ∈ <em>Λ</em></span> - Coordinate system match: <span class="math inline">Space(<em>π</em>) = <em>B</em></span> - Encoding validation: <span class="math inline"><em>E</em>(<strong>w</strong>) = commitment</span></p>
+<p>All checks pass with probability 1 for honestly generated proofs. <span class="math inline">▫</span> ◻</p>
+</div>
+
+<h2 id="soundness">Soundness</h2>
+<div class="theorem">
+
+<p><strong>Theorem 2</strong> (Soundness of ThreadProof). For any invalid identity <span class="math inline"><em>I</em><sup>′</sup></span> or forged proof <span class="math inline"><em>π</em><sup>′</sup></span>, the probability of verification acceptance is negligible:</p>
+<p><span class="math display">Pr [<em>V</em>(<em>I</em><sup>′</sup>, <em>π</em><sup>′</sup>) = 1|¬Valid(<em>I</em><sup>′</sup>, <em>π</em><sup>′</sup>)] ≤ negl(<em>λ</em>)</span></p>
+<p>where <span class="math inline"><em>λ</em></span> is the security parameter.</p>
+</div>
+
+<div class="proof">
+
+<p><em>Proof.</em> Assume adversary <span class="math inline">𝒜</span> attempts to forge a proof <span class="math inline"><em>π</em><sup>′</sup></span> for invalid identity <span class="math inline"><em>I</em><sup>′</sup></span>. By Axiom <a href="#ax:non-iso" data-reference-type="ref" data-reference="ax:non-iso">1</a>, <span class="math inline">𝒜</span> cannot transform a valid proof from another coordinate system.</p>
+<p>The security reduces to the hardness of the Learning With Errors problem:</p>
+<p><span class="math display">Advantage<sub>𝒜</sub> ≤ Advantage<sub>LWE</sub>(<em>n</em>, <em>q</em>, <em>χ</em>)</span></p>
+<p>where <span class="math inline"><em>n</em></span> is lattice dimension, <span class="math inline"><em>q</em></span> is modulus, and <span class="math inline"><em>χ</em></span> is error distribution.</p>
+<p>Given that LWE is conjectured hard even for quantum adversaries, the forgery probability is negligible. <span class="math inline">▫</span> ◻</p>
+</div>
+
+<h2 id="hardness">Hardness</h2>
+<div class="theorem">
+
+<p><strong>Theorem 3</strong> (Quantum Hardness). Breaking ThreadProof security requires solving the Learning With Errors problem, which remains hard against quantum adversaries.</p>
+</div>
+
+<div class="proof">
+
+<p><em>Proof.</em> The security of ThreadProof relies on:</p>
+<p>1. <strong>Lattice Problems</strong>: Finding short vectors in the locked coordinate system 2. <strong>LWE Hardness</strong>: Distinguishing <span class="math inline">(<strong>A</strong>, <strong>A</strong><strong>s</strong> + <strong>e</strong>)</span> from uniform 3. <strong>Non-Isomorphism</strong>: Preventing coordinate system attacks</p>
+<p>Quantum algorithms (Shor’s, Grover’s) do not provide efficient solutions to lattice problems in high dimensions. The best known quantum algorithm achieves only polynomial speedup:</p>
+<p><span class="math display">Time<sub>Quantum</sub> = <em>Õ</em>(2<sup>0.265<em>n</em></sup>)</span></p>
+<p>Therefore, ThreadProof maintains post-quantum security. <span class="math inline">▫</span> ◻</p>
+</div>
+
+<h2 id="correctness">Correctness</h2>
+<div class="proposition">
+
+<p><strong>Proposition 4</strong> (Correctness Under Transformation). ThreadProof maintains correctness only within its native coordinate system. Any transformation violates correctness.</p>
+</div>
+
+<h2 id="encoding-invariance">Encoding Invariance</h2>
+<div class="lemma">
+
+<p><strong>Lemma 5</strong> (HKDF-SHA3-512 Invariance). The encoding function <span class="math inline"><em>E</em> : <em>Λ</em> → {0, 1}<sup>512</sup></span> maintains collision resistance and preimage resistance under the coordinate lock constraint.</p>
+</div>
+
+<h1 id="implementation-specification">Implementation Specification</h1>
+<h2 id="key-generation">Key Generation</h2>
+<div class="algorithm">
+
+<div class="algorithmic">
+
+<p>Security parameter <span class="math inline"><em>λ</em></span>, coordinate system <span class="math inline">𝒞</span> Public key <span class="math inline"><em>p</em><em>k</em></span>, secret key <span class="math inline"><em>s</em><em>k</em></span> Sample random seed <span class="math inline"><em>s</em> ← {0, 1}<sup><em>λ</em></sup></span> Generate lattice basis <span class="math inline"><strong>B</strong> ← GenBasis(<em>s</em>, 𝒞)</span> Lock coordinate system: <span class="math inline"><strong>B</strong>.lock(𝒞)</span> Compute trapdoor <span class="math inline"><strong>T</strong> ← Trapdoor(<strong>B</strong>)</span> Derive identity: <span class="math inline">ZID ← HKDF(<em>s</em>, "identity")</span> <span class="math inline"><em>p</em><em>k</em> = (<strong>B</strong>, ZID, 𝒞)</span>, <span class="math inline"><em>s</em><em>k</em> = (<strong>T</strong>, <em>s</em>)</span></p>
+</div>
+
+</div>
+
+<h2 id="proof-generation">Proof Generation</h2>
+<div class="algorithm">
+
+<div class="algorithmic">
+
+<p>Secret key <span class="math inline"><em>s</em><em>k</em></span>, message <span class="math inline"><em>m</em></span>, context <span class="math inline"><em>c</em><em>t</em><em>x</em></span> Proof <span class="math inline"><em>π</em></span> Parse <span class="math inline"><em>s</em><em>k</em> = (<strong>T</strong>, <em>s</em>)</span> Sample randomness <span class="math inline"><em>r</em> ← <em>χ</em></span> Compute commitment <span class="math inline"><em>c</em> = HKDF(<em>m</em>||<em>c</em><em>t</em><em>x</em>||<em>r</em>)</span> Generate witness <span class="math inline"><strong>w</strong> ← SamplePre(<strong>T</strong>, <em>c</em>)</span> Verify coordinate lock: <span class="math inline">CheckLock(<strong>w</strong>, 𝒞)</span> Create proof <span class="math inline"><em>π</em> = (<strong>w</strong>, <em>c</em>, <em>r</em>, 𝒞)</span> <span class="math inline"><em>π</em></span></p>
+</div>
+
+</div>
+
+<h2 id="verification-algorithm">Verification Algorithm</h2>
+<div class="algorithm">
+
+<div class="algorithmic">
+
+<p>Public key <span class="math inline"><em>p</em><em>k</em></span>, proof <span class="math inline"><em>π</em></span>, message <span class="math inline"><em>m</em></span>, context <span class="math inline"><em>c</em><em>t</em><em>x</em></span> Accept/Reject Parse <span class="math inline"><em>p</em><em>k</em> = (<strong>B</strong>, ZID, 𝒞)</span> Parse <span class="math inline"><em>π</em> = (<strong>w</strong>, <em>c</em>, <em>r</em>, 𝒞<sup>′</sup>)</span> Reject // Coordinate system mismatch Verify lattice membership: <span class="math inline"><strong>w</strong> ∈ <em>Λ</em>(<strong>B</strong>)</span> Recompute <span class="math inline"><em>c</em><sup>′</sup> = HKDF(<em>m</em>||<em>c</em><em>t</em><em>x</em>||<em>r</em>)</span> Reject Verify witness norm: <span class="math inline">||<strong>w</strong>|| ≤ <em>β</em></span> Accept</p>
+</div>
+
+</div>
+
+<h1 id="integration-with-obinexus-framework">Integration with OBINexus Framework</h1>
+<p>ThreadProof integrates seamlessly with the OBINexus Cryptographic Interoperability Standard v1.0:</p>
+<h2 id="pattern-registration">Pattern Registration</h2>
+<p>ThreadProof primitives register with the OBINexus pattern matching system:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>THREADPROOF_PATTERNS <span class="op">=</span> {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ZID_PATTERN&quot;</span>: <span class="vs">r&quot;</span><span class="dv">^</span><span class="vs">ZID:QZ-Lattice-</span><span class="dv">\d</span><span class="op">+</span><span class="dv">$</span><span class="vs">&quot;</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ENCODING_PATTERN&quot;</span>: <span class="vs">r&quot;</span><span class="dv">^</span><span class="vs">HKDF-SHA3-512</span><span class="dv">$</span><span class="vs">&quot;</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;SIGNATURE_PATTERN&quot;</span>: <span class="vs">r&quot;</span><span class="dv">^</span><span class="vs">Falcon-512</span><span class="dv">$</span><span class="vs">&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> register_threadproof_patterns():</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name, pattern <span class="kw">in</span> THREADPROOF_PATTERNS.items():</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        register_cryptographic_pattern(</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>            pattern_name<span class="op">=</span>name,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>            regex<span class="op">=</span>pattern,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>            category<span class="op">=</span><span class="st">&quot;POST_QUANTUM&quot;</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            version<span class="op">=</span><span class="st">&quot;1.0.0&quot;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        )</span></code></pre></div>
+<h2 id="audit-integration">Audit Integration</h2>
+<p>ThreadProof operations integrate with the SecureAuditNode:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ThreadProofAuditNode(SecureAuditNode):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, zid, operation, proof_hash):</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>            primitive_digest<span class="op">=</span>zid,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>            pattern_state<span class="op">=</span>ThreadProofState()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.operation <span class="op">=</span> operation</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.proof_hash <span class="op">=</span> sha256(proof_hash).hexdigest()[:<span class="dv">16</span>]</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.coordinate_system <span class="op">=</span> <span class="st">&quot;Cartesian&quot;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.axiom_compliance <span class="op">=</span> <span class="va">self</span>.verify_axioms()</span></code></pre></div>
+<h1 id="performance-analysis">Performance Analysis</h1>
+<h2 id="computational-complexity">Computational Complexity</h2>
+<div class="proposition">
+
+<p><strong>Proposition 6</strong> (Time Complexity). ThreadProof operations have the following complexity bounds:</p>
+<ul>
+<li><p>Key Generation: <span class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span> where <span class="math inline"><em>n</em></span> is lattice dimension</p></li>
+<li><p>Proof Generation: <span class="math inline"><em>O</em>(<em>n</em><sup>2</sup>log <em>n</em>)</span> using fast sampling</p></li>
+<li><p>Verification: <span class="math inline"><em>O</em>(<em>n</em><sup>2</sup>)</span> for matrix-vector operations</p></li>
+</ul>
+</div>
+
+<h2 id="space-complexity">Space Complexity</h2>
+<div class="proposition">
+
+<p><strong>Proposition 7</strong> (Storage Requirements). ThreadProof requires:</p>
+<ul>
+<li><p>Public Key: <span class="math inline"><em>O</em>(<em>n</em><sup>2</sup>log <em>q</em>)</span> bits</p></li>
+<li><p>Secret Key: <span class="math inline"><em>O</em>(<em>n</em><sup>2</sup>log <em>q</em>)</span> bits</p></li>
+<li><p>Proof Size: <span class="math inline"><em>O</em>(<em>n</em>log <em>q</em>)</span> bits</p></li>
+<li><p>CID Storage: <span class="math inline"><em>O</em>(1)</span> (constant 512 bits)</p></li>
+</ul>
+</div>
+
+<h1 id="security-analysis">Security Analysis</h1>
+<h2 id="attack-resistance">Attack Resistance</h2>
+<p>ThreadProof resists the following attack classes:</p>
+<ol type="1">
+<li><p><strong>Coordinate Transformation Attacks</strong>: Prevented by Axiom <a href="#ax:non-iso" data-reference-type="ref" data-reference="ax:non-iso">1</a></p></li>
+<li><p><strong>Cross-System Derivation</strong>: Blocked by Axiom <a href="#ax:kdf" data-reference-type="ref" data-reference="ax:kdf">3</a></p></li>
+<li><p><strong>Proof Transplantation</strong>: Prevented by Axiom <a href="#ax:encoding" data-reference-type="ref" data-reference="ax:encoding">2</a></p></li>
+<li><p><strong>Quantum Attacks</strong>: Resistant due to LWE hardness</p></li>
+<li><p><strong>Side-Channel Attacks</strong>: Mitigated by constant-time implementations</p></li>
+</ol>
+<h2 id="formal-security-proof">Formal Security Proof</h2>
+<div class="theorem">
+
+<p><strong>Theorem 8</strong> (ThreadProof Security). ThreadProof achieves IND-CCA2 security under the LWE assumption with advantage:</p>
+<p><span class="math display">Adv<sub>ThreadProof</sub><sup>IND-CCA2</sup>(𝒜) ≤ Adv<sub>LWE</sub><sup><em>n</em>, <em>q</em>, <em>χ</em></sup>(ℬ) + negl(<em>λ</em>)</span></p>
+</div>
+
+<h1 id="conclusion">Conclusion</h1>
+<p>ThreadProof provides a mathematically rigorous framework for post-quantum secure identity management through non-isomorphic lattice-based cryptography. By enforcing coordinate system locks and preventing geometric transformations, the system achieves strong security guarantees while maintaining practical efficiency. The integration with OBINexus infrastructure ensures compatibility with existing cryptographic standards while advancing the state of quantum-resistant identity systems.</p>
+<p>Future work includes optimizing proof sizes through advanced compression techniques and extending the framework to support threshold identity schemes for distributed applications.</p>
+<h1 id="acknowledgments">Acknowledgments</h1>
+<p>This work builds upon the OBINexus Cryptographic Interoperability Standard v1.0 and the Mathematical Framework for Zero-Overhead Data Marshalling developed by the OBINexus Engineering Team.</p>
+<h1 id="contact">Contact</h1>
+<p>For implementation details, integration support, or security audits:</p>
+<div class="center">
+
+<p><code>support@obinexus.org</code><br />
+OBINexus Computing<br />
+<a href="https://github.com/obinexus">https://github.com/obinexus</a></p>
+</div>
+
+  </main>
+  <footer>
+    <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-a-non-isomorphic-lattice-based-post-quantum-identity-proof</code></p>
+  </footer>
+</body>
+</html>

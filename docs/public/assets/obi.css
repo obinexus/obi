@@ -301,6 +301,19 @@ dd {
   max-width: 76ch;
 }
 
+.doc-article img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--obi-border);
+  border-radius: var(--obi-radius);
+  background: #fbfcf9;
+}
+
+.doc-article p > img:only-child {
+  margin: 1rem 0;
+}
+
 section {
   scroll-margin-top: 96px;
 }

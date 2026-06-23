@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dimensional Game Theory Application of Non Deterministic Finite Automaton Directed Acyclic Graph for Actor Modelling | OBI Source HTML</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8f5;
+      --surface: #ffffff;
+      --text: #202321;
+      --muted: #626962;
+      --accent: #147d7e;
+      --border: #d9ddd4;
+      --code: #eef1eb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    header, main, footer { max-width: 1060px; margin: 0 auto; padding: 1.25rem; }
+    header { border-bottom: 4px solid var(--accent); background: #161819; color: #f5f7f2; max-width: none; }
+    header > div { max-width: 1060px; margin: 0 auto; }
+    a { color: #0f5f60; }
+    header a { color: inherit; }
+    main { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-top: 1.25rem; }
+    h1, h2, h3 { line-height: 1.25; }
+    h1 { margin-top: 0; font-size: clamp(2rem, 5vw, 3.5rem); }
+    p, li { max-width: 78ch; }
+    img { max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; }
+    pre { overflow: auto; background: #20251f; color: #f7fbf2; padding: 1rem; border-radius: 8px; }
+    code { background: var(--code); padding: 0.12rem 0.25rem; border-radius: 5px; }
+    pre code { background: transparent; padding: 0; }
+    table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; }
+    th, td { border: 1px solid var(--border); padding: 0.45rem 0.6rem; text-align: left; }
+    blockquote { border-left: 4px solid var(--accent); margin-left: 0; padding-left: 1rem; color: var(--muted); }
+    .skip-link { position: absolute; left: 1rem; top: 0.75rem; transform: translateY(-200%); }
+    .skip-link:focus { transform: translateY(0); background: var(--surface); color: var(--text); padding: 0.5rem; }
+  </style>
+  <script>
+    window.MathJax = { tex: { inlineMath: [["\\(", "\\)"], ["$", "$"]], displayMath: [["\\[", "\\]"], ["$$", "$$"]] } };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header>
+    <div>
+      <a href="../index.html">OBI Source HTML</a>
+      <h1>Dimensional Game Theory Application of Non Deterministic Finite Automaton Directed Acyclic Graph for Actor Modelling</h1>
+      <p>Generated from Markdown with Python tooling and Pandoc-compatible source preservation.</p>
+    </div>
+  </header>
+  <main id="content" tabindex="-1">
+    <h1 id="dimensional-game-theory-application-of-non-deterministic-finite-automaton-directed-acyclic-graph-for-actor-modelling">Dimensional Game Theory Application of Non Deterministic Finite Automaton Directed Acyclic Graph for Actor Modelling</h1>
+<p>Source folder: <code>overleaf-projects-75-items-copy/Dimensional Game Theory  Application of Non-Deterministic Finite Automaton Directed Acyclic Graph for Actor Modelling</code></p>
+<h2 id="extracted-files">Extracted Files</h2>
+<ul>
+<li><code>main.tex</code></li>
+</ul>
+<h2 id="main">main</h2>
+<h1 id="introduction">Introduction</h1>
+<h2 id="background-from-classical-game-theory-to-dimensional-extensions">Background: From Classical Game Theory to Dimensional Extensions</h2>
+<p>A short motivation for DGT: traditional game theory analyses strategic agents with fixed action sets and payoffs. DGT extends this by adding “strategic dimensions” that are activated contextually and by building functorial mappings between observer and actor spaces.</p>
+<h2 id="role-of-phenomenology-in-computational-modelling">Role of Phenomenology in Computational Modelling</h2>
+<p>Phenomenological elements (phenotype, phenomemory, phenovalue) are included as first-class types to model human-in-the-loop systems and to ground coherence metrics in measurable observables.</p>
+<h2 id="hdis-as-foundation-human-in-the-loop-coherence-systems">HDIS as Foundation: Human-in-the-Loop Coherence Systems</h2>
+<p>HDIS is introduced as the architectural seed for active systems that observe, adapt, and self-heal. Implementations include DIRAM, DIPAD and the SemVerX hot-swap engine.</p>
+<h2 id="research-aim-and-scope">Research Aim and Scope</h2>
+<p>This document unifies formalism, algorithms and reference implementations (links to repositories) for DGT, NFA functor extension, ODTS and HDIS integration.</p>
+<h1 id="theoretical-framework">Theoretical Framework</h1>
+<h2 id="dimensional-game-theory-dgt-core-definitions">Dimensional Game Theory (DGT): Core Definitions</h2>
+<h3 id="glossary-and-notation">Glossary and Notation</h3>
+<p><span class="math inline">ℕ</span><br />
+Natural numbers <span class="math inline">{0, 1, 2, …}</span>.</p>
+<p><span class="math inline">ℤ</span><br />
+Integers <span class="math inline">{…, −2, −1, 0, 1, 2, …}</span>.</p>
+<p><span class="math inline">ℚ</span><br />
+, <span class="math inline">ℝ</span>, <span class="math inline">ℂ</span> standard sets of rational, real and complex numbers.</p>
+<h3 id="dgt-specific-symbols">DGT-specific symbols</h3>
+<p><span class="math inline"><em>F</em>, <em>G</em></span><br />
+Functorial mappings between behaviour spaces.</p>
+<p><span class="math inline"><em>F</em> ⋅ <em>G</em></span><br />
+Composition: <span class="math inline">(<em>F</em> ⋅ <em>G</em>)(<em>x</em>) = <em>F</em>(<em>G</em>(<em>x</em>))</span>; in DGT composition may be non-deterministic through functor-lifting to power-set codomains.</p>
+<p><span class="math inline"><em>F</em> ⋆ <em>G</em></span><br />
+Coherence operator (lossless interaction), defined in Section <a href="#sec:coherence-operators" data-reference-type="ref" data-reference="sec:coherence-operators">2.6</a>.</p>
+<p><span class="math inline"><em>Φ</em>, <em>Ψ</em></span><br />
+Phenomenological functors: <span class="math inline"><em>Φ</em></span> maps raw observations to phenovalue; <span class="math inline"><em>Ψ</em></span> maps intent/actor transforms.</p>
+<h2 id="non-deterministic-finite-automata-nfa-as-behavioural-models">Non-Deterministic Finite Automata (NFA) as Behavioural Models</h2>
+<p>Define an actor as <span class="math inline">𝒜<sub>NFA</sub> = (<em>Q</em>, <em>Σ</em>, <em>δ</em>, <em>q</em><sub>0</sub>, <em>F</em>)</span> where <span class="math inline"><em>δ</em> : <em>Q</em> × <em>Σ</em> → 2<sup><em>Q</em></sup></span>. Actor policies are modelled as NFA transitions and functor lifts let us compose NFAs with DAG topologies.</p>
+<h2 id="directed-acyclic-graphs-dag-in-system-coherence">Directed Acyclic Graphs (DAG) in System Coherence</h2>
+<p>Nodes model actor components; edges model observer-consumer transactions and coherence receipts. A DAG <span class="math inline"><em>G</em> = (<em>V</em>, <em>E</em>)</span> is used so that topological traversal and functor composition are well-defined.</p>
+<h2 id="actor-observer-consumer-paradigm">Actor-Observer-Consumer Paradigm</h2>
+<p>Each node implements an <em>Observer</em> that produces phenovalue and a <em>Consumer</em> that acts on it. The pair yields dual receipts stored in the witness ledger.</p>
+<h2 id="phenomenological-type-system-phenotype-phenomemory-phenovalue">Phenomenological Type System (Phenotype, Phenomemory, Phenovalue)</h2>
+<p>Formal type definitions and interfaces for phenomodels, including minimal API examples (pseudocode) for observing and consuming layers.</p>
+<h2 id="coherence-operators-and-functor-composition">Coherence Operators and Functor Composition</h2>
+<p>Define algebraic operators used to combine functors: union <span class="math inline">𝒰</span>, coherence <span class="math inline">⋆</span>, disjoint <span class="math inline">÷</span>, and null <span class="math inline">⊥</span>. A working definition:</p>
+<p><span class="math display"><em>H</em> = <em>F</em> ⋆ <em>G</em> = 𝒞(<em>F</em>, <em>G</em>) ⋅ (<em>F</em> ⋅ <em>G</em>)</span></p>
+<p>with <span class="math inline">𝒞(<em>F</em>, <em>G</em>) ∈ [0, 1]</span> the coherence measure (see Section <a href="#sec:crif" data-reference-type="ref" data-reference="sec:crif">6</a>).</p>
+<h1 id="mathematical-and-algorithmic-foundation">Mathematical and Algorithmic Foundation</h1>
+<h2 id="state-transition-functions-and-nfa-functor-definition">State Transition Functions and NFA Functor Definition</h2>
+<p>Formalisation of lifted transitions: if <span class="math inline"><em>δ</em></span> is the NFA transition, we define the functor-lifted transition <span class="math inline"><em>δ</em><sup>♯</sup></span> mapping distributions or power-set states.</p>
+<h2 id="functor-composition-f-cdot-g-operator-interpolation">Functor Composition: <span class="math inline"><em>F</em> ⋅ <em>G</em></span> Operator Interpolation</h2>
+<p>Describe the interpolation semantics when <span class="math inline"><em>F</em></span> and <span class="math inline"><em>G</em></span> are stochastic/non- deterministic functors. Provide pseudocode for composition and for estimating <span class="math inline">𝒞(<em>F</em>, <em>G</em>)</span> via sampled traces.</p>
+<h2 id="set-theoretic-mapping-union-disjoint-pairing-division">Set-Theoretic Mapping: Union, Disjoint, Pairing, Division</h2>
+<p>Formal set operations used to reason about lossless vs lossy joins in the DAG.</p>
+<h2 id="complexity-constraints-and-olog-n-auxiliary-space">Complexity Constraints and <span class="math inline"><em>O</em>(log <em>n</em>)</span> Auxiliary Space</h2>
+<p>State the Functor Framework’s constraint: implement traversals and QA aggregations using <span class="math inline"><em>O</em>(log <em>n</em>)</span> auxiliary space (practical implementation notes for iterative topological traversal with bounded frontier are provided).</p>
+<h2 id="lossless-vs-lossy-systems-huffmanavl-equilibrium">Lossless vs Lossy Systems (Huffman–AVL Equilibrium)</h2>
+<p>Explain the equilibrium idea: Huffman-like compression (entropy minimisation) balanced with AVL-like structural constraints to preserve recoverability.</p>
+<h2 id="coherence-preservation-under-non-determinism">Coherence Preservation under Non-Determinism</h2>
+<p>Lossless and lossy examples and the probing functor <span class="math inline"><em>P</em>(𝒜<sub>NFA</sub>, <em>θ</em>)</span> that measures sensitivity <span class="math inline">∇<sub><em>θ</em></sub>𝒞</span>.</p>
+<h1 id="obinexus-derivative-tracing-system-odts">OBINexus Derivative Tracing System (ODTS)</h1>
+<p>A safety-first subsystem to trace symbolic derivatives and confirm termination for polynomial-type models used by controllers. Example use-case and API.</p>
+<h1 id="hdis-integration">HDIS Integration</h1>
+<h2 id="hdis-as-a-consumer-observer-digital-nervous-system">HDIS as a Consumer-Observer Digital Nervous System</h2>
+<p>Architectural overview, the witness ledger concept and coherence receipts.</p>
+<h2 id="mapping-observer-and-consumer-roles">Mapping Observer and Consumer Roles</h2>
+<p>Concrete mapping table and role responsibilities.</p>
+<h2 id="semverx-evolutionary-component-replacement">SemVerX: Evolutionary Component Replacement</h2>
+<p>Specification of SemVerX, hot-swap policies and DAG-based resolver.</p>
+<h2 id="witness-ledger-and-coherence-receipts">Witness Ledger and Coherence Receipts</h2>
+<p>Full CRIF specification and pseudocode (see Section <a href="#sec:crif" data-reference-type="ref" data-reference="sec:crif">6</a>).</p>
+<h2 id="polyglot-implementation-rust--esp32--python">Polyglot Implementation: Rust – ESP32 – Python</h2>
+<p>Integration notes, canonical IR, and polyglot binding rules for the HDIS stack.</p>
+<h1 id="coherence-receipt-integrity-function-crif">Coherence Receipt Integrity Function (CRIF)</h1>
+<h2 id="notation">Notation</h2>
+<p><span class="math inline"><em>G</em> = (<em>V</em>, <em>E</em>)</span> DAG, witness ledger <span class="math inline"><em>L</em> = {<em>r</em><sub><em>e</em></sub>}</span>, receipts <span class="math inline"><em>r</em><sub><em>e</em></sub> = (<em>o</em>, <em>c</em>, <em>ϕ</em>, <em>τ</em>, <em>σ</em>)</span>.</p>
+<h2 id="crif-definition">CRIF Definition</h2>
+<p><span class="math display"><em>C</em> = <em>λ</em> <em>I</em><sub>hash</sub>(<em>L</em>) + (1 − <em>λ</em>) <em>Q</em><sub>agg</sub></span></p>
+<p>with detailed computation steps and pseudocode implemented as Algorithm <a href="#alg:crif" data-reference-type="ref" data-reference="alg:crif">[alg:crif]</a>.</p>
+<div class="algorithm">
+
+<div class="algorithmic">
+
+<p>compute <span class="math inline"><em>I</em><sub><em>h</em><em>a</em><em>s</em><em>h</em></sub></span> by validating hashes for receipts in <span class="math inline"><em>L</em></span> compute per-pipeline <span class="math inline"><em>Q</em>(<em>P</em>)</span> using F1 gate metrics compute <span class="math inline"><em>Q</em><sub><em>a</em><em>g</em><em>g</em></sub> = ∑<sub><em>i</em></sub><em>α</em><sub><em>i</em></sub><em>Q</em>(<em>P</em><sub><em>i</em></sub>)</span> <span class="math inline"><em>C</em> = <em>λ</em><em>I</em><sub><em>h</em><em>a</em><em>s</em><em>h</em></sub> + (1 − <em>λ</em>)<em>Q</em><sub><em>a</em><em>g</em><em>g</em></sub></span> <strong>return</strong> <span class="math inline"><em>C</em></span> and pass/fail flag <span class="math inline"><em>C</em> ≥ <em>C</em><sub><em>r</em><em>e</em><em>q</em></sub></span></p>
+</div>
+
+</div>
+
+<h1 id="actor-behaviour-modelling">Actor Behaviour Modelling</h1>
+<h2 id="non-deterministic-action-state-space">Non-Deterministic Action-State Space</h2>
+<p>Formal NFA-based actor models and compositional rules.</p>
+<h2 id="dimensional-extension-of-actor-roles">Dimensional Extension of Actor Roles</h2>
+<p>How dimensions activate and interact; detection algorithm (PCA-based) for finding dominant strategic dimensions.</p>
+<h2 id="real-world-example-housing-entanglement-scenario">Real-World Example: Housing Entanglement Scenario</h2>
+<p>A worked example mapping public services failures into DGT observables and ledger evidence. This section shows how to structure FOI/appeal evidence as phenovalue traces that the HDIS network can witness.</p>
+<h2 id="fault-tolerant-resolution-via-phenomenological-feedback">Fault-Tolerant Resolution via Phenomenological Feedback</h2>
+<p>Active repair flow and decision paths.</p>
+<h2 id="adaptive-decision-pathways">Adaptive Decision Pathways</h2>
+<p>Algorithmic implementation of adaptive response (Algorithm <a href="#alg:adaptive" data-reference-type="ref" data-reference="alg:adaptive">[alg:adaptive]</a>).</p>
+<div class="algorithm">
+
+<div class="algorithmic">
+
+<p>detect dominant <span class="math inline"><em>D</em><sub><em>d</em><em>o</em><em>m</em></sub> = {<em>D</em> ∣ <em>E</em>(<em>ŝ</em><sub><em>o</em></sub>, <em>D</em>) &gt; <em>θ</em>}</span> generate counter-strategy <span class="math inline"><em>s</em><sub><em>D</em></sub><sup>c</sup></span> combine counters weighted by dominance <strong>return</strong> combined strategy</p>
+</div>
+
+</div>
+
+<h1 id="simulation-and-verification">Simulation and Verification</h1>
+<h2 id="dag-construction-and-traversal-pseudocode">DAG Construction and Traversal Pseudocode</h2>
+<p>Topological traversal, bounded auxiliary stack and checkpointing notes.</p>
+<h2 id="nfa-functor-evaluation-loop">NFA-Functor Evaluation Loop</h2>
+<p>Pseudocode for sampling NFA traces, lifting to functors and computing <span class="math inline">𝒞</span> estimates.</p>
+<h2 id="huffmanavl-compression-for-state-balancing">Huffman–AVL Compression for State Balancing</h2>
+<p>Outline of combining Huffman coding heuristics with AVL balancing to reduce state representation entropy while preserving recoverability.</p>
+<h2 id="complexity-validation-test-cases">Complexity Validation Test Cases</h2>
+<p>Example test harness and expected pass/fail criteria.</p>
+<h2 id="coherence-score-metrics--meaning-scale">Coherence Score Metrics (-Meaning Scale)</h2>
+<p>Definition of the witness score used in the registry (scale -12..+12 or 0..1 normalised). Recommended thresholds.</p>
+<h1 id="implementation-architecture">Implementation Architecture</h1>
+<h2 id="system-layers-iaas-baas-observer-interfaces">System Layers: IaaS, BaaS, Observer Interfaces</h2>
+<p>Stack diagram and responsibilities.</p>
+<h2 id="opensense-integration-and-sensory-phenotyping">OpenSense Integration and Sensory Phenotyping</h2>
+<p>Sensor mapping examples (IMU, gaze, skin-response) into phenovalue types.</p>
+<h2 id="registry-and-witness-nft-economy">Registry and Witness NFT Economy</h2>
+<p>How coherence receipts can be packaged as signed artefacts for funding applications and audit trails.</p>
+<h2 id="fault-tolerant-hot-swap-engine-semverx-resolver">Fault-Tolerant Hot-Swap Engine (SemVerX Resolver)</h2>
+<p>Resolver pseudocode with Eulerian/Hamiltonian path scoring.</p>
+<h2 id="prototype-hdis-d-daemon-and-esp32-module">Prototype: <code>hdis-d</code> Daemon and ESP32 Module</h2>
+<p>Quickstart: clone, build and flash steps; see README in repo.</p>
+<h1 id="discussion">Discussion</h1>
+<h2 id="phenomenological-implications-for-human-computation">Phenomenological Implications for Human Computation</h2>
+<p>Ethical stakes, agency and the risk of over-automation.</p>
+<h2 id="socio-technical-impact-in-public-infrastructure">Socio-Technical Impact in Public Infrastructure</h2>
+<p>How witness receipts and coherence scores could change accountability.</p>
+<h2 id="funding-and-accessibility-mitigation-via-witness-proofs">Funding and Accessibility Mitigation via Witness Proofs</h2>
+<p>Examples of grant/funding documentation derived from ledger evidence.</p>
+<h2 id="ethical-and-legal-dimensions-of-hdis">Ethical and Legal Dimensions of HDIS</h2>
+<p>Privacy, consent, and recommended governance model.</p>
+<h1 id="conclusion">Conclusion</h1>
+<h2 id="synthesis-of-dgtnfafunctor-model">Synthesis of DGT–NFA–Functor Model</h2>
+<h2 id="future-research-directions-dgt-and-quantum-coherence">Future Research Directions (DGT++ and Quantum Coherence)</h2>
+<h2 id="closing-reflection">Closing Reflection</h2>
+<h1 id="references">References</h1>
+<div class="thebibliography">
+
+<p>9 J. von Neumann and O. Morgenstern, <em>Theory of Games and Economic Behavior</em>, 1944. J. Nash, <em>Equilibrium points in n-person games</em>, PNAS, 1950. N. M. Okpala, <em>Dimensional Game Theory: DGT (draft)</em>, OBINexus, 2025.</p>
+</div>
+
+  </main>
+  <footer>
+    <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-dimensional-game-theory-application-of-non-deterministic-finite-automaton-directed-acycl</code></p>
+  </footer>
+</body>
+</html>

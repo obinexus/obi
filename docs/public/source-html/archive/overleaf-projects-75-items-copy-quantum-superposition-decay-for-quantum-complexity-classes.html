@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quantum Superposition Decay for Quantum Complexity Classes | OBI Source HTML</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8f5;
+      --surface: #ffffff;
+      --text: #202321;
+      --muted: #626962;
+      --accent: #147d7e;
+      --border: #d9ddd4;
+      --code: #eef1eb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    header, main, footer { max-width: 1060px; margin: 0 auto; padding: 1.25rem; }
+    header { border-bottom: 4px solid var(--accent); background: #161819; color: #f5f7f2; max-width: none; }
+    header > div { max-width: 1060px; margin: 0 auto; }
+    a { color: #0f5f60; }
+    header a { color: inherit; }
+    main { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-top: 1.25rem; }
+    h1, h2, h3 { line-height: 1.25; }
+    h1 { margin-top: 0; font-size: clamp(2rem, 5vw, 3.5rem); }
+    p, li { max-width: 78ch; }
+    img { max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; }
+    pre { overflow: auto; background: #20251f; color: #f7fbf2; padding: 1rem; border-radius: 8px; }
+    code { background: var(--code); padding: 0.12rem 0.25rem; border-radius: 5px; }
+    pre code { background: transparent; padding: 0; }
+    table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; }
+    th, td { border: 1px solid var(--border); padding: 0.45rem 0.6rem; text-align: left; }
+    blockquote { border-left: 4px solid var(--accent); margin-left: 0; padding-left: 1rem; color: var(--muted); }
+    .skip-link { position: absolute; left: 1rem; top: 0.75rem; transform: translateY(-200%); }
+    .skip-link:focus { transform: translateY(0); background: var(--surface); color: var(--text); padding: 0.5rem; }
+  </style>
+  <script>
+    window.MathJax = { tex: { inlineMath: [["\\(", "\\)"], ["$", "$"]], displayMath: [["\\[", "\\]"], ["$$", "$$"]] } };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header>
+    <div>
+      <a href="../index.html">OBI Source HTML</a>
+      <h1>Quantum Superposition Decay for Quantum Complexity Classes</h1>
+      <p>Generated from Markdown with Python tooling and Pandoc-compatible source preservation.</p>
+    </div>
+  </header>
+  <main id="content" tabindex="-1">
+    <h1 id="quantum-superposition-decay-for-quantum-complexity-classes">Quantum Superposition Decay for Quantum Complexity Classes</h1>
+<p>Source folder: <code>overleaf-projects-75-items-copy/Quantum Superposition Decay for Quantum Complexity Classes</code></p>
+<h2 id="extracted-files">Extracted Files</h2>
+<ul>
+<li><code>main.tex</code></li>
+</ul>
+<h2 id="main">main</h2>
+<div class="titlepage">
+
+<p><strong>Quantum Superposition Decay for Quantum Complexity Classes</strong><br />
+A Classical–Quantum Bridge via the Read-Write-Execute Memory Model<br />
+Nnamdi Okpala<br />
+OBINexus Computing<br />
+<code>okpalan@protonmail.com</code><br />
+2026-06-23</p>
+</div>
+
+<h1 id="introduction">Introduction</h1>
+<p>The relationship between quantum and classical computation is most precisely characterised through the lens of promise-problem complexity classes. While quantum speedup for specific problem families (integer factorisation, unstructured search) is well established, a general framework that maps the <em>measurement event</em>—the moment a quantum superposition collapses to a definite classical outcome—onto classical computational primitives has received less systematic attention.</p>
+<p>This paper proposes such a framework under the name <strong>Superposition Decay</strong> (<span class="math inline">SD</span>). The central intuition is that the collapse of a superposition is not a passive observation but an active computational window: a bounded interval of control during which a system may coherently commit or roll back parallel computations, analogous to a transactional memory operation.</p>
+<p>We formalise five related contributions:</p>
+<ol type="1">
+<li><p><strong>The <span class="math inline">SD</span> window.</strong> A formal definition of the measurement window as a triple (resolved / rejected / pending), bounding acceptance and rejection by probability thresholds <span class="math inline"><em>a</em>(<em>n</em>)</span> and <span class="math inline"><em>b</em>(<em>n</em>)</span>, with an intermediate <em>pending</em> region supporting deferred evaluation.</p></li>
+<li><p><strong>The RWX memory model.</strong> A Read-Write-Execute abstraction that maps quantum measurement to classical memory transactions: <span class="math inline"><em>n</em></span> writes followed by <span class="math inline"><em>k</em></span> reads collapse to a single coherent read event when the last read is the terminal operation.</p></li>
+<li><p><strong>Complexity-class tractability under <span class="math inline">SD</span>.</strong> A characterisation showing that <span class="math inline">BQP</span> promise problems are exactly the class tractable under a single superposition decay event; problems in <span class="math inline">PP</span> and <span class="math inline">PSPACE</span> require multiple decay events or additional measurement principles.</p></li>
+<li><p><strong>Rift: quantum-classical grammar matching.</strong> A formalisation of the Rift compiler’s parser as a quantum automaton, with grammar production rules as superposed branches and parse commitment as a grammar decay event governed by the stabilisation principle.</p></li>
+<li><p><strong>Quantum Burst Protocol (QBP).</strong> A communication protocol in which all candidate network paths are held in superposition during connection negotiation and selected by a single measurement (spectral decay), achieving optimal routing in <span class="math inline"><em>O</em>(1)</span> measurement time.</p></li>
+</ol>
+<p>The paper is organised as follows. Section <a href="#sec:prelim" data-reference-type="ref" data-reference="sec:prelim">2</a> reviews necessary background in quantum mechanics and complexity theory. Section <a href="#sec:sd" data-reference-type="ref" data-reference="sec:sd">3</a> defines superposition decay formally. Section <a href="#sec:rwx" data-reference-type="ref" data-reference="sec:rwx">4</a> presents the RWX memory model. Section <a href="#sec:complexity" data-reference-type="ref" data-reference="sec:complexity">5</a> maps results onto the complexity hierarchy. Section <a href="#sec:parallel" data-reference-type="ref" data-reference="sec:parallel">6</a> states and proves the main parallelism theorem. Section <a href="#sec:rift" data-reference-type="ref" data-reference="sec:rift">7</a> formalises Rift as a quantum-classical grammar matcher. Section <a href="#sec:qbp" data-reference-type="ref" data-reference="sec:qbp">8</a> introduces QBP. Section <a href="#sec:mmuko" data-reference-type="ref" data-reference="sec:mmuko">9</a> describes the MMUKO OS and OBINexus toolchain. Section <a href="#sec:conclusion" data-reference-type="ref" data-reference="sec:conclusion">10</a> concludes.</p>
+<h1 id="preliminaries">Preliminaries</h1>
+<h2 id="quantum-postulates">Quantum Postulates</h2>
+<p>We work in the standard Hilbert-space formulation of quantum mechanics. A quantum state is represented by a unit vector <span class="math inline">|<em>ψ</em>⟩ ∈ ℂ<sup>2<sup><em>n</em></sup></sup></span> for an <span class="math inline"><em>n</em></span>-qubit system.</p>
+<div class="axiom">
+
+<p><strong>Axiom 1</strong> (State Postulate). The complete state of a quantum system at time <span class="math inline"><em>t</em></span> is described by a normalised vector <span class="math inline">|<em>ψ</em>(<em>t</em>)⟩ ∈ ℋ</span>, the system’s Hilbert space, satisfying <span class="math inline">⟨<em>ψ</em>(<em>t</em>) ∣ <em>ψ</em>(<em>t</em>)⟩ = 1</span>.</p>
+</div>
+
+<div class="axiom">
+
+<p><strong>Axiom 2</strong> (Superposition Postulate). If <span class="math inline">|<em>ψ</em><sub>1</sub>⟩</span> and <span class="math inline">|<em>ψ</em><sub>2</sub>⟩</span> are valid states of a quantum system, then any linear combination</p>
+<p><span class="math display">|<em>ψ</em>⟩ = <em>c</em><sub>1</sub>|<em>ψ</em><sub>1</sub>⟩ + <em>c</em><sub>2</sub>|<em>ψ</em><sub>2</sub>⟩,  <em>c</em><sub>1</sub>, <em>c</em><sub>2</sub> ∈ ℂ,  |<em>c</em><sub>1</sub>|<sup>2</sup> + |<em>c</em><sub>2</sub>|<sup>2</sup> = 1,</span></p>
+<p>is also a valid state. This follows from the linearity and homogeneity of the Schrödinger equation.</p>
+</div>
+
+<div class="axiom">
+
+<p><strong>Axiom 3</strong> (Wave-Function Collapse / Measurement Postulate). Upon measurement of an observable <span class="math inline"><em>Ô</em></span> with eigenvalues <span class="math inline">{<em>λ</em><sub><em>i</em></sub>}</span> and eigenstates <span class="math inline">{|<em>e</em><sub><em>i</em></sub>⟩}</span>, the system transitions from <span class="math inline">|<em>ψ</em>⟩ = ∑<sub><em>i</em></sub><em>c</em><sub><em>i</em></sub>|<em>e</em><sub><em>i</em></sub>⟩</span> to eigenstate <span class="math inline">|<em>e</em><sub><em>j</em></sub>⟩</span> with probability <span class="math inline">|<em>c</em><sub><em>j</em></sub>|<sup>2</sup></span>. The post-measurement state is <span class="math inline">|<em>e</em><sub><em>j</em></sub>⟩</span>.</p>
+</div>
+
+<div class="axiom">
+
+<p><strong>Axiom 4</strong> (Evolution Postulate). Between measurements, a closed quantum system evolves unitarily: <span class="math inline">|<em>ψ</em>(<em>t</em>)⟩ = <em>U</em>(<em>t</em>)|<em>ψ</em>(0)⟩</span>, where <span class="math inline"><em>U</em>(<em>t</em>)</span> is a unitary operator.</p>
+</div>
+
+<h2 id="classical-turing-machine-and-complexity">Classical Turing Machine and Complexity</h2>
+<p>A <em>Turing machine</em> (TM) is a tuple <span class="math inline"><em>M</em> = (<em>Q</em>, <em>Σ</em>, <em>Γ</em>, <em>δ</em>, <em>q</em><sub>0</sub>, <em>q</em><sub>acc</sub>, <em>q</em><sub>rej</sub>)</span> with the standard interpretation. Time complexity <span class="math inline"><em>T</em>(<em>n</em>)</span> denotes the maximum number of steps on inputs of length <span class="math inline"><em>n</em></span>. We use the standard complexity classes <span class="math inline">P</span>, <span class="math inline">NP</span>, <span class="math inline">BPP</span>, <span class="math inline">PP</span>, <span class="math inline">PSPACE</span>, and <span class="math inline">BQP</span>; their promise-problem definitions are recalled in Section <a href="#sec:complexity" data-reference-type="ref" data-reference="sec:complexity">5</a>.</p>
+<h2 id="quantum-circuits">Quantum Circuits</h2>
+<p>A <em>quantum circuit</em> <span class="math inline"><em>Q</em><sub><em>n</em></sub></span> on <span class="math inline"><em>n</em></span> qubits is a sequence of gates drawn from a universal gate set (e.g., <span class="math inline">{<em>H</em>, CNOT, <em>T</em>}</span>) that accepts an <span class="math inline"><em>n</em></span>-qubit input and produces a 1-qubit output. A <em>uniform circuit family</em> <span class="math inline">𝒬 = {<em>Q</em><sub><em>n</em></sub> : <em>n</em> ∈ ℕ}</span> is one where the description of <span class="math inline"><em>Q</em><sub><em>n</em></sub></span> is computable in polynomial time from <span class="math inline"><em>n</em></span>.</p>
+<h2 id="probabilistic-directed-acyclic-graphs">Probabilistic Directed Acyclic Graphs</h2>
+<div class="definition">
+
+<p><strong>Definition 5</strong> (Probabilistic DAG). A <em>probabilistic directed acyclic graph</em> <span class="math inline"><em>G</em> = (<em>V</em>, <em>E</em>, <em>p</em>)</span> is a DAG where each edge <span class="math inline">(<em>u</em>, <em>v</em>) ∈ <em>E</em></span> carries a probability weight <span class="math inline"><em>p</em>(<em>u</em>, <em>v</em>) ∈ [0, 1]</span> such that for every vertex <span class="math inline"><em>u</em></span>, <span class="math inline">∑<sub><em>v</em> : (<em>u</em>, <em>v</em>) ∈ <em>E</em></sub><em>p</em>(<em>u</em>, <em>v</em>) ≤ 1</span>. Each path from a source to a sink represents a computation branch; the probability of a path is the product of its edge weights.</p>
+</div>
+
+<h1 id="superposition-decay">Superposition Decay</h1>
+<h2 id="informal-motivation">Informal Motivation</h2>
+<p>When a quantum system in superposition is measured, the resulting classical outcome is not predetermined—it is drawn from a probability distribution defined by the amplitudes. We argue that this <em>measurement event</em> is best understood not as an instantaneous point but as a <em>window</em>: a bounded region of the computation during which the system retains coherence and the outcomes of parallel branches may still be combined or discarded.</p>
+<p>Once the window closes—the superposition <em>decays</em>—a single classical outcome is committed. The <span class="math inline">SD</span> framework captures this window operationally.</p>
+<h2 id="formal-definition">Formal Definition</h2>
+<div class="definition">
+
+<p><strong>Definition 6</strong> (Quantum Connection Graph). A <em>quantum connection</em> is a graph <span class="math inline"><em>G</em> = (<em>E</em>, <em>N</em>)</span> where <span class="math inline"><em>N</em></span> is the set of <span class="math inline"><em>n</em></span>-qubit nodes (quantum registers) and <span class="math inline"><em>E</em> ⊆ <em>N</em> × <em>N</em></span> is the set of entanglement edges. A path from node <span class="math inline"><em>A</em></span> to node <span class="math inline"><em>B</em></span> in <span class="math inline"><em>G</em></span> represents a sequence of entangled operations connecting two computational loci.</p>
+</div>
+
+<div class="definition">
+
+<p><strong>Definition 7</strong> (Superposition State Vector). For an <span class="math inline"><em>n</em></span>-qubit system, the superposition state is</p>
+<p><span class="math display">|<em>Ψ</em>⟩ = ∑<sub><em>x</em> ∈ {0, 1}<sup><em>n</em></sup></sub><em>α</em><sub><em>x</em></sub>|<em>x</em>⟩,  <em>α</em><sub><em>x</em></sub> ∈ ℂ,  ∑<sub><em>x</em></sub>|<em>α</em><sub><em>x</em></sub>|<sup>2</sup> = 1.</span></p>
+<p>The probability of observing basis state <span class="math inline">|<em>x</em>⟩</span> is <span class="math inline"><em>p</em>(<em>x</em>) = |<em>α</em><sub><em>x</em></sub>|<sup>2</sup></span>.</p>
+</div>
+
+<div id="def:sdwindow" class="definition">
+
+<p><strong>Definition 8</strong> (Superposition Decay Window). Let <span class="math inline">𝒬 = {<em>Q</em><sub><em>n</em></sub>}</span> be a uniform quantum circuit family and let <span class="math inline"><em>a</em>, <em>b</em> : ℕ → [0, 1]</span> be functions with <span class="math inline"><em>a</em>(<em>n</em>) &gt; <em>b</em>(<em>n</em>)</span> for all <span class="math inline"><em>n</em></span>. The <em>superposition decay window</em> <span class="math inline">SD(<em>a</em>, <em>b</em>)</span> is the triple</p>
+<p><span class="math display">SD(<em>a</em>, <em>b</em>) = ( resolved, rejected, pending ),</span></p>
+<p>where for an input <span class="math inline"><em>x</em></span> of length <span class="math inline"><em>n</em></span>:</p>
+<ul>
+<li><p><span class="math inline"><em>x</em></span> is <strong>resolved</strong> (accepted) if <span class="math inline">Pr [<em>Q</em><sub>|<em>x</em>|</sub>(<em>x</em>) = 1] ≥ <em>a</em>(|<em>x</em>|)</span>,</p></li>
+<li><p><span class="math inline"><em>x</em></span> is <strong>rejected</strong> if <span class="math inline">Pr [<em>Q</em><sub>|<em>x</em>|</sub>(<em>x</em>) = 1] ≤ <em>b</em>(|<em>x</em>|)</span>,</p></li>
+<li><p><span class="math inline"><em>x</em></span> is <strong>pending</strong> if <span class="math inline"><em>b</em>(|<em>x</em>|) &lt; Pr [<em>Q</em><sub>|<em>x</em>|</sub>(<em>x</em>) = 1] &lt; <em>a</em>(|<em>x</em>|)</span>.</p></li>
+</ul>
+<p>The <em>decay event</em> is the transition of a state from <em>pending</em> to either <em>resolved</em> or <em>rejected</em> upon measurement.</p>
+</div>
+
+<div class="remark">
+
+<p><em>Remark 9</em>. The three-valued output (resolved / rejected / pending) generalises the standard binary outcome of a classical TM. The <em>pending</em> state corresponds precisely to the undecided region of a promise problem: the system is contractually guaranteed not to receive inputs from this region in the promise-problem formulation, but the <span class="math inline">SD</span> framework makes the region explicit as a computational state.</p>
+</div>
+
+<h2 id="constructive-and-destructive-superposition">Constructive and Destructive Superposition</h2>
+<p>The superposition principle admits both <em>constructive</em> interference (amplitudes add, increasing probability of a desired outcome) and <em>destructive</em> interference (amplitudes cancel, suppressing undesired outcomes). We formalise this in terms of the wave function as follows.</p>
+<div class="definition">
+
+<p><strong>Definition 10</strong> (Constructive / Destructive Interference). Given two states <span class="math inline">|<em>ψ</em><sub>1</sub>⟩ = ∑<sub><em>x</em></sub><em>α</em><sub><em>x</em></sub>|<em>x</em>⟩</span> and <span class="math inline">|<em>ψ</em><sub>2</sub>⟩ = ∑<sub><em>x</em></sub><em>β</em><sub><em>x</em></sub>|<em>x</em>⟩</span>, their superposition <span class="math inline">|<em>ψ</em>⟩ = <em>c</em><sub>1</sub>|<em>ψ</em><sub>1</sub>⟩ + <em>c</em><sub>2</sub>|<em>ψ</em><sub>2</sub>⟩</span> exhibits:</p>
+<ul>
+<li><p><strong>Constructive interference</strong> at <span class="math inline"><em>x</em></span> if <span class="math inline">|<em>c</em><sub>1</sub><em>α</em><sub><em>x</em></sub> + <em>c</em><sub>2</sub><em>β</em><sub><em>x</em></sub>| &gt; max (|<em>c</em><sub>1</sub><em>α</em><sub><em>x</em></sub>|,|<em>c</em><sub>2</sub><em>β</em><sub><em>x</em></sub>|)</span>.</p></li>
+<li><p><strong>Destructive interference</strong> at <span class="math inline"><em>x</em></span> if <span class="math inline">|<em>c</em><sub>1</sub><em>α</em><sub><em>x</em></sub> + <em>c</em><sub>2</sub><em>β</em><sub><em>x</em></sub>| &lt; min (|<em>c</em><sub>1</sub><em>α</em><sub><em>x</em></sub>|,|<em>c</em><sub>2</sub><em>β</em><sub><em>x</em></sub>|)</span>.</p></li>
+</ul>
+</div>
+
+<p>In the <span class="math inline">SD</span> framework, a quantum algorithm exploits constructive interference to amplify the amplitude of the correct solution branch before the decay window closes, and destructive interference to suppress incorrect branches.</p>
+<h1 id="the-read-write-execute-rwx-memory-model">The Read-Write-Execute (RWX) Memory Model</h1>
+<h2 id="motivation">Motivation</h2>
+<p>Classical memory access is characterised by read (<span class="math inline"><em>R</em></span>), write (<span class="math inline"><em>W</em></span>), and execute (<span class="math inline"><em>X</em></span>) permissions, typically represented as a triple <span class="math inline">(<em>r</em>, <em>w</em>, <em>x</em>)</span> per memory region. We propose a quantum analogue in which the <em>sequence</em> of reads and writes within a superposition decay window determines the atomicity and coherence of the resulting classical observation.</p>
+<h2 id="formal-model">Formal Model</h2>
+<div class="definition">
+
+<p><strong>Definition 11</strong> (RWX Operation Sequence). An <em>RWX sequence</em> is a finite ordered list of operations <span class="math inline"><em>σ</em> = (<em>o</em><sub>1</sub>, <em>o</em><sub>2</sub>, …, <em>o</em><sub><em>k</em></sub>)</span> where each <span class="math inline"><em>o</em><sub><em>i</em></sub> ∈ {<em>R</em>, <em>W</em>, <em>X</em>}</span>. The sequence is <em>terminal-read</em> if <span class="math inline"><em>o</em><sub><em>k</em></sub> = <em>R</em></span> (the final operation is a read).</p>
+</div>
+
+<div id="def:adu" class="definition">
+
+<p><strong>Definition 12</strong> (Atomic Decay Unit). A terminal-read RWX sequence of <span class="math inline"><em>w</em></span> writes followed by <span class="math inline"><em>r</em></span> reads,</p>
+<p><span class="math display">$$\sigma = (\underbrace{W, W, \ldots, W}_{w},\;
+              \underbrace{R, R, \ldots, R}_{r-1},\; R),$$</span></p>
+<p>constitutes a single <em>atomic decay unit</em> (ADU) equivalent to one coherent read operation. Formally:</p>
+<p><span class="math display">$$w \cdot W + r \cdot R \;\xrightarrow{\;\ensuremath{\mathrm{SD}}\;}\; 1 \cdot R_{\text{coherent}}.$$</span></p>
+</div>
+
+<div class="example">
+
+<p><strong>Example 13</strong> (4-Write 2-Read ADU). The concrete instance stated in the source document is:</p>
+<p><span class="math display">$$4W + 2R \;\xrightarrow{\;\ensuremath{\mathrm{SD}}\;}\; 1R.$$</span></p>
+<p>This means: four parallel write operations (corresponding to four parallel computation branches in superposition) and two intermediate read probes collapse—upon superposition decay—into a single coherent classical read outcome. The dual-state nature of the system (write = superposed, read = collapsed) ensures that the terminal read is the only externally observable event.</p>
+</div>
+
+<div class="proposition">
+
+<p><strong>Proposition 14</strong> (Dual-State Equivalence). <em>In a quantum system respecting the <span class="math inline">SD</span> window, the state before the terminal read is a superposition of all write branches. The terminal read collapses this superposition to a single classical value. Therefore, the external observer sees exactly one read operation regardless of the number of internal write branches.</em></p>
+</div>
+
+<div class="proof">
+
+<p><em>Proof.</em> By the Measurement Postulate (Axiom 3), measurement of the system in state <span class="math inline">|<em>Ψ</em>⟩ = ∑<sub><em>x</em></sub><em>α</em><sub><em>x</em></sub>|<em>x</em>⟩</span> produces outcome <span class="math inline"><em>x</em></span> with probability <span class="math inline">|<em>α</em><sub><em>x</em></sub>|<sup>2</sup></span> and collapses the state to <span class="math inline">|<em>x</em>⟩</span>. Each write branch corresponds to a basis state <span class="math inline">|<em>x</em>⟩</span>. Since the terminal read is the sole measurement, all prior writes are unobserved intermediate computations within the unitary evolution <span class="math inline"><em>U</em>(<em>t</em>)</span>. By the Evolution Postulate (Axiom 4), <span class="math inline"><em>U</em>(<em>t</em>)</span> is reversible and does not produce classical outputs; only the terminal measurement does. Hence the external observable record contains exactly one read event. 0◻ ◻</p>
+</div>
+
+<h2 id="rwx-permission-table">RWX Permission Table</h2>
+<p>The classical RWX permission system maps directly onto the decay window:</p>
+<div class="center">
+
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Permission</strong></th>
+<th style="text-align: left;"><strong>Classical Meaning</strong></th>
+<th style="text-align: left;"><strong>Quantum / <span class="math inline">SD</span> Analogue</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><span class="math inline"><em>R</em></span> (Read)</td>
+<td style="text-align: left;">Load value from memory</td>
+<td style="text-align: left;">Terminal measurement; collapses superposition</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="math inline"><em>W</em></span> (Write)</td>
+<td style="text-align: left;">Store value to memory</td>
+<td style="text-align: left;">Unitary gate application; maintains superposition</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="math inline"><em>X</em></span> (Execute)</td>
+<td style="text-align: left;">Run code in memory region</td>
+<td style="text-align: left;">Quantum circuit evaluation within decay window</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h1 id="complexity-classes-under-superposition-decay">Complexity Classes Under Superposition Decay</h1>
+<h2 id="promise-problem-formulation">Promise Problem Formulation</h2>
+<p>A <em>promise problem</em> is a pair <span class="math inline">(<em>A</em><sub>yes</sub>, <em>A</em><sub>no</sub>)</span> of disjoint languages. An algorithm <em>solves</em> the promise problem if it accepts every <span class="math inline"><em>x</em> ∈ <em>A</em><sub>yes</sub></span> and rejects every <span class="math inline"><em>x</em> ∈ <em>A</em><sub>no</sub></span>, with no constraint on inputs outside <span class="math inline"><em>A</em><sub>yes</sub> ∪ <em>A</em><sub>no</sub></span>.</p>
+<h2 id="complexity-class-definitions">Complexity Class Definitions</h2>
+<div id="tab:classes">
+
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Class</strong></th>
+<th style="text-align: left;">Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><span class="math inline">P</span></strong></td>
+<td style="text-align: left;">Promise problems for which a polynomial-time <em>deterministic</em> TM accepts all strings in <span class="math inline"><em>A</em><sub>yes</sub></span> and rejects all strings in <span class="math inline"><em>A</em><sub>no</sub></span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><span class="math inline">BPP</span></strong></td>
+<td style="text-align: left;">Promise problems for which a polynomial-time <em>probabilistic</em> TM accepts every string in <span class="math inline"><em>A</em><sub>yes</sub></span> with probability <span class="math inline">$\geq \tfrac{2}{3}$</span> and every string in <span class="math inline"><em>A</em><sub>no</sub></span> with probability <span class="math inline">$\leq \tfrac{1}{3}$</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><span class="math inline">BQP</span></strong></td>
+<td style="text-align: left;">Promise problems such that for functions <span class="math inline"><em>a</em>, <em>b</em> : ℕ → [0, 1]</span> with <span class="math inline">$a(n) \geq \tfrac{2}{3}$</span> and <span class="math inline">$b(n) \leq \tfrac{1}{3}$</span>, there exists a uniform quantum circuit family <span class="math inline">𝒬 = {<em>Q</em><sub><em>n</em></sub> : <em>n</em> ∈ ℕ}</span> where <span class="math inline"><em>Q</em><sub><em>n</em></sub></span> accepts <span class="math inline"><em>n</em></span> qubits and gives a 1-qubit output, such that every <span class="math inline"><em>x</em> ∈ <em>A</em><sub>yes</sub></span> is accepted with probability $`\geq a(</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><span class="math inline">PP</span></strong></td>
+<td style="text-align: left;">Promise problems for which a polynomial-time probabilistic TM accepts every string in <span class="math inline"><em>A</em><sub>yes</sub></span> with probability <span class="math inline">$&gt; \tfrac{1}{2}$</span> and every string in <span class="math inline"><em>A</em><sub>no</sub></span> with probability <span class="math inline">$\leq \tfrac{1}{2}$</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><span class="math inline">PSPACE</span></strong></td>
+<td style="text-align: left;">Promise problems for which a <em>deterministic</em> TM running in polynomial <em>space</em> accepts all <span class="math inline"><em>A</em><sub>yes</sub></span> and rejects all <span class="math inline"><em>A</em><sub>no</sub></span>.</td>
+</tr>
+</tbody>
+</table>
+<p>Complexity class definitions in the promise-problem framework.</p>
+</div>
+
+<h2 id="tractability-under-mathrmsd">Tractability Under <span class="math inline">SD</span></h2>
+<div id="thm:bqp" class="theorem">
+
+<p><strong>Theorem 15</strong> (<span class="math inline">SD</span>-Tractability of <span class="math inline">BQP</span>). <em>A promise problem <span class="math inline">(<em>A</em><sub>yes</sub>, <em>A</em><sub>no</sub>)</span> is in <span class="math inline">BQP</span> if and only if it is solvable by a uniform quantum circuit family within a single superposition decay window <span class="math inline">SD(<em>a</em>, <em>b</em>)</span> with <span class="math inline">$a(n) - b(n) \geq \tfrac{1}{3}$</span> for all <span class="math inline"><em>n</em></span>.</em></p>
+</div>
+
+<div class="proof">
+
+<p><em>Proof.</em> <span class="math inline">( ⇒ )</span> By definition of <span class="math inline">BQP</span>, there exists a uniform circuit family <span class="math inline">{<em>Q</em><sub><em>n</em></sub>}</span> with the stated acceptance probabilities. The circuit <span class="math inline"><em>Q</em><sub><em>n</em></sub></span> operates entirely within a unitary evolution (all gates are write operations in RWX terms) and terminates with a single measurement (the terminal read). This constitutes a single ADU as in Definition <a href="#def:adu" data-reference-type="ref" data-reference="def:adu">12</a>, hence falls within one <span class="math inline">SD</span> window.</p>
+<p><span class="math inline">( ⇐ )</span> Suppose a single <span class="math inline">SD</span><span class="math inline">(<em>a</em>, <em>b</em>)</span> window with <span class="math inline">$a(n) - b(n) \geq
+\tfrac{1}{3}$</span> solves the promise problem. The circuit within the window is unitary (by the Evolution Postulate) and polynomial-time (by the polynomial-size constraint on the circuit family). This is exactly the definition of a <span class="math inline">BQP</span> circuit. 0◻ ◻</p>
+</div>
+
+<div class="corollary">
+
+<p><strong>Corollary 16</strong>. <em><span class="math inline">P ⊆ BPP ⊆ BQP</span> under the <span class="math inline">SD</span> framework, since deterministic and bounded-error probabilistic computations can be simulated by a single decay window with all amplitude concentrated on one branch.</em></p>
+</div>
+
+<div id="thm:pp" class="theorem">
+
+<p><strong>Theorem 17</strong> (Multi-Decay Requirement for <span class="math inline">PP</span>). <em>There exist promise problems in <span class="math inline">PP \ BQP</span> that require more than one superposition decay event to resolve under <span class="math inline">SD</span>.</em></p>
+</div>
+
+<div class="proof">
+
+<p><em>Proof Sketch.</em> <span class="math inline">PP</span> allows acceptance probabilities arbitrarily close to <span class="math inline">$\tfrac{1}{2}$</span>, whereas <span class="math inline">BQP</span> requires a gap of at least <span class="math inline">$\tfrac{1}{3}$</span>. A problem instance where <span class="math inline">$\Pr[\text{accept}] = \tfrac{1}{2} + \epsilon$</span> for arbitrarily small <span class="math inline"><em>ϵ</em> &gt; 0</span> cannot be distinguished from a reject instance (with <span class="math inline">$\Pr = \tfrac{1}{2} - \epsilon$</span>) by a single decay event with fixed thresholds <span class="math inline"><em>a</em>, <em>b</em></span> satisfying <span class="math inline">$a - b \geq \tfrac{1}{3}$</span>. Multiple sequential decay events (with amplitude amplification between events) are required to drive the probability above the <span class="math inline">BQP</span> threshold. 0◻ ◻</p>
+</div>
+
+<div class="remark">
+
+<p><em>Remark 18</em>. <span class="math inline">PSPACE</span> problems, being characterised by polynomial-space deterministic computation, lie outside the reach of a constant number of superposition decay events unless <span class="math inline">BQP = PSPACE</span>, which is not currently believed. They require fundamentally different principles—either unbounded decay depth or oracle access—within the <span class="math inline">SD</span> framework.</p>
+</div>
+
+<h1 id="the-main-parallelism-theorem">The Main Parallelism Theorem</h1>
+<h2 id="statement">Statement</h2>
+<div id="thm:main" class="theorem">
+
+<p><strong>Theorem 19</strong> (Classical-to-Quantum Parallelism via <span class="math inline">SD</span>). <em>Let <span class="math inline">𝒜</span> be a classical algorithm with time complexity <span class="math inline"><em>O</em>(<em>f</em>(<em>n</em>))</span> where <span class="math inline"><em>f</em></span> is a linear function (<span class="math inline"><em>f</em>(<em>n</em>) = <em>c</em><em>n</em></span> for some constant <span class="math inline"><em>c</em> &gt; 0</span>), and let <span class="math inline">𝒜</span> be deterministic or non-deterministic. Then there exists a quantum circuit family <span class="math inline">𝒬<sub>𝒜</sub> = {<em>Q</em><sub><em>n</em></sub>}</span> such that:</em></p>
+<ol type="1">
+<li><p><em><span class="math inline"><em>Q</em><sub><em>n</em></sub></span> simulates all execution branches of <span class="math inline">𝒜</span> on inputs of length <span class="math inline"><em>n</em></span> in <em>parallel</em> within a single superposition decay window <span class="math inline">SD(<em>a</em>, <em>b</em>)</span>.</em></p></li>
+<li><p><em>The circuit size of <span class="math inline"><em>Q</em><sub><em>n</em></sub></span> is polynomial in <span class="math inline"><em>n</em></span>.</em></p></li>
+<li><p><em>The correct output is obtained upon the terminal measurement (the decay event) with probability <span class="math inline">$\geq \tfrac{2}{3}$</span>.</em></p></li>
+</ol>
+</div>
+
+<div class="proof">
+
+<p><em>Proof.</em> We construct <span class="math inline"><em>Q</em><sub><em>n</em></sub></span> as follows.</p>
+<p><strong>Step 1: Encode branches.</strong> The <span class="math inline"><em>k</em></span> non-deterministic branches of <span class="math inline">𝒜</span> on input <span class="math inline"><em>x</em></span> correspond to basis states <span class="math inline">|<em>b</em><sub>1</sub>⟩, …, |<em>b</em><sub><em>k</em></sub>⟩</span> in a <span class="math inline">⌈log<sub>2</sub><em>k</em>⌉</span>-qubit register. Since <span class="math inline">𝒜</span> runs in linear time <span class="math inline"><em>O</em>(<em>n</em>)</span>, the number of branches is at most <span class="math inline"><em>k</em> ≤ 2<sup><em>c</em><em>n</em></sup></span> for some constant <span class="math inline"><em>c</em></span>; encoding requires <span class="math inline"><em>O</em>(<em>n</em>)</span> qubits.</p>
+<p><strong>Step 2: Superpose branches.</strong> Apply a Hadamard transform <span class="math inline"><em>H</em><sup>⊗⌈log<sub>2</sub><em>k</em>⌉</sup></span> to create the uniform superposition <span class="math inline">$\left| \Psi_0 \right\rangle = \frac{1}{\sqrt{k}} \sum_{i=1}^k \left| b_i \right\rangle$</span>.</p>
+<p><strong>Step 3: Parallel evaluation.</strong> By the linearity of unitary evolution, the circuit <span class="math inline"><em>U</em><sub>𝒜</sub></span> that implements one step of <span class="math inline">𝒜</span> acts on all branches simultaneously: <span class="math inline">$U_{\mathcal{A}} \left| \Psi_0 \right\rangle = \frac{1}{\sqrt{k}} \sum_i U_{\mathcal{A}}
+\left| b_i \right\rangle$</span>. Since <span class="math inline">𝒜</span> runs in <span class="math inline"><em>O</em>(<em>n</em>)</span> steps, <span class="math inline"><em>U</em><sub>𝒜</sub></span> consists of <span class="math inline"><em>O</em>(<em>n</em>)</span> layers, each implementable by a polynomial-size circuit.</p>
+<p><strong>Step 4: Amplitude amplification.</strong> Apply Grover-type amplitude amplification  to boost the amplitude of accepting branches. After <span class="math inline">$O(\sqrt{k})$</span> iterations, the probability of observing an accepting branch exceeds <span class="math inline">$\tfrac{2}{3}$</span>.</p>
+<p><strong>Step 5: Terminal measurement.</strong> Measure the output qubit. This constitutes the single superposition decay event. By Theorem <a href="#thm:bqp" data-reference-type="ref" data-reference="thm:bqp">15</a>, the resulting problem is in <span class="math inline">BQP</span>.</p>
+<p>The total circuit size is <span class="math inline">$O(n \cdot \sqrt{k}) \leq O(n \cdot 2^{cn/2})$</span>, which is polynomial for fixed <span class="math inline">$c &lt; \tfrac{2 \log n}{n}$</span>—i.e., for linear <span class="math inline"><em>f</em>(<em>n</em>) = <em>c</em><em>n</em></span> with small <span class="math inline"><em>c</em></span>. This covers all algorithms with sub-exponential branch counts, which includes all deterministic and polynomially-branching non-deterministic linear-time algorithms. 0◻ ◻</p>
+</div>
+
+<h2 id="linear-systems-as-parallel-dags">Linear Systems as Parallel DAGs</h2>
+<div id="thm:dag" class="theorem">
+
+<p><strong>Theorem 20</strong> (Linear Systems as Probabilistic DAGs). <em>Any system of <span class="math inline"><em>m</em></span> linear equations in <span class="math inline"><em>n</em></span> variables over <span class="math inline">ℝ</span> (or <span class="math inline">ℂ</span>) with a unique solution can be expressed as a probabilistic DAG <span class="math inline"><em>G</em> = (<em>V</em>, <em>E</em>, <em>p</em>)</span> whose parallel evaluation under <span class="math inline">SD</span> yields the solution in time <span class="math inline"><em>O</em>(log <em>n</em>)</span> on a quantum system.</em></p>
+</div>
+
+<div class="proof">
+
+<p><em>Proof Sketch.</em> The system <span class="math inline"><em>A</em><strong>x</strong> = <strong>b</strong></span> (with <span class="math inline"><em>A</em> ∈ ℝ<sup><em>m</em> × <em>n</em></sup></span>) has a unique solution <span class="math inline"><strong>x</strong><sup>*</sup> = <em>A</em><sup>−1</sup><strong>b</strong></span> (assuming <span class="math inline"><em>A</em></span> is invertible). The HHL algorithm  solves this system in <span class="math inline"><em>O</em>(log <em>n</em> ⋅ <em>κ</em><sup>2</sup>)</span> time on a quantum computer, where <span class="math inline"><em>κ</em></span> is the condition number of <span class="math inline"><em>A</em></span>. We model each variable as a DAG node and each dependency as a directed edge. Gaussian elimination induces a topological order on the DAG; each elimination step is a parallel unitary operation on the corresponding qubit register. The terminal measurement on each variable register constitutes a separate <span class="math inline">SD</span> event, and the results compose to give <span class="math inline"><strong>x</strong><sup>*</sup></span>. 0◻ ◻</p>
+</div>
+
+<h1 id="rift-a-quantum-classical-grammar-matcher">Rift: A Quantum-Classical Grammar Matcher</h1>
+<h2 id="overview">Overview</h2>
+<p><strong>Rift</strong> (formally: <em>RIFT — a Flexible Translator</em>) is the compiler front-end component of the OBINexus toolchain. Its theoretical grounding in the <span class="math inline">SD</span> framework arises from the observation that grammar matching in a parser shares the structural properties of quantum superposition: multiple production-rule paths may be simultaneously <em>active</em> (pending) until sufficient lookahead disambiguates them. The decay event corresponds to the moment the parser commits to a single parse path.</p>
+<h2 id="wave-postulates-as-triangular-matching-postulates">Wave Postulates as Triangular Matching Postulates</h2>
+<p>The wave postulate (Axiom 3) asserts that a quantum system in superposition <span class="math inline">|<em>Ψ</em>⟩ = <em>c</em><sub>1</sub>|<em>ψ</em><sub>1</sub>⟩ + <em>c</em><sub>2</sub>|<em>ψ</em><sub>2</sub>⟩</span> yields one of two outcomes upon measurement. We draw a direct structural analogy to a context-free grammar <span class="math inline"><em>G</em> = (<em>V</em>, <em>Σ</em>, <em>R</em>, <em>S</em>)</span> with two competing production rules <span class="math inline"><em>A</em> → <em>α</em> ∣ <em>β</em></span>. In both cases:</p>
+<ul>
+<li><p>The system is in a <em>pending</em> superposition of both alternatives until a discriminating token (the “measurement”) is encountered.</p></li>
+<li><p>The collapse to a single rule (the “decay”) is the parser’s commit to one production.</p></li>
+<li><p>Destructive interference corresponds to the parser eliminating impossible parse paths via lookahead or semantic constraints.</p></li>
+</ul>
+<div class="definition">
+
+<p><strong>Definition 21</strong> (Grammar Superposition State). Let <span class="math inline"><em>G</em> = (<em>V</em>, <em>Σ</em>, <em>R</em>, <em>S</em>)</span> be a context-free grammar and let <span class="math inline"><em>π</em></span> be a partial parse of input <span class="math inline"><em>w</em> = <em>w</em><sub>1</sub><em>w</em><sub>2</sub>⋯<em>w</em><sub><em>n</em></sub></span>. The <em>grammar superposition state</em> at position <span class="math inline"><em>i</em></span> is the set</p>
+<p><span class="math display"><em>Γ</em><sub><em>i</em></sub> = { (<em>A</em> → <em>α</em> • <em>β</em>, <em>j</em>) ∣ <em>A</em> → <em>α</em><em>β</em> ∈ <em>R</em>, <em>w</em><sub><em>j</em></sub>⋯<em>w</em><sub><em>i</em></sub>⇒<sup>*</sup><em>α</em> }</span></p>
+<p>of all active Earley items. The state <span class="math inline"><em>Γ</em><sub><em>i</em></sub></span> is the grammar analogue of the superposition state vector: it encodes all simultaneously possible parse paths.</p>
+</div>
+
+<div class="definition">
+
+<p><strong>Definition 22</strong> (Grammar Decay Event). A <em>grammar decay event</em> at position <span class="math inline"><em>i</em></span> occurs when <span class="math inline">|<em>Γ</em><sub><em>i</em></sub>| = 1</span>, i.e., all but one parse path has been eliminated by lookahead. This corresponds to the collapse of the grammar superposition state to a single production, exactly as measurement collapses <span class="math inline">|<em>Ψ</em>⟩</span> to a single basis state.</p>
+</div>
+
+<h2 id="parallel-grammar-evaluation">Parallel Grammar Evaluation</h2>
+<div id="thm:rift" class="theorem">
+
+<p><strong>Theorem 23</strong> (Rift Parallel Parsing). <em>Let <span class="math inline"><em>G</em></span> be an unambiguous context-free grammar and let <span class="math inline"><em>w</em></span> be an input string of length <span class="math inline"><em>n</em></span>. Rift evaluates all production rules of <span class="math inline"><em>G</em></span> in <em>parallel</em> by maintaining the full grammar superposition state <span class="math inline"><em>Γ</em><sub><em>i</em></sub></span> at each position, collapsing (decaying) only when the lookahead forces <span class="math inline">|<em>Γ</em><sub><em>i</em></sub>| = 1</span>. The resulting parse is produced in <span class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span> time in the worst case (Earley) and <span class="math inline"><em>O</em>(<em>n</em>)</span> for unambiguous grammars in Chomsky Normal Form, corresponding to a single-decay-event parse.</em></p>
+</div>
+
+<div class="proof">
+
+<p><em>Proof Sketch.</em> The Earley algorithm maintains all active items in <span class="math inline"><em>Γ</em><sub><em>i</em></sub></span> at each position. For an unambiguous grammar, the number of active items is bounded by a constant at each position after the initial scan, so the grammar superposition state decays to a singleton in <span class="math inline"><em>O</em>(<em>n</em>)</span> steps. This is structurally identical to a <span class="math inline">BQP</span> computation: the circuit evaluates all branches in parallel and the terminal measurement (grammar decay) yields the unique correct parse with probability 1. 0◻ ◻</p>
+</div>
+
+<h2 id="stabilisation-principle">Stabilisation Principle</h2>
+<p>The <span class="math inline">SD</span> framework introduces a <em>stabilisation principle</em> as the binding mechanism between the quantum measurement window and its cognitive or computational substrate.</p>
+<div class="definition">
+
+<p><strong>Definition 24</strong> (Stabilisation Principle). A system <span class="math inline"><em>S</em></span> obeys the <em>stabilisation principle</em> if, within the <span class="math inline">SD</span> window, all intermediate states are reversible (unitary), and the terminal measurement commits the system to a stable classical output that cannot be further modified within the same decay window. Formally:</p>
+<p><span class="math display">∀ <em>t</em> &lt; <em>t</em><sub>decay</sub>: <em>U</em>(<em>t</em>) is unitary and reversible.   At <em>t</em><sub>decay</sub>: output is classical and irreversible.</span></p>
+</div>
+
+<p>In the Rift context, this means: all grammar transitions before the decay event are reversible (backtracking is permitted); after the grammar decay event, the committed parse tree is final.</p>
+<h1 id="quantum-burst-protocol-qbp">Quantum Burst Protocol (QBP)</h1>
+<h2 id="motivation-1">Motivation</h2>
+<p>The <em>Quantum Burst Protocol</em> (QBP) extends the <span class="math inline">SD</span> framework from computation to communication. Just as a quantum circuit collapses a superposition of computation branches to a single classical output, a QBP connection collapses a superposition of communication paths between two endpoints to a single established channel.</p>
+<h2 id="formal-definition-1">Formal Definition</h2>
+<div class="definition">
+
+<p><strong>Definition 25</strong> (QBP Connection). A <em>Quantum Burst Protocol connection</em> is a tuple</p>
+<p><span class="math display">QBP(<em>A</em>, <em>B</em>) = (<em>G</em>, SD(<em>a</em>, <em>b</em>), <em>Π</em>),</span></p>
+<p>where:</p>
+<ul>
+<li><p><span class="math inline"><em>G</em> = (<em>E</em>, <em>N</em>)</span> is the quantum connection graph (Definition 3.1), with <span class="math inline"><em>A</em>, <em>B</em> ∈ <em>N</em></span> the sender and receiver endpoints.</p></li>
+<li><p><span class="math inline">SD(<em>a</em>, <em>b</em>)</span> is the superposition decay window governing the connection establishment handshake.</p></li>
+<li><p><span class="math inline"><em>Π</em> = {<em>π</em><sub>1</sub>, <em>π</em><sub>2</sub>, …, <em>π</em><sub><em>k</em></sub>}</span> is the set of candidate communication paths (edges in <span class="math inline"><em>E</em></span>) held in superposition during the handshake phase.</p></li>
+</ul>
+<p>The connection is <em>established</em> (resolved) when the <span class="math inline">SD</span> window closes and a single path <span class="math inline"><em>π</em><sup>*</sup> ∈ <em>Π</em></span> is selected; it is <em>refused</em> (rejected) if no path survives the decay; and it is <em>negotiating</em> (pending) during the handshake phase.</p>
+</div>
+
+<h2 id="qbp-handshake-as-superposition-decay">QBP Handshake as Superposition Decay</h2>
+<div class="proposition">
+
+<p><strong>Proposition 26</strong> (QBP Three-Phase Handshake). <em>A QBP connection establishment proceeds in three phases corresponding exactly to the three states of the <span class="math inline">SD</span> window:</em></p>
+<ol type="1">
+<li><p><em><strong>Negotiating (pending):</strong> Both <span class="math inline"><em>A</em></span> and <span class="math inline"><em>B</em></span> maintain a superposition of all feasible communication paths <span class="math inline"><em>Π</em></span>. No classical commitment is made.</em></p></li>
+<li><p><em><strong>Resolved:</strong> The <span class="math inline">SD</span> window closes; the path <span class="math inline"><em>π</em><sup>*</sup></span> with maximal probability amplitude is selected. <span class="math inline"><em>A</em></span> and <span class="math inline"><em>B</em></span> are classically connected via <span class="math inline"><em>π</em><sup>*</sup></span>.</em></p></li>
+<li><p><em><strong>Rejected:</strong> The <span class="math inline">SD</span> window closes with all path amplitudes below the threshold <span class="math inline"><em>b</em>(<em>n</em>)</span>; no connection is established.</em></p></li>
+</ol>
+</div>
+
+<div class="remark">
+
+<p><em>Remark 27</em>. The QBP handshake is a quantum analogue of the classical TCP three-way handshake (SYN / SYN-ACK / ACK), with the key difference that in QBP, <em>all candidate paths are simultaneously active</em> during the negotiating phase, and the path selection is determined by a single quantum measurement (the decay event) rather than sequential message exchange.</p>
+</div>
+
+<h2 id="spectral-graph-representation">Spectral Graph Representation</h2>
+<p>The candidate path set <span class="math inline"><em>Π</em></span> is naturally represented as a <em>spectral graph</em>:</p>
+<div class="definition">
+
+<p><strong>Definition 28</strong> (Spectral Connection Graph). The <em>spectral connection graph</em> of a QBP connection is the directed graph <span class="math inline"><em>Ĝ</em> = (<em>V</em>, <em>E</em>, <em>λ</em>)</span> where <span class="math inline"><em>λ</em> : <em>E</em> → [0, 1]</span> assigns each edge a probability amplitude (eigenvalue weight) such that <span class="math inline">∑<sub><em>e</em> ∈ <em>Π</em></sub><em>λ</em>(<em>e</em>)<sup>2</sup> = 1</span>. The selected path <span class="math inline"><em>π</em><sup>*</sup></span> is the eigenvector corresponding to the dominant eigenvalue after the decay measurement.</p>
+</div>
+
+<div class="example">
+
+<p><strong>Example 29</strong> (Internet Connection as QBP). Consider connecting a client <span class="math inline"><em>A</em></span> to a server <span class="math inline"><em>B</em></span> over a network with <span class="math inline"><em>k</em></span> possible routing paths. In classical networking, these paths are evaluated sequentially (or via parallel probes with separate classical outcomes). Under QBP, the network interface holds all <span class="math inline"><em>k</em></span> paths in superposition:</p>
+<p><span class="math display">$$\left| \Pi \right\rangle = \frac{1}{\sqrt{k}} \sum_{i=1}^k \left| \pi_i \right\rangle.$$</span></p>
+<p>Quality-of-service metrics (latency, bandwidth, packet loss) act as the observable <span class="math inline"><em>Ô</em></span>. Measurement of <span class="math inline"><em>Ô</em></span> collapses <span class="math inline">|<em>Π</em>⟩</span> to the optimal path <span class="math inline">|<em>π</em><sup>*</sup>⟩</span> in a single decay event, achieving optimal routing in <span class="math inline"><em>O</em>(1)</span> measurement time (assuming the superposition can be prepared in <span class="math inline"><em>O</em>(log <em>k</em>)</span> time).</p>
+</div>
+
+<h1 id="mmuko-os-and-the-obinexus-toolchain">MMUKO OS and the OBINexus Toolchain</h1>
+<h2 id="mmuko-os">MMUKO OS</h2>
+<p><strong>MMUKO OS</strong> (M for Mike, Q for Bella [Queen], K for Kilo, O for Oscar) is the operating system substrate for the OBINexus quantum-classical computing framework. The name encodes its philosophical foundation: <em>“the spirit of good and evil that connects nothing and everything, that binds all of us and all of them.”</em> This duality—nothing and everything, good and evil—maps directly onto the binary superposition state <span class="math inline">|0⟩</span> and <span class="math inline">|1⟩</span> and their linear combinations.</p>
+<p>MMUKO OS is a cloud-based Windows system that serves as the classical substrate on which quantum algorithms are emulated prior to the availability of dedicated quantum hardware. Its design is guided by three principles:</p>
+<ol type="1">
+<li><p><strong>Read-Write symmetry:</strong> All memory operations respect the RWX model (Section <a href="#sec:rwx" data-reference-type="ref" data-reference="sec:rwx">4</a>), ensuring that write-heavy workloads collapse atomically to coherent read outcomes.</p></li>
+<li><p><strong>Superposition-aware scheduling:</strong> The OS scheduler treats parallel threads as superposed branches of a single computation, deferring classical commitment until the <span class="math inline">SD</span> window closes.</p></li>
+<li><p><strong>Decay-triggered synchronisation:</strong> Inter-process communication is governed by QBP handshakes (Section <a href="#sec:qbp" data-reference-type="ref" data-reference="sec:qbp">8</a>), replacing traditional lock-based synchronisation with measurement-based collapse events.</p></li>
+</ol>
+<h2 id="toolchain-stack">Toolchain Stack</h2>
+<p>The OBINexus toolchain implements the <span class="math inline">SD</span> framework across the full compilation pipeline:</p>
+<div class="center">
+
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Component</strong></th>
+<th style="text-align: left;"><strong>Role in <span class="math inline">SD</span> Framework</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">riftlang.exe</td>
+<td style="text-align: left;">Source language compiler; implements grammar superposition (Section <a href="#sec:rift" data-reference-type="ref" data-reference="sec:rift">7</a>) to parse Rift source files in parallel.</td>
+</tr>
+<tr>
+<td style="text-align: left;">.so.a</td>
+<td style="text-align: left;">Shared object / static archive; intermediate representation holding the superposed (pre-decay) compilation state.</td>
+</tr>
+<tr>
+<td style="text-align: left;">rift.exe</td>
+<td style="text-align: left;">Linked executable; represents the post-decay committed classical binary output.</td>
+</tr>
+<tr>
+<td style="text-align: left;">gosilang</td>
+<td style="text-align: left;">Target runtime language binding; maps <span class="math inline">SD</span> primitives to hardware-level instructions.</td>
+</tr>
+<tr>
+<td style="text-align: left;">nlink</td>
+<td style="text-align: left;">Build linker / orchestrator; manages the RWX transaction across compilation units.</td>
+</tr>
+<tr>
+<td style="text-align: left;">polybuild</td>
+<td style="text-align: left;">Polyglot build system; coordinates multiple <span class="math inline">SD</span> decay events across heterogeneous language targets.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>The pipeline can be summarised as:</p>
+<p><span class="math display">$$\texttt{riftlang.exe} \;\to\; \texttt{.so.a} \;\to\; \texttt{rift.exe}
+  \;\to\; \texttt{gosilang} \;\xrightarrow{\;\texttt{nlink / polybuild}\;}\;
+  \text{deployed binary}.$$</span></p>
+<h1 id="conclusion-and-future-work">Conclusion and Future Work</h1>
+<p>We have formalised the concept of <em>Superposition Decay</em> as a measurement window bridging quantum and classical computation. The main results are:</p>
+<ul>
+<li><p>The <span class="math inline">SD</span> window is a three-valued construct (resolved / rejected / pending) that generalises the binary output of a classical TM and aligns precisely with the promise-problem formulation of quantum complexity classes.</p></li>
+<li><p>The RWX memory model provides an operational interpretation of the decay window: <span class="math inline"><em>n</em></span> write operations and <span class="math inline"><em>k</em></span> read operations within the window collapse atomically to a single coherent read.</p></li>
+<li><p><span class="math inline">BQP</span> is exactly the class of promise problems solvable within a single <span class="math inline">SD</span> event with a probability gap of <span class="math inline">$\tfrac{1}{3}$</span>.</p></li>
+<li><p>Classical algorithms bounded by linear time complexity—deterministic or non-deterministic—can be simulated in parallel within a single <span class="math inline">SD</span> window by a polynomial-size quantum circuit.</p></li>
+<li><p>Systems of linear equations can be expressed as probabilistic DAGs whose parallel evaluation under <span class="math inline">SD</span> yields solutions in <span class="math inline"><em>O</em>(log <em>n</em>)</span> quantum time.</p></li>
+<li><p>Rift’s parser exploits grammar superposition to evaluate all production rules in parallel, collapsing to a unique parse tree at a grammar decay event governed by the stabilisation principle.</p></li>
+<li><p>The Quantum Burst Protocol (QBP) extends <span class="math inline">SD</span> to networking: all candidate communication paths are held in superposition during handshake, with optimal path selection achieved by a single spectral decay measurement.</p></li>
+<li><p>The MMUKO OS / OBINexus toolchain implements all of the above across the full pipeline: <code>riftlang.exe</code> <span class="math inline">→</span> <code>.so.a</code> <span class="math inline">→</span> <code>rift.exe</code> <span class="math inline">→</span> <code>gosilang</code>, orchestrated by <code>nlink</code> and <code>polybuild</code>.</p></li>
+</ul>
+<h2 id="future-work">Future Work</h2>
+<p>The following directions are planned within the OBINexus research programme:</p>
+<ol type="1">
+<li><p><strong>Hardware realisation.</strong> Implementing the <span class="math inline">SD</span> framework on near-term quantum hardware (superconducting qubits, trapped ions) via the MMUKO OS / <code>riftlang</code> compiler toolchain.</p></li>
+<li><p><strong>Multi-decay protocols for <span class="math inline">PP</span> and <span class="math inline">PSPACE</span>.</strong> Designing iterated <span class="math inline">SD</span> protocols that amplify probability across multiple decay events to address problems beyond <span class="math inline">BQP</span>.</p></li>
+<li><p><strong>QBP networking stack.</strong> Implementing QBP as a full networking protocol atop the MMUKO OS kernel, replacing TCP handshakes with spectral decay measurements for latency-optimal routing.</p></li>
+<li><p><strong>Rift compiler validation.</strong> Formal verification that the Rift grammar decay event produces parse trees equivalent to those of a classical Earley parser, with empirical benchmarks on <code>gosilang</code> target programs.</p></li>
+<li><p><strong>Cognitive binding.</strong> Exploring the stabilisation principle as a model for attention and commitment in cognitive architectures: the <span class="math inline">SD</span> window as a formal model for the moment of decision in neural-symbolic systems.</p></li>
+</ol>
+<div class="thebibliography">
+
+<p>9</p>
+<p>L. K. Grover, “A fast quantum mechanical algorithm for database search,” <em>Proceedings of the 28th Annual ACM Symposium on Theory of Computing (STOC)</em>, pp. 212–219, 1996.</p>
+<p>A. W. Harrow, A. Hassidim, and S. Lloyd, “Quantum algorithm for linear systems of equations,” <em>Physical Review Letters</em>, vol. 103, no. 15, p. 150502, 2009.</p>
+<p>M. A. Nielsen and I. L. Chuang, <em>Quantum Computation and Quantum Information</em>, 10th anniversary ed., Cambridge University Press, 2010.</p>
+<p>J. Watrous, “Quantum computational complexity,” in <em>Encyclopedia of Complexity and Systems Science</em>, Springer, 2009.</p>
+</div>
+
+  </main>
+  <footer>
+    <p>Generated artifact: <code>archive/overleaf-projects-75-items-copy-quantum-superposition-decay-for-quantum-complexity-classes</code></p>
+  </footer>
+</body>
+</html>

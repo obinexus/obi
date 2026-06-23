@@ -12,6 +12,8 @@ export const SOURCE_DIR = path.join(DOCS_DIR, "source");
 export const PUBLIC_DIR = path.join(DOCS_DIR, "public");
 export const ARCHIVE_DIR = path.join(DOCS_DIR, "archive");
 export const PUBLIC_ASSETS_DIR = path.join(PUBLIC_DIR, "assets");
+export const PUBLIC_PDF_DIR = path.join(PUBLIC_DIR, "pdf");
+export const PUBLIC_SOURCE_HTML_DIR = path.join(PUBLIC_DIR, "source-html");
 export const BASE_URL = "https://obinexus.github.io/obi/";
 export const OBI_DEFINITION =
   "an ontological and Bayesian reasoning infrastructure for uncertainty-aware robotic and humanitarian systems.";
@@ -20,7 +22,9 @@ export const REQUIRED_SOURCE_DIRS = [
   "tex",
   "bib",
   "md",
+  "pdf",
   "txt",
+  "html",
   "assets",
 ].map((name) => path.join(SOURCE_DIR, name));
 
@@ -48,6 +52,8 @@ export async function ensureDocumentationLayout() {
     SOURCE_DIR,
     PUBLIC_DIR,
     PUBLIC_ASSETS_DIR,
+    PUBLIC_PDF_DIR,
+    PUBLIC_SOURCE_HTML_DIR,
     ARCHIVE_DIR,
     ...REQUIRED_SOURCE_DIRS,
   ];
@@ -116,6 +122,28 @@ export async function copySourceAssets() {
   }
 }
 
+export async function copySourcePdfs() {
+  const sourcePdfs = path.join(SOURCE_DIR, "pdf");
+  const pdfs = await listFiles(sourcePdfs, [".pdf"]);
+  for (const pdf of pdfs) {
+    const relative = path.relative(sourcePdfs, pdf);
+    const destination = path.join(PUBLIC_PDF_DIR, relative);
+    await fs.mkdir(path.dirname(destination), { recursive: true });
+    await fs.copyFile(pdf, destination);
+  }
+}
+
+export async function copySourceHtml() {
+  const sourceHtml = path.join(SOURCE_DIR, "html");
+  const files = await listFiles(sourceHtml);
+  for (const file of files) {
+    const relative = path.relative(sourceHtml, file);
+    const destination = path.join(PUBLIC_SOURCE_HTML_DIR, relative);
+    await fs.mkdir(path.dirname(destination), { recursive: true });
+    await fs.copyFile(file, destination);
+  }
+}
+
 export function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -144,6 +172,17 @@ export function slugify(value, fallback = "document") {
     .replace(/^-+|-+$/g, "")
     .slice(0, 96);
   return slug || fallback;
+}
+
+export function uniqueSlug(baseSlug, usedSlugs) {
+  let candidate = baseSlug;
+  let index = 2;
+  while (usedSlugs.has(candidate)) {
+    candidate = `${baseSlug}-${index}`;
+    index += 1;
+  }
+  usedSlugs.add(candidate);
+  return candidate;
 }
 
 export function titleFromPath(filePath) {
@@ -200,7 +239,16 @@ export function inlineMarkdown(value) {
     return `@@CODE${code.length - 1}@@`;
   });
   html = html
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+    .replace(
+      /!\[([^\]]*)\]\(([^)\s]+)(?:\s+&quot;([^&]*)&quot;)?\)/g,
+      '<img src="$2" alt="$1" loading="lazy">',
+    )
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, href) => {
+      const isLinkTarget =
+        /^(https?:|mailto:|#|\.{0,2}\/)/i.test(href) ||
+        /^[A-Za-z0-9_-]+[/.]/.test(href);
+      return isLinkTarget ? `<a href="${href}">${label}</a>` : match;
+    })
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/\*([^*]+)\*/g, "<em>$1</em>");
   return html.replace(/@@CODE(\d+)@@/g, (_match, index) => code[Number(index)]);
@@ -799,12 +847,19 @@ export function papersPageBody(documents, archives) {
       ? archives
           .map(
             (archive) =>
-              `<li><span>${escapeHtml(archive.title)}</span><code>${escapeHtml(
+              `<li><span>${escapeHtml(archive.title)}</span>${
+                archive.htmlHref
+                  ? `<a href="${escapeHtml(archive.htmlHref)}">HTML view</a>`
+                  : ""
+              }<code>${escapeHtml(
                 archive.fileName,
               )}</code></li>`,
           )
           .join("")
       : `<li><span>No archived bundles found.</span></li>`;
+  const extractedIndex = archives.some((archive) => archive.extractedIndexHref)
+    ? `<p><a href="source-html/index.html">Open extracted archive and PDF HTML index</a>. These pages are generated under <code>docs/source/html</code> and copied into <code>docs/public/source-html</code> during the docs build.</p>`
+    : "";
 
   return [
     section(
@@ -815,7 +870,7 @@ export function papersPageBody(documents, archives) {
     section(
       "archived-research-bundles",
       "Archived Research Bundles",
-      `<p>ZIP bundles are preserved in <code>docs/archive</code> for future review. They are not unpacked during the normal documentation build.</p><ul class="archive-list">${archiveItems}</ul>`,
+      `<p>ZIP bundles are preserved in <code>docs/archive</code>. Run <code>npm run docs:populate</code> to extract them into Markdown and Pandoc-compatible HTML views.</p>${extractedIndex}<ul class="archive-list">${archiveItems}</ul>`,
     ),
   ].join("\n");
 }
@@ -865,6 +920,8 @@ export async function buildDocumentation() {
   await ensureDocumentationLayout();
   await cleanPublicDocs();
   await copySourceAssets();
+  await copySourcePdfs();
+  await copySourceHtml();
   await writeTextFile(path.join(PUBLIC_ASSETS_DIR, "obi.css"), cssAsset());
   await writeTextFile(path.join(PUBLIC_ASSETS_DIR, "obi.js"), jsAsset());
 
@@ -893,11 +950,12 @@ export async function buildSourcePages(bibliographyMap) {
     ...(await listFiles(path.join(SOURCE_DIR, "tex"), [".tex"])),
   ];
   const documents = [];
+  const usedSlugs = new Set();
   for (const file of sourceFiles) {
     const extension = path.extname(file).toLowerCase();
     const raw = await readTextFile(file);
     const title = titleFromPath(file);
-    const slug = slugify(path.basename(file, extension));
+    const slug = uniqueSlug(slugify(path.basename(file, extension)), usedSlugs);
     const publicPath = `sources/${slug}.html`;
     const outputPath = path.join(PUBLIC_DIR, publicPath);
     const prefix = rootPrefixFor(publicPath);
@@ -1063,11 +1121,30 @@ export async function searchIndexFromPublicHtml() {
 
 async function archiveMetadata() {
   const archiveFiles = await listFiles(ARCHIVE_DIR, [".zip"]);
-  return archiveFiles.map((file) => ({
-    title: titleFromPath(file),
-    fileName: path.basename(file),
-    path: path.relative(ROOT, file).replaceAll(path.sep, "/"),
-  }));
+  const sourceHtmlIndex = path.join(PUBLIC_SOURCE_HTML_DIR, "index.html");
+  const extractedIndexHref = (await fileExists(sourceHtmlIndex)) ? "source-html/index.html" : null;
+  return Promise.all(
+    archiveFiles.map(async (file) => {
+      const slug = slugify(path.basename(file, path.extname(file)));
+      const archiveHtml = path.join(PUBLIC_SOURCE_HTML_DIR, "archive", `${slug}.html`);
+      return {
+        title: titleFromPath(file),
+        fileName: path.basename(file),
+        path: path.relative(ROOT, file).replaceAll(path.sep, "/"),
+        htmlHref: (await fileExists(archiveHtml)) ? `source-html/archive/${slug}.html` : null,
+        extractedIndexHref,
+      };
+    }),
+  );
+}
+
+async function fileExists(filePath) {
+  try {
+    const stat = await fs.stat(filePath);
+    return stat.isFile();
+  } catch {
+    return false;
+  }
 }
 
 async function writeSitemap(documents) {
@@ -1226,6 +1303,7 @@ function contentType(filePath) {
       ".jpeg": "image/jpeg",
       ".gif": "image/gif",
       ".webp": "image/webp",
+      ".pdf": "application/pdf",
     }[extension] || "application/octet-stream"
   );
 }
@@ -1532,6 +1610,19 @@ p,
 li,
 dd {
   max-width: 76ch;
+}
+
+.doc-article img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--obi-border);
+  border-radius: var(--obi-radius);
+  background: #fbfcf9;
+}
+
+.doc-article p > img:only-child {
+  margin: 1rem 0;
 }
 
 section {
